@@ -29,6 +29,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         karma = false;
         released = false;
         showRecently = false;
+        myScore = 0;
     }
 
     /**
@@ -55,6 +56,18 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     }
 
+
+    // Getters and Setters
+
+
+    /**
+     * Returns karma of this DejaPhoto object.
+     * @return karma (true or false).
+     */
+    public boolean getKarma() {
+        return karma;
+    }
+
     /**
      * Set karma flag to true.
      */
@@ -63,12 +76,27 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     }
 
     /**
+     * Returns released flag of this DejaPhoto object.
+     * @return released (true or false).
+     */
+    public boolean isReleased() {
+        return released;
+    }
+
+    /**
      * Set release flag to true;
      */
-    public void releasePhoto() {
+    public void setReleased() {
         released = true;
     }
 
+    /**
+     * Returns shownRecently flag of this DejaPhoto object.
+     * @return shownRecently (true or false).
+     */
+    public boolean isShownRecently() {
+        return showRecently;
+    }
     /**
      * Set showRecently flag to true.
      */
