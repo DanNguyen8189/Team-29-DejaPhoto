@@ -8,19 +8,23 @@
 
     <ImageButton
         android:id="@+id/leftArrow"
+        android:background="@mipmap/arrow_button_metal_green_left_T"
+        android:scaleType="center"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
         android:layout_width="184dp"
         android:layout_height="185dp"
-        android:src="@mipmap/arrow_button_metal_green_left_T"
-        tools:layout_editor_absoluteY="16dp"
-        tools:layout_editor_absoluteX="100dp" />
+        tools:layout_editor_absoluteY="245dp"
+        tools:layout_editor_absoluteX="16dp" />
 
     <ImageButton
         android:id="@+id/rightArrow"
+        android:background="@mipmap/arrow_button_metal_green_right_T"
+
         android:layout_width="184dp"
         android:layout_height="185dp"
-        android:src="@mipmap/arrow_button_metal_green_right_T"
-        tools:layout_editor_absoluteY="230dp"
-        tools:layout_editor_absoluteX="100dp" />
+        tools:layout_editor_absoluteY="245dp"
+        tools:layout_editor_absoluteX="170dp" />
 
 
 </android.support.constraint.ConstraintLayout>
