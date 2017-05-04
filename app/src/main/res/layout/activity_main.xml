@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         tools:layout_editor_absoluteX="25dp"
         tools:layout_editor_absoluteY="361dp">
 
@@ -17,9 +18,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:adjustViewBounds="true"
             android:background="@mipmap/arrow_button_metal_green_left_t"
-            android:scaleType="fitCenter"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="327dp" />
 
@@ -29,9 +28,7 @@
             android:layout_height="100dp"
             android:layout_marginLeft="135dp"
             android:layout_weight="1"
-            android:adjustViewBounds="true"
             android:background="@mipmap/arrow_button_metal_green_right_t"
-            android:scaleType="fitCenter"
             tools:layout_editor_absoluteX="247dp"
             tools:layout_editor_absoluteY="0dp" />
 
