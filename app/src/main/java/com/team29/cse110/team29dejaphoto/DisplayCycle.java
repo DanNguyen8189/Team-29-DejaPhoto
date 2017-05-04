@@ -6,7 +6,7 @@ import java.util.*;
  */
 
 public class DisplayCycle {
-    public class Priorities {
+    private class Priorities {
 
         // Check which features of DejaVu Mode are on
         boolean isLocationOn;
@@ -31,7 +31,7 @@ public class DisplayCycle {
     */
     }
 
-    public class History {
+    private class History {
 
         LinkedList<DejaPhoto>  historyData; // Holds the history objects
         ListIterator<DejaPhoto> listIterator; // Holds current position in the history list
