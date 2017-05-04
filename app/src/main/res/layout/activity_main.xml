@@ -6,13 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.team29.cse110.team29dejaphoto.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:id="@+id/leftArrow"
+        android:layout_width="184dp"
+        android:layout_height="185dp"
+        android:src="@mipmap/arrow_button_metal_green_left_T"
+        tools:layout_editor_absoluteY="16dp"
+        tools:layout_editor_absoluteX="100dp" />
+
+    <ImageButton
+        android:id="@+id/rightArrow"
+        android:layout_width="184dp"
+        android:layout_height="185dp"
+        android:src="@mipmap/arrow_button_metal_green_right_T"
+        tools:layout_editor_absoluteY="230dp"
+        tools:layout_editor_absoluteX="100dp" />
+
 
 </android.support.constraint.ConstraintLayout>

@@ -2,7 +2,7 @@ package com.team29.cse110.team29dejaphoto;
 import java.util.*;
 
 /**
- * Created by Dan Nguyen Brian Orensztein on 5/3/2017.
+ * Created by Dan Nguyen Brian Orensztein on 5/2/2017.
  */
 
 public class DisplayCycle {
