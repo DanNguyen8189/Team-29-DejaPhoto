@@ -62,11 +62,16 @@ public class DisplayCycle {
 
         }
 
-        /***************************************** TODO
-         public boolean checkValidPrev() {
-
-         }
-         **********************************************/
+        /**
+         * Used to check if we are currently at the oldest DejaPhoto in the history list.
+         * param None
+         * return boolean - True if there are photos available when traversing backwards through
+         *                  the history; false otherwise.
+         */
+        public boolean checkValidPrev() {
+            if(listIterator.hasNext()) return true;
+            return false;
+        }
 
         /**
          * Used to increment the counter (which photo we are looking at in the history
@@ -80,11 +85,16 @@ public class DisplayCycle {
             return listIterator.next();
         }
 
-        /***************************************** TODO
-         public DejaPhoto getPrev() {
-
-         }
-         *********************************************/
+        /**
+         * Used to increment the iterator and to get the previous photo.
+         * param None
+         * return DejaPhoto - the photo to be displayed
+         *        null - there are no previous photos available
+         */
+        public DejaPhoto getPrev() {
+            if(!checkValidPrev()) return null;
+            return listIterator.next();
+        }
 
         /**
          * Used to remove DejaPhoto's from the history list when it reaches 10
@@ -149,10 +159,16 @@ public class DisplayCycle {
         return toDisplay;
     }
 
-    /************************************* TODO
-     public DejaPhoto getPrevPhoto() {
-
-     }
-     ***************************************/
+    /**
+     * Used to get the previous photo in the sequence, calling other helper methods to
+     * determine where to get the previous photo.
+     * param none
+     * return DejaPhoto - photo to be displayed
+     *        null - there are no previous photos available
+     */
+    public DejaPhoto getPrevPhoto() {
+        if (history.checkValidPrev()) return history.getPrev();
+        return null;
+    }
 
 }
