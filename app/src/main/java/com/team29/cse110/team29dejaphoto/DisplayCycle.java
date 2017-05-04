@@ -16,7 +16,7 @@ public class DisplayCycle {
         PriorityQueue<DejaPhoto> album; // Holds a sorted list of photos based on priority
 
         /* Priorities Default Constructor */
-        public Priorities() {
+        private Priorities() {
             isLocationOn = true;
             isDateOn = true;
             isTimeOn = true;
@@ -39,7 +39,7 @@ public class DisplayCycle {
         int counter; // Keep track of which photo in history we are on
 
         /* History Default Constructor */
-        public History() {
+        private History() {
             historyData = new LinkedList<DejaPhoto>();
             listIterator = historyData.listIterator();
             maxTen = 0;
@@ -52,7 +52,7 @@ public class DisplayCycle {
          * return boolean - False if the number of photos in the list equal the counter.
          *                   Otherwise, returns true.
          */
-        public boolean checkValidNext() {
+        private boolean checkValidNext() {
             // No next photo in the history list
             if (maxTen == counter) {
                 return false;
@@ -74,7 +74,7 @@ public class DisplayCycle {
          * param None
          * return DejaPhoto - the photo to be displayed
          */
-        public DejaPhoto getNext() {
+        private DejaPhoto getNext() {
 
             counter++;
             return listIterator.next();
@@ -93,7 +93,7 @@ public class DisplayCycle {
          * @return DejaPhoto - Photo to be added back into the PQ if removed from
          *                     the list
          */
-        public DejaPhoto updateHistory(DejaPhoto photo) {
+        private DejaPhoto updateHistory(DejaPhoto photo) {
             DejaPhoto toMove = null; // Holds the photo removed from the list
 
             // List is at max capacity
@@ -129,7 +129,7 @@ public class DisplayCycle {
         DejaPhoto toAdd = null; // Iniitalize the photo to be added to the PQ album
 
         // The photo we are looking at is not the latest photo in history
-        if ((history.checkValidNext() == true) && (inHistory == true)) {
+        if (history.checkValidNext() && inHistory) {
             toDisplay = history.getNext();
             return toDisplay;
         }
