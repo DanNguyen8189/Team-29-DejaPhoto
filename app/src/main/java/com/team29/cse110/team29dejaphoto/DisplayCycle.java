@@ -22,7 +22,11 @@ public class DisplayCycle {
             isDateOn = true;
             isTimeOn = true;
 
-            album = new PriorityQueue<DejaPhoto>(); // *******Do we need to pass in the comparator???********
+            album = new PriorityQueue<DejaPhoto>(); // TODO*******Do we need to pass in the comparator???********
+        }
+
+        private void addToHeap(DejaPhoto photo){
+            album.add(photo);
         }
 
     /* Updates the priorities
@@ -54,13 +58,7 @@ public class DisplayCycle {
          *                   Otherwise, returns true.
          */
         private boolean checkValidNext() {
-            // No next photo in the history list
-            if (maxTen == counter) {
-                return false;
-            }
-
-            return true;
-
+            return (maxTen != counter);
         }
 
         /**
@@ -81,7 +79,6 @@ public class DisplayCycle {
          * return DejaPhoto - the photo to be displayed
          */
         private DejaPhoto getNext() {
-
             counter++;
             return listIterator.next();
         }
@@ -123,9 +120,9 @@ public class DisplayCycle {
     }
 
     // Initialize member variables for DisplayCycle
-    History history;
-    Priorities priorities;
-    boolean inHistory;
+    private History history;
+    private Priorities priorities;
+    private boolean inHistory;
 
     /* DisplayCycle constructor */
     public DisplayCycle() {
@@ -161,7 +158,7 @@ public class DisplayCycle {
 
             // history list was at max capacity and a photo was removed to be re-added to PQ
             if (toAdd != null) {
-                priorities.album.add(toAdd);
+                priorities.addToHeap(toAdd);
             }
         }
 
