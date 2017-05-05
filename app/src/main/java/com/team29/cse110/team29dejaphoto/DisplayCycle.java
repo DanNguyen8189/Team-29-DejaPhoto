@@ -22,7 +22,7 @@ public class DisplayCycle {
             isDateOn = true;
             isTimeOn = true;
 
-            album = new PriorityQueue<DejaPhoto>(); // *******Do we need to pass in the comparator???********
+            album = new PriorityQueue<DejaPhoto>(); // TODO*******Do we need to pass in the comparator???********
         }
 
     /* Updates the priorities
@@ -81,7 +81,6 @@ public class DisplayCycle {
          * return DejaPhoto - the photo to be displayed
          */
         private DejaPhoto getNext() {
-
             counter++;
             return listIterator.next();
         }
@@ -123,9 +122,9 @@ public class DisplayCycle {
     }
 
     // Initialize member variables for DisplayCycle
-    History history;
-    Priorities priorities;
-    boolean inHistory;
+    private History history;
+    private Priorities priorities;
+    private boolean inHistory;
 
     /* DisplayCycle constructor */
     public DisplayCycle() {
