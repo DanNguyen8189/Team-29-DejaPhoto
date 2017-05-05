@@ -146,7 +146,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     // Helper methods below
 
     private int getKarmaPoints() {
-        return 0;
+        return mapBooleanToInt(karma);
     }
 
     private int getLocationPoints() {
