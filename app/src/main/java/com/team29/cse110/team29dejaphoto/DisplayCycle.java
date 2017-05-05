@@ -41,14 +41,14 @@ public class DisplayCycle {
         LinkedList<DejaPhoto>  historyData; // Holds the history objects
         ListIterator<DejaPhoto> listIterator; // Holds current position in the history list
         int maxTen; // Keep track of how many photos are in the history
-        int counter; // Keep track of which photo in history we are on
+        //int counter; // Keep track of which photo in history we are on
 
         /* History Default Constructor */
         private History() {
             historyData = new LinkedList<DejaPhoto>();
             listIterator = historyData.listIterator();
             maxTen = 0;
-            counter = 0;
+            //counter = 0;
         }
 
         /**
@@ -58,7 +58,8 @@ public class DisplayCycle {
          *                   Otherwise, returns true.
          */
         private boolean checkValidNext() {
-            return (maxTen != counter);
+            //return (maxTen != counter);
+            return listIterator.hasNext();
         }
 
         /**
@@ -79,7 +80,7 @@ public class DisplayCycle {
          * return DejaPhoto - the photo to be displayed
          */
         private DejaPhoto getNext() {
-            counter++;
+            //counter++;
             return listIterator.next();
         }
 
@@ -122,7 +123,7 @@ public class DisplayCycle {
     // Initialize member variables for DisplayCycle
     private History history;
     private Priorities priorities;
-    private boolean inHistory;
+    //private boolean inHistory;
 
     /* DisplayCycle constructor */
     public DisplayCycle() {
@@ -130,7 +131,7 @@ public class DisplayCycle {
         history = new History();
         priorities = new Priorities();
 
-        inHistory = false; // Used to check if we are in the history list or not
+        //inHistory = false; // Used to check if we are in the history list or not
     }
 
     /**
@@ -145,14 +146,14 @@ public class DisplayCycle {
         DejaPhoto toAdd = null; // Initialize the photo to be added to the PQ album
 
         // The photo we are looking at is not the latest photo in history
-        if (history.checkValidNext() && inHistory) {
+        if (history.checkValidNext()) {
             toDisplay = history.getNext();
             return toDisplay;
         }
 
         // We are no longer in the history list (now in PQ)
         else {
-            inHistory = false;
+            //inHistory = false;
             toDisplay = priorities.album.poll();
             toAdd = history.updateHistory(toDisplay);
 
@@ -173,7 +174,8 @@ public class DisplayCycle {
      *        null - there are no previous photos available
      */
     public DejaPhoto getPrevPhoto() {
-        if (history.checkValidPrev()) return history.getPrev();
+        if (history.checkValidPrev())
+            return history.getPrev();
         return null;
     }
 
