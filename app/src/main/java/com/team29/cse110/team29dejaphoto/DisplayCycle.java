@@ -1,4 +1,5 @@
 package com.team29.cse110.team29dejaphoto;
+
 import java.util.*;
 
 /**
@@ -68,7 +69,7 @@ public class DisplayCycle {
          * return boolean - True if there are photos available when traversing backwards through
          *                  the history; false otherwise.
          */
-        public boolean checkValidPrev() {
+        private boolean checkValidPrev() {
             if(listIterator.hasNext()) return true;
             return false;
         }
@@ -91,7 +92,7 @@ public class DisplayCycle {
          * return DejaPhoto - the photo to be displayed
          *        null - there are no previous photos available
          */
-        public DejaPhoto getPrev() {
+        private DejaPhoto getPrev() {
             if(!checkValidPrev()) return null;
             return listIterator.next();
         }
