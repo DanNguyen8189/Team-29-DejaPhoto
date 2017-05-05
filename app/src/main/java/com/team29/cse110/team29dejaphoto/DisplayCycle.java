@@ -75,7 +75,7 @@ public class DisplayCycle {
          *                  the history; false otherwise.
          */
         private boolean checkValidPrev() {
-            if(listIterator.hasNext()) return true;
+            if(listIterator.hasPrevious()) return true;
             return false;
         }
 
@@ -98,7 +98,7 @@ public class DisplayCycle {
          */
         private DejaPhoto getPrev() {
             if(!checkValidPrev()) return null;
-            return listIterator.next();
+            return listIterator.previous();
         }
 
         /**
@@ -120,6 +120,8 @@ public class DisplayCycle {
 
             // Add newest photo from PQ to the list
             historyData.add(photo);
+            //update iterator to new index
+            listIterator.next();
             maxTen++;
 
             return toMove;
