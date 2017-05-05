@@ -122,11 +122,19 @@ public class DisplayCycle {
         }
     }
 
-    // Create an instance of the History and Priorities class
-    History history = new History();
-    Priorities priorities = new Priorities();
+    // Initialize member variables for DisplayCycle
+    History history;
+    Priorities priorities;
+    boolean inHistory;
 
-    boolean inHistory = false; // Used to check if we are in the history list or not
+    /* DisplayCycle constructor */
+    public DisplayCycle() {
+        // Create an instance of the History and Priorities class
+        history = new History();
+        priorities = new Priorities();
+
+        inHistory = false; // Used to check if we are in the history list or not
+    }
 
     /**
      * Used to get the next photo in the sequence, calling other helper methods to
@@ -137,7 +145,7 @@ public class DisplayCycle {
     public DejaPhoto getNextPhoto() {
 
         DejaPhoto toDisplay = null; // Initialize the photo that will be displayed
-        DejaPhoto toAdd = null; // Iniitalize the photo to be added to the PQ album
+        DejaPhoto toAdd = null; // Initialize the photo to be added to the PQ album
 
         // The photo we are looking at is not the latest photo in history
         if (history.checkValidNext() && inHistory) {
