@@ -4,35 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.team29.cse110.team29dejaphoto.MainActivity">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="361dp">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="340dp"
+        android:gravity="center_horizontal"
+        >
 
         <ImageButton
             android:id="@+id/leftArrow"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_gravity="center"
             android:background="@mipmap/arrow_button_metal_green_left_t"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="327dp" />
+             />
 
         <ImageButton
             android:id="@+id/rightArrow"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_toRightOf="@id/leftArrow"
+            android:layout_toEndOf="@id/leftArrow"
             android:layout_marginLeft="135dp"
-            android:layout_weight="1"
+            android:layout_marginStart="135dp"
             android:background="@mipmap/arrow_button_metal_green_right_t"
-            tools:layout_editor_absoluteX="247dp"
-            tools:layout_editor_absoluteY="0dp" />
+            />
 
-    </LinearLayout>
-
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
