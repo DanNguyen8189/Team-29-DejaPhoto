@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     ImageButton arrowLeft; //left arrow button
     ImageButton arrowRight; //right arrow button
+    Button loadPhotosButton; // click to load all photos
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         arrowLeft = (ImageButton) findViewById(R.id.leftArrow);
         arrowRight = (ImageButton) findViewById(R.id.rightArrow);
+        loadPhotosButton = (Button) findViewById(R.id.loadPhotos);
 
         /*
         TODO
@@ -42,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }*/
 
-        loadPhotos();
+    }
+
+    public DejaPhoto[] getAllPhotosAsArray() {
+        return loaderPackage.getGallery();
     }
 
 
