@@ -7,6 +7,7 @@ import java.util.*;
  */
 
 public class DisplayCycle {
+
     private class Priorities {
 
         // Check which features of DejaVu Mode are on
@@ -140,6 +141,13 @@ public class DisplayCycle {
         priorities = new Priorities();
 
         //inHistory = false; // Used to check if we are in the history list or not
+    }
+
+    /*
+     * Add a single photo to album.
+     */
+    public void addToCycle(DejaPhoto photo) {
+        this.priorities.addToHeap(photo);
     }
 
     /**

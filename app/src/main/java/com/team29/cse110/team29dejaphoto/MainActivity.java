@@ -83,8 +83,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(DejaPhoto[] result) {
 
             for (DejaPhoto currPhoto : result) {
-                // TODO
+                displayCycle.addToCycle(currPhoto);
             }
+
             progressDialog.dismiss();
         }
 
