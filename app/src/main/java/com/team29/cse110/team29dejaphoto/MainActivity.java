@@ -82,9 +82,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(DejaPhoto[] result) {
 
-            /*for (DejaPhoto currPhoto : result) {
-                displayCycle.addToCycle(currPhoto);
-            }*/
+            if (result != null) {
+                for (int i = 0; i < result.length; i++) {
+                    displayCycle.addToCycle(result[i]);
+                }
+            }
 
             progressDialog.dismiss();
         }
@@ -119,8 +121,9 @@ public class MainActivity extends AppCompatActivity {
                     null);
 
             int numOfPhotos = cursor.getCount();
-            if (numOfPhotos == 0) {
-                return new DejaPhoto[] {new DejaPhoto(null, 0, 0, 0L, "Test")};
+            if (numOfPhotos == 0 || numOfPhotos == 1) {
+                cursor.close();
+                return null;
             }
             DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 

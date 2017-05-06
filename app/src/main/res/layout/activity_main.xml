@@ -12,34 +12,17 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="340dp"
-        android:gravity="center_horizontal"
-        >
+        android:gravity="center_horizontal">
 
-        <ImageButton
-            android:id="@+id/leftArrow"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@mipmap/arrow_button_metal_green_left_t"
-             />
 
-        <ImageButton
-            android:id="@+id/rightArrow"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_toRightOf="@id/leftArrow"
-            android:layout_toEndOf="@id/leftArrow"
-            android:layout_marginLeft="135dp"
-            android:layout_marginStart="135dp"
-            android:background="@mipmap/arrow_button_metal_green_right_t"
-            />
+        <Button
+            android:id="@+id/loadPhotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load Images"
+            android:onClick="loadPhotos"/>
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/loadPhotos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Load Images"
-        android:onClick="loadPhotos"/>
 
 </android.support.constraint.ConstraintLayout>
