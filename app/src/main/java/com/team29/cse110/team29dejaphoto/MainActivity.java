@@ -2,6 +2,7 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -21,9 +22,15 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    WallpaperManager background;
+
     private DisplayCycle displayCycle = new DisplayCycle();
 
+
     Button loadPhotosButton; // click to load all photos
+    ImageButton buttonLeft; // click to cycle back
+    ImageButton buttonRight; // click to cycle forward
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
 
@@ -33,9 +40,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loadPhotosButton = (Button) findViewById(R.id.loadPhotos);
+        buttonLeft = (ImageButton) findViewById(R.id.leftArrow);
+        buttonRight = (ImageButton) findViewById(R.id.rightArrow);
 
     }
 
+
+    public void cycleBack(View view) {
+        background = WallpaperManager.getInstance(getApplicationContext());
+        try {
+            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), displayCycle.getPrevPhoto().getPhotoUri()));
+        }
+
+        catch (Exception e) {
+        }
+    }
+
+    public void cycleForward(View view) {
+        background = WallpaperManager.getInstance(getApplicationContext());
+        try {
+            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), displayCycle.getNextPhoto().getPhotoUri()));
+        }
+
+        catch (Exception e) {
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
