@@ -20,7 +20,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DisplayCycle displayCycle;
+    private DisplayCycle displayCycle = new DisplayCycle();
 
     Button loadPhotosButton; // click to load all photos
 
