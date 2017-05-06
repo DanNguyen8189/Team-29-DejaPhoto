@@ -82,13 +82,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(DejaPhoto[] result) {
 
-            for (DejaPhoto currPhoto : result) {
+            /*for (DejaPhoto currPhoto : result) {
                 displayCycle.addToCycle(currPhoto);
-            }
+            }*/
 
-            progressDialog.show(MainActivity.this,
-                    "ProgressDialog",
-                    "All Photos Loaded (Hopefully)");
             progressDialog.dismiss();
         }
 
@@ -101,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(String... text) {
-
         }
 
         private DejaPhoto[] getPhotosAsArray() {
@@ -123,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
                     null);
 
             int numOfPhotos = cursor.getCount();
+            if (numOfPhotos == 0) {
+                return new DejaPhoto[] {new DejaPhoto(null, 0, 0, 0L, "Test")};
+            }
             DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
             int titleIndex = cursor.getColumnIndex(MediaStore.Images.Media.TITLE);
@@ -151,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             cursor.close();
-
             return gallery;
+
         }
 
     }
