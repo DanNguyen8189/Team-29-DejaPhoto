@@ -49,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void cycleBack(View view) {
         background = WallpaperManager.getInstance(getApplicationContext());
+        DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
         try {
-            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), displayCycle.getPrevPhoto().getPhotoUri()));
+            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
+            Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 
         catch (Exception e) {
@@ -59,8 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void cycleForward(View view) {
         background = WallpaperManager.getInstance(getApplicationContext());
+        DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
         try {
-            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), displayCycle.getNextPhoto().getPhotoUri()));
+            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
+            Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 
         catch (Exception e) {
