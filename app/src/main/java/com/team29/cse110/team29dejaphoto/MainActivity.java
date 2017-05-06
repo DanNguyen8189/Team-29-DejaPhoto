@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void loadPhotos() {
+    public void loadPhotos() {
 
         ActivityCompat.requestPermissions(this,
                 new String[] { Manifest.permission.READ_EXTERNAL_STORAGE},
