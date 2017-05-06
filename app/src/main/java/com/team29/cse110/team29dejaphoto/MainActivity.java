@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DejaPhoto[] getPhotosAsArray() {
 
+        Log.d(TAG, "Entering getPhotosAsArray method");
         String[] projection = { MediaStore.Images.Media.TITLE,
                 MediaStore.Images.Media.LATITUDE,
                 MediaStore.Images.Media.LONGITUDE,
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
+            Log.d(TAG, filename);
             gallery[count] = new DejaPhoto(uri, latitude, longitude, time, null);
             count++;
 
