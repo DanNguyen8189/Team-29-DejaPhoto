@@ -23,6 +23,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
+    private final String TAG = "MainActivity";
     WallpaperManager background;
 
     private DisplayCycle displayCycle = new DisplayCycle();
@@ -85,10 +86,9 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_MEDIA : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    Toast.makeText(this, "Loading Photos...", Toast.LENGTH_SHORT).show();
                     DejaPhoto[] gallery = getPhotosAsArray();
                     fillDisplayCycle(gallery);
-                    Toast.makeText(this, "Done Loading Photos!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
@@ -135,24 +135,23 @@ public class MainActivity extends AppCompatActivity {
         int timeIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED);
         int count = 0;
 
-        if (cursor.moveToFirst()) {
-            while (cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
 
-                title = cursor.getString(titleIndex);
-                latitude = cursor.getDouble(latIndex);
-                longitude = cursor.getDouble(longIndex);
-                time = cursor.getLong(timeIndex);
+            title = cursor.getString(titleIndex);
+            latitude = cursor.getDouble(latIndex);
+            longitude = cursor.getDouble(longIndex);
+            time = cursor.getLong(timeIndex);
 
-                String filename = title + ".jpg";
-                String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
-                File file = new File(absolutePath);
-                Uri uri = Uri.fromFile(file);
+            String filename = title + ".jpg";
+            String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
+            File file = new File(absolutePath);
+            Uri uri = Uri.fromFile(file);
 
-                gallery[count] = new DejaPhoto(uri, latitude, longitude, time, null);
-                count++;
+            gallery[count] = new DejaPhoto(uri, latitude, longitude, time, null);
+            count++;
 
-            }
         }
+
 
         cursor.close();
         return gallery;
