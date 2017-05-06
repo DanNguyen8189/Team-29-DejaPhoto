@@ -83,9 +83,11 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(DejaPhoto[] result) {
 
             if (result != null) {
-                for (int i = 0; i < result.length; i++) {
-                    displayCycle.addToCycle(result[i]);
-                }
+
+                displayCycle.addToCycle(new DejaPhoto(null, 0, 0, 0L, "Test"));
+                /*for (int i = 0; i < result.length; i++) {
+                    //displayCycle.addToCycle(result[i]);
+                }*/
             }
 
             progressDialog.dismiss();
