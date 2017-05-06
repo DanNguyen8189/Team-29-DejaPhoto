@@ -20,18 +20,18 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@mipmap/arrow_button_metal_green_left_t"
-             />
+            android:onClick="cycleBack" />
 
         <ImageButton
             android:id="@+id/rightArrow"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_toRightOf="@id/leftArrow"
-            android:layout_toEndOf="@id/leftArrow"
             android:layout_marginLeft="135dp"
             android:layout_marginStart="135dp"
+            android:layout_toEndOf="@id/leftArrow"
+            android:layout_toRightOf="@id/leftArrow"
             android:background="@mipmap/arrow_button_metal_green_right_t"
-            />
+            android:onClick="cycleForward" />
 
     </RelativeLayout>
 
