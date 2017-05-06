@@ -66,6 +66,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /*
+     * This is the onClick method for the load images button.
+     */
+    public void loadPhotos(View view) {
+
+        ActivityCompat.requestPermissions(this,
+                new String[] { Manifest.permission.READ_EXTERNAL_STORAGE},
+                PERMISSIONS_REQUEST_MEDIA);
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
@@ -73,8 +85,10 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_MEDIA : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    AsyncLoadImages imageLoader = new AsyncLoadImages();
-                    imageLoader.execute();
+                    Toast.makeText(this, "Loading Photos...", Toast.LENGTH_SHORT).show();
+                    DejaPhoto[] gallery = getPhotosAsArray();
+                    fillDisplayCycle(gallery);
+                    Toast.makeText(this, "Done Loading Photos!", Toast.LENGTH_SHORT).show();
                     return;
 
                 }
@@ -90,102 +104,67 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private DejaPhoto[] getPhotosAsArray() {
 
-    public void loadPhotos(View view) {
+        String[] projection = { MediaStore.Images.Media.TITLE,
+                MediaStore.Images.Media.LATITUDE,
+                MediaStore.Images.Media.LONGITUDE,
+                MediaStore.Images.Media.DATE_ADDED };
 
-        ActivityCompat.requestPermissions(this,
-                new String[] { Manifest.permission.READ_EXTERNAL_STORAGE},
-                PERMISSIONS_REQUEST_MEDIA);
+        String title = "";
+        double latitude = 0;
+        double longitude = 0;
+        long time = 0L;
+
+        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+
+        int numOfPhotos = cursor.getCount();
+        if (numOfPhotos == 0 || numOfPhotos == 1) {
+            cursor.close();
+            return null;
+        }
+        DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
+
+        int titleIndex = cursor.getColumnIndex(MediaStore.Images.Media.TITLE);
+        int latIndex = cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE);
+        int longIndex = cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE);
+        int timeIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED);
+        int count = 0;
+
+        if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
+
+                title = cursor.getString(titleIndex);
+                latitude = cursor.getDouble(latIndex);
+                longitude = cursor.getDouble(longIndex);
+                time = cursor.getLong(timeIndex);
+
+                String filename = title + ".jpg";
+                String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
+                File file = new File(absolutePath);
+                Uri uri = Uri.fromFile(file);
+
+                gallery[count] = new DejaPhoto(uri, latitude, longitude, time, null);
+                count++;
+
+            }
+        }
+
+        cursor.close();
+        return gallery;
 
     }
 
+    private void fillDisplayCycle(DejaPhoto[] gallery) {
 
-    private class AsyncLoadImages extends AsyncTask<DisplayCycle, String, DejaPhoto[]> {
-
-        ProgressDialog progressDialog;
-
-        @Override
-        protected DejaPhoto[] doInBackground(DisplayCycle... params) {
-            return getPhotosAsArray();
-        }
-
-        @Override
-        protected void onPostExecute(DejaPhoto[] result) {
-
-            if (result != null) {
-                for (int i = 0; i < result.length; i++) {
-                    displayCycle.addToCycle(result[i]);
-                }
+        if (gallery != null) {
+            for (int i = 0; i < gallery.length; i++) {
+                displayCycle.addToCycle(gallery[i]);
             }
-
-            progressDialog.dismiss();
-        }
-
-        @Override
-        protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(MainActivity.this,
-                    "ProgressDialog",
-                    "Loading Photos...");
-        }
-
-        @Override
-        protected void onProgressUpdate(String... text) {
-        }
-
-        private DejaPhoto[] getPhotosAsArray() {
-
-            String[] projection = { MediaStore.Images.Media.TITLE,
-                    MediaStore.Images.Media.LATITUDE,
-                    MediaStore.Images.Media.LONGITUDE,
-                    MediaStore.Images.Media.DATE_ADDED };
-
-            String title = "";
-            double latitude = 0;
-            double longitude = 0;
-            long time = 0L;
-
-            Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    projection,
-                    null,
-                    null,
-                    null);
-
-            int numOfPhotos = cursor.getCount();
-            if (numOfPhotos == 0 || numOfPhotos == 1) {
-                cursor.close();
-                return null;
-            }
-            DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
-
-
-            int titleIndex = cursor.getColumnIndex(MediaStore.Images.Media.TITLE);
-            int latIndex = cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE);
-            int longIndex = cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE);
-            int timeIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED);
-            int count = 0;
-
-            if (cursor.moveToFirst()) {
-                while (cursor.moveToNext()) {
-
-                    title = cursor.getString(titleIndex);
-                    latitude = cursor.getDouble(latIndex);
-                    longitude = cursor.getDouble(longIndex);
-                    time = cursor.getLong(timeIndex);
-
-                    String filename = title + ".jpg";
-                    String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
-                    File file = new File(absolutePath);
-                    Uri uri = Uri.fromFile(file);
-
-                    gallery[count] = new DejaPhoto(uri, latitude, longitude, time, null);
-                    count++;
-
-                }
-            }
-
-            cursor.close();
-            return gallery;
-
         }
 
     }
