@@ -143,6 +143,13 @@ public class DisplayCycle {
         //inHistory = false; // Used to check if we are in the history list or not
     }
 
+    public DisplayCycle(DejaPhoto[] gallery){
+        history = new History();
+        priorities = new Priorities();
+        for( DejaPhoto photo : gallery){
+            priorities.addToHeap(photo);
+        }
+    }
     /*
      * Add a single photo to album.
      */
