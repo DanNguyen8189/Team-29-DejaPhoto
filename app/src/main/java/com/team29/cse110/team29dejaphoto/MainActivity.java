@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 displayCycle.addToCycle(currPhoto);
             }
 
+            progressDialog.show(MainActivity.this,
+                    "ProgressDialog",
+                    "All Photos Loaded (Hopefully)");
             progressDialog.dismiss();
         }
 
