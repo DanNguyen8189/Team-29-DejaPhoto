@@ -131,21 +131,23 @@ public class MainActivity extends AppCompatActivity {
             int timeIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED);
             int count = 0;
 
-            while (cursor.moveToNext()) {
+            if (cursor.moveToFirst()) {
+                while (cursor.moveToNext()) {
 
-                title = cursor.getString(titleIndex);
-                latitude = cursor.getDouble(latIndex);
-                longitude = cursor.getDouble(longIndex);
-                time = cursor.getLong(timeIndex);
+                    title = cursor.getString(titleIndex);
+                    latitude = cursor.getDouble(latIndex);
+                    longitude = cursor.getDouble(longIndex);
+                    time = cursor.getLong(timeIndex);
 
-                String filename = title + ".jpg";
-                String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
-                File file = new File(absolutePath);
-                Uri uri = Uri.fromFile(file);
+                    String filename = title + ".jpg";
+                    String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
+                    File file = new File(absolutePath);
+                    Uri uri = Uri.fromFile(file);
 
-                gallery[count] = new DejaPhoto(uri, latitude, longitude, time, null);
-                count++;
+                    gallery[count] = new DejaPhoto(uri, latitude, longitude, time, null);
+                    count++;
 
+                }
             }
 
             cursor.close();
