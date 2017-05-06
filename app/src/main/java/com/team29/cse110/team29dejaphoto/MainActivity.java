@@ -20,35 +20,19 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton arrowLeft; //left arrow button
-    ImageButton arrowRight; //right arrow button
+    private DisplayCycle displayCycle;
+
     Button loadPhotosButton; // click to load all photos
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
-
-    private LoaderPackage loaderPackage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        arrowLeft = (ImageButton) findViewById(R.id.leftArrow);
-        arrowRight = (ImageButton) findViewById(R.id.rightArrow);
         loadPhotosButton = (Button) findViewById(R.id.loadPhotos);
 
-        /*
-        TODO
-        arrowLeft.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-
-            }
-        }*/
-
-    }
-
-    public DejaPhoto[] getAllPhotosAsArray() {
-        return loaderPackage.getGallery();
     }
 
 
@@ -59,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_MEDIA : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    loaderPackage = new LoaderPackage();
                     AsyncLoadImages imageLoader = new AsyncLoadImages();
-                    imageLoader.execute(loaderPackage);
+                    imageLoader.execute();
                     return;
 
                 }
@@ -87,10 +70,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class AsyncLoadImages extends AsyncTask<LoaderPackage, String, DejaPhoto[]> {
+    private class AsyncLoadImages extends AsyncTask<DisplayCycle, String, DejaPhoto[]> {
+
+        ProgressDialog progressDialog;
 
         @Override
-        protected DejaPhoto[] doInBackground(LoaderPackage... params) {
+        protected DejaPhoto[] doInBackground(DisplayCycle... params) {
+            return getPhotosAsArray();
+        }
+
+        @Override
+        protected void onPostExecute(DejaPhoto[] result) {
+
+            for (DejaPhoto currPhoto : result) {
+                // TODO
+            }
+            progressDialog.dismiss();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(MainActivity.this,
+                    "ProgressDialog",
+                    "Loading Photos...");
+        }
+
+        @Override
+        protected void onProgressUpdate(String... text) {
+
+        }
+
+        private DejaPhoto[] getPhotosAsArray() {
+
+            String[] projection = { MediaStore.Images.Media.TITLE,
+                    MediaStore.Images.Media.LATITUDE,
+                    MediaStore.Images.Media.LONGITUDE,
+                    MediaStore.Images.Media.DATE_ADDED };
 
             String title = "";
             double latitude = 0;
@@ -98,14 +113,13 @@ public class MainActivity extends AppCompatActivity {
             long time = 0L;
 
             Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    params[0].getProjection(),
+                    projection,
                     null,
                     null,
                     null);
 
             int numOfPhotos = cursor.getCount();
-            params[0].initializeGallery(numOfPhotos);
-            DejaPhoto[] gallery = params[0].getGallery();
+            DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
             int titleIndex = cursor.getColumnIndex(MediaStore.Images.Media.TITLE);
             int latIndex = cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE);
@@ -133,21 +147,6 @@ public class MainActivity extends AppCompatActivity {
             cursor.close();
 
             return gallery;
-        }
-
-        @Override
-        protected void onPostExecute(DejaPhoto[] result) {
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected void onProgressUpdate(String... text) {
-
         }
 
     }
