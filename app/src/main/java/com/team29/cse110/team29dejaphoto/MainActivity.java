@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -68,10 +69,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
-
     /*
      * This is the onClick method for the load images button.
      */
