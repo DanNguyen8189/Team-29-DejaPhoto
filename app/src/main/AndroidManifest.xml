@@ -3,7 +3,7 @@
     package="com.team29.cse110.team29dejaphoto">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permissiom.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
         android:allowBackup="true"
