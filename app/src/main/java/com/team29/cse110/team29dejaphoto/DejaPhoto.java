@@ -68,6 +68,12 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     // Getters and Setters
 
+    /**
+     * Returns Uri
+     */
+    public Uri getPhotoUri() {
+        return photoUri;
+    }
 
     /**
      * Returns karma of this DejaPhoto object.
