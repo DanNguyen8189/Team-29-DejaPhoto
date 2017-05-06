@@ -31,7 +31,7 @@
             android:layout_toEndOf="@id/leftArrow"
             android:layout_toRightOf="@id/leftArrow"
             android:background="@mipmap/arrow_button_metal_green_right_t"
-            android:onClick="cycleForward" />
+            android:onClick="changeWallpaper" />
 
     </RelativeLayout>
 

@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton buttonRight; // click to cycle forward
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
+    private final int PERMISSIONS_WALLPAPER = 2; // int value for permission to change wallpaper
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void cycleForward(View view) {
+    public void cycleForward() {
         background = WallpaperManager.getInstance(getApplicationContext());
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
         try {
@@ -83,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void changeWallpaper(View view) {
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.SET_WALLPAPER}, PERMISSIONS_WALLPAPER);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
@@ -99,6 +104,13 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(this, "Error setting permissions", Toast.LENGTH_SHORT).show();
                     return;
+                }
+            }
+
+            case PERMISSIONS_WALLPAPER : {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Setting Wallpaper", Toast.LENGTH_SHORT).show();
+                    cycleForward();
                 }
             }
             default: {
