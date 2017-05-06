@@ -36,11 +36,20 @@ public class DisplayCycle {
             return album.poll();
         }
 
-    /* Updates the priorities
-    public void updatePriorities() {
-        TODO
-    }
-    */
+        /* Updates the priorities */
+        public void updatePriorities() {
+            // Naive implementation
+            ArrayList<DejaPhoto> temp = new ArrayList<>();
+            for(DejaPhoto photo : album) {
+                album.remove(photo);
+                photo.setScore(photo.calculateScore(isLocationOn, isDateOn, isTimeOn));
+                temp.add(photo);
+            }
+            for(DejaPhoto photo : temp) {
+                album.add(photo);
+            }
+        }
+
     }
 
     private class History {
