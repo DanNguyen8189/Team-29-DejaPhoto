@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
             DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
+
 
             int titleIndex = cursor.getColumnIndex(MediaStore.Images.Media.TITLE);
             int latIndex = cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE);
