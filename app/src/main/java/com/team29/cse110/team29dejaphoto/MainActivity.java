@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }
-
             case PERMISSIONS_WALLPAPER : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Setting Wallpaper", Toast.LENGTH_SHORT).show();
@@ -145,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
+        Log.d(TAG, "Retrieved " + numOfPhotos + " photos");
 
         int titleIndex = cursor.getColumnIndex(MediaStore.Images.Media.TITLE);
         int latIndex = cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE);
