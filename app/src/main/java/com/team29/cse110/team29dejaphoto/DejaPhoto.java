@@ -14,8 +14,6 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     private Long time;            /* Time this photo was taken (seconds since January 1st 1970 */
     private String date;          /* Day of the week this photo was taken */
 
-    // TODO There's are variety of other useful data like orientation, height, etc. that might become useful later on.
-
     private boolean karma;        /* Flags for karma, released, and whether the photo has been */
     private boolean released;     /* shown recently */
     private boolean showRecently;
@@ -38,7 +36,21 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         released = false;
         showRecently = false;
 
-        myScore = 0;
+        updateScore(true, true, true);  /* By default, score is calculated with all settings true */
+
+    }
+
+    /*
+     * DejaPhoto constuctor. This constructor call the regular constructor, then updates the
+     * score for custom values of isLocationOn, isDateOn, and isTimeOn. This constructor is to
+     * be used when creating new DejaPhoto objects when DejaPhoto settings are customized.
+     */
+    public DejaPhoto(Uri photoUri, double latitude, double longitude, Long time, String date,
+                     boolean isLocationOn, boolean isDateOn, boolean isTimeOn) {
+
+        this(photoUri, latitude, longitude, time, date);  /* Add regular photo data . . . */
+        updateScore(isLocationOn, isDateOn, isTimeOn);    /* ... and calculate custom score */
+
     }
 
     /**
@@ -127,24 +139,19 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         myScore = newScore;
     }
 
-    /**
-     * Calculates the priority score of this DejaPhoto object given settings to include/ignore
-     * location, date, and time.
-     * @param isLocationOn True to include location data in score calculation, and false otherwise.
-     * @param isDateOn True to include date in score calculation, and false otherwise.
-     * @param isTimeOn True to inlcude time in score calculation, and false otherwise.
-     * @return int value of this DejaPhoto object's priority score.
+    /*
+     * Updates the score for this DejaPhoto object, given settings for location, date, and time.
      */
-    public int calculateScore(boolean isLocationOn, boolean isDateOn, boolean isTimeOn) {
+    public void updateScore(boolean isLocationOn, boolean isDateOn, boolean isTimeOn) {
 
         int includeLocation = mapBooleanToInt(isLocationOn);
         int includeDate = mapBooleanToInt(isDateOn);
         int includeTime = mapBooleanToInt(isTimeOn);
 
-        return getKarmaPoints() +
-               includeLocation * getLocationPoints() +
-               includeDate * getDatePoints() +
-               includeTime * getTimeTakenPoints();
+        myScore = getKarmaPoints() +
+                  includeLocation * getLocationPoints() +
+                  includeDate * getDatePoints() +
+                  includeTime * getTimeTakenPoints();
 
     }
 
