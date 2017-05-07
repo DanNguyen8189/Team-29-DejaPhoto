@@ -195,18 +195,21 @@ public class DisplayCycle {
 
         // The photo we are looking at is not the latest photo in history
         if (history.checkValidNext()) {
+            Log.d(TAG, "Getting next photo from history");
             toDisplay = history.getNext();
             return toDisplay;
         }
 
         // We are no longer in the history list (now in PQ)
         else {
+            Log.d(TAG, "Getting next photo from priority queue");
             //inHistory = false;
             toDisplay = priorities.getNewPhoto();
             toAdd = history.updateHistory(toDisplay);
 
             // history list was at max capacity and a photo was removed to be re-added to PQ
             if (toAdd != null) {
+                Log.d(TAG, "History was at max capacity");
                 priorities.addToHeap(toAdd);
             }
         }
@@ -223,8 +226,10 @@ public class DisplayCycle {
      */
     public DejaPhoto getPrevPhoto() {
         Log.d(TAG, "Entering getPrevPhoto method");
-        if (history.checkValidPrev())
+        if (history.checkValidPrev()) {
+            Log.d(TAG, "Getting previous photo from history");
             return history.getPrev();
+        }
         return null;
     }
 
