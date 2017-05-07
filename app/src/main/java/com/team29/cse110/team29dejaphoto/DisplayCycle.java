@@ -3,6 +3,7 @@ package com.team29.cse110.team29dejaphoto;
 import android.util.Log;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Dan Nguyen Brian Orensztein on 5/2/2017.
@@ -60,15 +61,15 @@ public class DisplayCycle {
     }
 
     private class History {
-
-        LinkedList<DejaPhoto>  historyData; // Holds the history objects
+        CopyOnWriteArrayList historyData;
+        //LinkedList<DejaPhoto>  historyData; // Holds the history objects
         ListIterator<DejaPhoto> listIterator; // Holds current position in the history list
         int maxTen; // Keep track of how many photos are in the history
         //int counter; // Keep track of which photo in history we are on
 
         /* History Default Constructor */
         private History() {
-            historyData = new LinkedList<DejaPhoto>();
+            historyData = new CopyOnWriteArrayList<DejaPhoto>(); //new LinkedList<DejaPhoto>();
             listIterator = historyData.listIterator();
             maxTen = 0;
             //counter = 0;
@@ -136,7 +137,8 @@ public class DisplayCycle {
             // List is at max capacity
             if (maxTen == 10) {
                 // Remove the oldest photo from the list
-                toMove = historyData.pollFirst();
+                //toMove = historyData.pollFirst();
+                toMove = (DejaPhoto) historyData.get(historyData.size()-1);
                 maxTen--;
             }
 
@@ -144,12 +146,15 @@ public class DisplayCycle {
             historyData.add(photo);
             //update iterator to new index
             if (maxTen != 0){
-                listIterator.next();
+                if(listIterator.hasNext()) {
+                    listIterator.next();
+                }
             }
             maxTen++;
 
             return toMove;
         }
+
     }
 
     // Initialize member variables for DisplayCycle
@@ -179,7 +184,7 @@ public class DisplayCycle {
     public void addToCycle(DejaPhoto photo) {
         Log.d(TAG, "Entering addToCycle method");
         this.priorities.addToHeap(photo);
-    }
+        }
 
     /**
      * Used to get the next photo in the sequence, calling other helper methods to
