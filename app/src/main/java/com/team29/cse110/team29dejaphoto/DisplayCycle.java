@@ -131,7 +131,9 @@ public class DisplayCycle {
             // Add newest photo from PQ to the list
             historyData.add(photo);
             //update iterator to new index
-            //listIterator.next();
+            if (maxTen != 0){
+                listIterator.next();
+            }
             maxTen++;
 
             return toMove;
