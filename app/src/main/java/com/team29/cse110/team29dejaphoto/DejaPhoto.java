@@ -2,6 +2,9 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.net.Uri;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * Created by David Duplantier and Noah Lovato on 5/1/17.
  */
@@ -11,8 +14,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     private Uri photoUri;         /* Uri for this photo */
     private double latitude;      /* Lat and long coordinates where this photo was taken */
     private double longitude;
-    private Long time;            /* Time this photo was taken (seconds since January 1st 1970 */
-    private String date;          /* Day of the week this photo was taken */
+    private Calendar time;        /* This Calendar object will hold the time this photo was taken */
 
     private boolean karma;        /* Flags for karma, released, and whether the photo has been */
     private boolean released;     /* shown recently */
@@ -24,13 +26,13 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      * DejaPhoto constructor. The photo's data including Uri, latitude, longitude, time taken,
      * and date taken, are passed as parameters to the constructor.
      */
-    public DejaPhoto(Uri photoUri, double latitude, double longitude, Long time, String date) {
+    public DejaPhoto(Uri photoUri, double latitude, double longitude, Long time) {
 
         this.photoUri = photoUri;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.time = time;
-        this.date = date;
+        this.time = new GregorianCalendar();
+        this.time.setTimeInMillis(time);
 
         karma = false;
         released = false;
@@ -48,7 +50,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     public DejaPhoto(Uri photoUri, double latitude, double longitude, Long time, String date,
                      boolean isLocationOn, boolean isDateOn, boolean isTimeOn) {
 
-        this(photoUri, latitude, longitude, time, date);  /* Add regular photo data . . . */
+        this(photoUri, latitude, longitude, time);  /* Add regular photo data . . . */
         updateScore(isLocationOn, isDateOn, isTimeOn);    /* ... and calculate custom score */
 
     }
@@ -167,11 +169,27 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     }
 
     private int getTimeTakenPoints() {
-        return 0;
+
+        Calendar now = new GregorianCalendar();
+
+        if (Math.abs(time.HOUR_OF_DAY - now.HOUR_OF_DAY) > 2) {
+            return 0;
+        }
+        else {
+            return 10;
+        }
     }
 
     private int getDatePoints() {
-        return 0;
+
+        Calendar now = new GregorianCalendar();
+
+        if (time.DAY_OF_WEEK == now.DAY_OF_WEEK) {
+            return 10;
+        }
+        else {
+            return 0;
+        }
     }
 
     /*

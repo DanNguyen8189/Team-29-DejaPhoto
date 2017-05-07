@@ -43,6 +43,12 @@ public class DisplayCycle {
             return album.poll();
         }
 
+        /*check if the priority queue is empty */
+
+        private boolean noNewPictures(){
+            return album.isEmpty();
+        }
+
         /* Updates the priorities */
         public void updatePriorities() {
             Log.d(TAG, "Entering updatePriorities method");
@@ -144,6 +150,8 @@ public class DisplayCycle {
                 // Remove the oldest photo from the list
                 //toMove = historyData.pollFirst();
                 toMove = (DejaPhoto) historyData.get(historyData.size()-1);
+                // remove oldest element from history
+                historyData.remove(0);
                 maxTen--;
             }
 
@@ -158,6 +166,17 @@ public class DisplayCycle {
             maxTen++;
 
             return toMove;
+        }
+
+        /*used to loop back to the earliest photo in history in the case there
+        * are no new photos to view
+         */
+        private DejaPhoto loopBack(){
+            //move iterator back to the front
+            for( int index = 0; index < maxTen - 1; index++){
+                listIterator.previous();
+            }
+            return (DejaPhoto) historyData.get(0);
         }
 
     }
@@ -208,6 +227,12 @@ public class DisplayCycle {
             Log.d(TAG, "Getting next photo from history");
             toDisplay = history.getNext();
             return toDisplay;
+        }
+
+        // no new photos in the heap to display; loop through history again
+        else if (priorities.noNewPictures()){
+            Log.d(TAG, "ran out of photos-looping back to first photo");
+            toDisplay = history.loopBack();
         }
 
         // We are no longer in the history list (now in PQ)
