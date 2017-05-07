@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public void loadPhotos(View view) {
 
+        loadPhotosButton.setEnabled(false);  /* Disable button immediately so user cannot
+                                                repeatedly load all photos */
+
         ActivityCompat.requestPermissions(this,
                 new String[] { Manifest.permission.READ_EXTERNAL_STORAGE},
                 PERMISSIONS_REQUEST_MEDIA);
