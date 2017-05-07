@@ -170,8 +170,7 @@ public class MainActivity extends AppCompatActivity {
             gallery[count] = new DejaPhoto(uri,
                     cursor.getDouble(latIndex),
                     cursor.getDouble(longIndex),
-                    cursor.getLong(timeIndex),
-                    null);
+                    cursor.getLong(timeIndex));
 
             count++;
 
