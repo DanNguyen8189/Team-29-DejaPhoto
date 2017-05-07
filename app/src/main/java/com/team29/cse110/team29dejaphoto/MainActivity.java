@@ -24,20 +24,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     private final String TAG = "MainActivity";
+
     WallpaperManager background;
 
     private DisplayCycle displayCycle = new DisplayCycle();
 
 
     Button loadPhotosButton; // click to load all photos
-    ImageButton buttonLeft; // click to cycle back
+    ImageButton buttonLeft;  // click to cycle back
     ImageButton buttonRight; // click to cycle forward
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
-    private final int PERMISSIONS_WALLPAPER = 2; // int value for permission to change wallpaper
+    private final int PERMISSIONS_WALLPAPER = 2;     // int value for permission to change wallpaper
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -132,11 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 MediaStore.Images.Media.LONGITUDE,
                 MediaStore.Images.Media.DATE_ADDED };
 
-        String title = "";
-        double latitude = 0;
-        double longitude = 0;
-        long time = 0L;
-
         Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 projection,
                 null,
@@ -159,24 +156,23 @@ public class MainActivity extends AppCompatActivity {
 
         while (cursor.moveToNext()) {
 
-            title = cursor.getString(titleIndex);
-            latitude = cursor.getDouble(latIndex);
-            longitude = cursor.getDouble(longIndex);
-            time = cursor.getLong(timeIndex);
-
-            String filename = title + ".jpg";
+            String filename = cursor.getString(titleIndex) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
             Log.d(TAG, filename);
-            gallery[count] = new DejaPhoto(uri, latitude, longitude, time, null);
+            gallery[count] = new DejaPhoto(uri,
+                    cursor.getDouble(latIndex),
+                    cursor.getDouble(longIndex),
+                    cursor.getLong(timeIndex),
+                    null);
+
             count++;
 
         }
-
-
         cursor.close();
+
         return gallery;
 
     }

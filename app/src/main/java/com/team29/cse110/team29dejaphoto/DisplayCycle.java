@@ -42,7 +42,7 @@ public class DisplayCycle {
             ArrayList<DejaPhoto> temp = new ArrayList<>();
             for(DejaPhoto photo : album) {
                 album.remove(photo);
-                photo.setScore(photo.calculateScore(isLocationOn, isDateOn, isTimeOn));
+                photo.updateScore(isLocationOn, isDateOn, isTimeOn);
                 temp.add(photo);
             }
             for(DejaPhoto photo : temp) {
