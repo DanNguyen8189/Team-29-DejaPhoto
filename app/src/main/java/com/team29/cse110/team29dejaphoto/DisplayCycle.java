@@ -1,5 +1,7 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.util.Log;
+
 import java.util.*;
 
 /**
@@ -7,6 +9,8 @@ import java.util.*;
  */
 
 public class DisplayCycle {
+
+    private final String TAG = "DisplayCycle";
 
     private class Priorities {
 
@@ -28,16 +32,19 @@ public class DisplayCycle {
 
         /* add a photo to the heap */
         private void addToHeap(DejaPhoto photo){
+            Log.d(TAG, "Entering addToHeap method");
             album.add(photo);
         }
 
         /* take off highest priority photo from priority queue and return it */
         private DejaPhoto getNewPhoto(){
+            Log.d(TAG, "Entering getNewPhoto method");
             return album.poll();
         }
 
         /* Updates the priorities */
         public void updatePriorities() {
+            Log.d(TAG, "Entering updatePriorities method");
             // Naive implementation
             ArrayList<DejaPhoto> temp = new ArrayList<>();
             for(DejaPhoto photo : album) {
@@ -74,6 +81,7 @@ public class DisplayCycle {
          *                   Otherwise, returns true.
          */
         private boolean checkValidNext() {
+            Log.d(TAG, "Entering checkValidNext method");
             //return (maxTen != counter);
             return listIterator.hasNext();
         }
@@ -85,6 +93,7 @@ public class DisplayCycle {
          *                  the history; false otherwise.
          */
         private boolean checkValidPrev() {
+            Log.d(TAG, "Entering checkValidPrev method");
             if(listIterator.hasPrevious()) return true;
             return false;
         }
@@ -96,6 +105,7 @@ public class DisplayCycle {
          * return DejaPhoto - the photo to be displayed
          */
         private DejaPhoto getNext() {
+            Log.d(TAG, "Entering getNext method");
             //counter++;
             return listIterator.next();
         }
@@ -107,6 +117,7 @@ public class DisplayCycle {
          *        null - there are no previous photos available
          */
         private DejaPhoto getPrev() {
+            Log.d(TAG, "Entering getPrev method");
             if(!checkValidPrev()) return null;
             return listIterator.previous();
         }
@@ -119,6 +130,7 @@ public class DisplayCycle {
          *                     the list
          */
         private DejaPhoto updateHistory(DejaPhoto photo) {
+            Log.d(TAG, "Entering updateHistory method");
             DejaPhoto toMove = null; // Holds the photo removed from the list
 
             // List is at max capacity
@@ -157,7 +169,7 @@ public class DisplayCycle {
     public DisplayCycle(DejaPhoto[] gallery){
         history = new History();
         priorities = new Priorities();
-        for( DejaPhoto photo : gallery){
+        for (DejaPhoto photo : gallery){
             priorities.addToHeap(photo);
         }
     }
@@ -165,6 +177,7 @@ public class DisplayCycle {
      * Add a single photo to album.
      */
     public void addToCycle(DejaPhoto photo) {
+        Log.d(TAG, "Entering addToCycle method");
         this.priorities.addToHeap(photo);
     }
 
@@ -176,6 +189,7 @@ public class DisplayCycle {
      */
     public DejaPhoto getNextPhoto() {
 
+        Log.d(TAG, "Entering getNextPhoto method");
         DejaPhoto toDisplay = null; // Initialize the photo that will be displayed
         DejaPhoto toAdd = null; // Initialize the photo to be added to the PQ album
 
@@ -208,6 +222,7 @@ public class DisplayCycle {
      *        null - there are no previous photos available
      */
     public DejaPhoto getPrevPhoto() {
+        Log.d(TAG, "Entering getPrevPhoto method");
         if (history.checkValidPrev())
             return history.getPrev();
         return null;
