@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     ImageButton buttonRight; // click to cycle forward
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
-    private final int PERMISSIONS_WALLPAPER = 2;     // int value for permission to change wallpaper
+    private final int PERMISSIONS_NEXT_WALLPAPER = 2;     // int value for permission to change to the next wallpaper
+    private final int PERMISSIONS_PREV_WALLPAPER = 3; // int value for permission to change to the previous wallpaper
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +51,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void cycleBack(View view) {
+    public void cycleBack() {
         background = WallpaperManager.getInstance(getApplicationContext());
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
+        Log.d(TAG, "Previous Photo was successfully retrieved");
         try {
             background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
             Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
@@ -91,7 +93,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeWallpaper(View view) {
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.SET_WALLPAPER}, PERMISSIONS_WALLPAPER);
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.SET_WALLPAPER}, PERMISSIONS_NEXT_WALLPAPER);
+    }
+
+    public void changeWallpaper2(View view) {
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.SET_WALLPAPER}, PERMISSIONS_PREV_WALLPAPER);
     }
 
     @Override
@@ -113,10 +119,21 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }
-            case PERMISSIONS_WALLPAPER : {
+            case PERMISSIONS_NEXT_WALLPAPER : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Setting Wallpaper", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Setting Next Wallpaper", Toast.LENGTH_SHORT).show();
                     cycleForward();
+                    return;
+                }
+                else {
+                    Toast.makeText(this, "Error setting permissions", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            case PERMISSIONS_PREV_WALLPAPER : {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
+                    cycleBack();
                     return;
                 }
                 else {
