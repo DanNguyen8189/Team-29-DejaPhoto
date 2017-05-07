@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     public void cycleForward() {
         background = WallpaperManager.getInstance(getApplicationContext());
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
+        Log.d(TAG, "Next Photo was successfully retrieved");
         try {
             background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
             Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
