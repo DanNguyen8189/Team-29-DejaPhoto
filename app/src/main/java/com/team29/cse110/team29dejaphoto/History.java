@@ -1,0 +1,93 @@
+package com.team29.cse110.team29dejaphoto;
+
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+public class History {
+
+    private LinkedList<DejaPhoto> historyList;
+    private ListIterator<DejaPhoto> iterator;
+    private int nelems;
+
+    /** Default Constructor */
+    public History() {
+        historyList = new LinkedList<>(); //new LinkedList<DejaPhoto>();
+        iterator = historyList.listIterator();
+    }
+
+    /**
+     * Used to check if we are currently at the latest DejaPhoto in the history list.
+     * @param None
+     * @return boolean - False if the number of photos in the list equal the counter.
+     *                   Otherwise, returns true.
+     */
+    private boolean checkValidNext() {
+        return iterator.hasNext();
+    }
+
+    /**
+     * Used to check if we are currently at the oldest DejaPhoto in the history list.
+     * @param None
+     * @return boolean - True if there are photos available when traversing backwards through
+     *                   the history; false otherwise.
+     */
+    private boolean checkValidPrev() {
+        return iterator.hasPrevious();
+    }
+
+    /**
+     * Used to increment the counter (which photo we are looking at in the history
+     * list) and to get the next photo.
+     * @param None
+     * @return DejaPhoto - the photo to be displayed
+     */
+    public DejaPhoto getNext() {
+        return checkValidNext() ? iterator.next() : null;
+    }
+
+    /**
+     * Used to increment the iterator and to get the previous photo.
+     * @param None
+     * @return DejaPhoto - the photo to be displayed
+     *         null - there are no previous photos available
+     */
+    public DejaPhoto getPrev() {
+        return checkValidPrev() ? iterator.previous() : null;
+    }
+
+    /**
+     * Used to remove DejaPhoto's from the history list when it reaches 10
+     * photos, and to add DejaPhoto's to the history when we swipe left.
+     * @param photo - Photo to add from priority queue to history list
+     * @return DejaPhoto - Photo to be added back into the PQ if removed from
+     *                     the list
+     */
+    public DejaPhoto addPhoto(DejaPhoto photo) {
+        DejaPhoto removed = null;
+
+        if(nelems == 10) {
+            removed = historyList.removeLast();
+        } else {
+            nelems ++;
+        }
+
+        historyList.addFirst(photo);
+        iterator = historyList.listIterator();
+
+        return removed;
+    }
+
+    /**
+     * Cycles the last photo in the history towards the front
+     * @return DejaPhoto cycled back to the front of the list
+     */
+    public DejaPhoto cycle() {
+        DejaPhoto toCycle = historyList.removeLast();
+        historyList.addFirst(toCycle);
+
+        iterator = historyList.listIterator();
+
+        return toCycle;
+    }
+
+}
