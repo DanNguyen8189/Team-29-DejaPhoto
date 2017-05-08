@@ -41,8 +41,10 @@ public class History {
      * @return DejaPhoto - the photo to be displayed
      */
     public DejaPhoto getNext() {
-        if(!forward) iterator.previous();
-        forward = true;
+        if(!forward && checkValidNext()) {
+            iterator.previous();
+            forward = true;
+        }
         return checkValidNext() ? iterator.previous() : null;
     }
 
@@ -52,8 +54,10 @@ public class History {
      *         null - there are no previous photos available
      */
     public DejaPhoto getPrev() {
-        if(forward) iterator.next();
-        forward = false;
+        if(forward && checkValidPrev()) {
+            iterator.next();
+            forward = false;
+        }
         return checkValidPrev() ? iterator.next() : null;
     }
 
