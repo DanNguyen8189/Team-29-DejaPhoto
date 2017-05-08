@@ -1,6 +1,7 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -133,6 +134,15 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         showRecently = true;
     }
 
+    public void setTime(Calendar newTime)
+    {
+        this.time = newTime;
+    }
+
+    public Calendar getTime() {
+        return time;
+    }
+
     public int getScore() {
         return myScore;
     }
@@ -172,7 +182,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
         Calendar now = new GregorianCalendar();
 
-        if (Math.abs(time.HOUR_OF_DAY - now.HOUR_OF_DAY) > 2) {
+        if (Math.abs(time.get(Calendar.HOUR_OF_DAY) - now.get(Calendar.HOUR_OF_DAY)) > 2) {
             return 0;
         }
         else {
@@ -184,7 +194,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
         Calendar now = new GregorianCalendar();
 
-        if (time.DAY_OF_WEEK == now.DAY_OF_WEEK) {
+        if ( time.get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK) ) {
             return 10;
         }
         else {
