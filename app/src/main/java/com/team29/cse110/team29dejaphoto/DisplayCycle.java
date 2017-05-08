@@ -32,18 +32,17 @@ public class DisplayCycle {
     /**
      * Used to get the next photo in the sequence, calling other helper methods to
      * determine where to get the next photo.
-     * @param none
      * @return DejaPhoto - photo to be displayed
      */
     public DejaPhoto getNextPhoto() {
         DejaPhoto next = history.getNext();
         if(next == null) {
             DejaPhoto newPhoto = priorities.getNewPhoto();
+
             if(newPhoto != null) {
                 DejaPhoto removed = history.addPhoto(newPhoto);
-                if(removed != null) {
-                    priorities.add(removed);
-                }
+                if(removed != null) priorities.add(removed);
+
             } else {
                 return history.cycle();
             }
@@ -55,7 +54,6 @@ public class DisplayCycle {
     /**
      * Used to get the previous photo in the sequence, calling other helper methods to
      * determine where to get the previous photo.
-     * @param none
      * @return DejaPhoto - photo to be displayed
      *         null - there are no previous photos available
      */
