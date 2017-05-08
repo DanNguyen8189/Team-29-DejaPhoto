@@ -107,9 +107,8 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_MEDIA : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-
                     DejaPhoto[] gallery = getPhotosAsArray();
-                    fillDisplayCycle(gallery);
+                    displayCycle.fillDisplayCycle(gallery);
                     Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
                     return;
 
@@ -165,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         int numOfPhotos = cursor.getCount();
         if (numOfPhotos == 0 || numOfPhotos == 1) {
             cursor.close();
-            return null;
+            return new DejaPhoto[]{};
         }
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
         Log.d(TAG, "Retrieved " + numOfPhotos + " photos");
@@ -183,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
-            Log.d(TAG, filename);
             gallery[count] = new DejaPhoto(uri,
                     cursor.getDouble(latIndex),
                     cursor.getDouble(longIndex),
@@ -195,16 +193,6 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
 
         return gallery;
-
-    }
-
-    private void fillDisplayCycle(DejaPhoto[] gallery) {
-
-        if (gallery != null) {
-            for (int i = 0; i < gallery.length; i++) {
-                displayCycle.addToCycle(gallery[i]);
-            }
-        }
 
     }
 

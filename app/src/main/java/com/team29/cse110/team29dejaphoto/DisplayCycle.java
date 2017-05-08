@@ -22,6 +22,18 @@ public class DisplayCycle {
         }
     }
 
+    /*
+     * Fill display DisplayCycle object with an array of DejaPhoto objects. This method is intended
+     * to allow instantiating the DisplayCycle object before a gallery of DejaPhoto objects is
+     * available, and fill the DisplayCycle at a later time. This is useful so that the app does
+     * not crash if the user presses the forwards/backwards button before images are loaded.
+     */
+    public void fillDisplayCycle(DejaPhoto[] gallery) {
+        for (DejaPhoto photo : gallery) {
+            priorities.add(photo);
+        }
+    }
+
     /**
      * Add a single photo to album.
      */
