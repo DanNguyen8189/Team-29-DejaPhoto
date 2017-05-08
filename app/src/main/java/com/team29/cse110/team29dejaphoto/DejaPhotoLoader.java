@@ -94,7 +94,7 @@ public class DejaPhotoLoader implements PhotoLoader {
     @Override
     public DejaPhoto[] getNewPhotosAsArray(Context context) {
         // TODO
-        return null;
+        return new DejaPhoto[]{};
     }
 
 }
