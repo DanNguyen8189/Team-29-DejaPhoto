@@ -6,6 +6,7 @@ import com.team29.cse110.team29dejaphoto.DisplayCycle;
 
 import org.junit.Rule;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Created by Brian Orensztein and Dan Nguyen on 5/3/2017.
