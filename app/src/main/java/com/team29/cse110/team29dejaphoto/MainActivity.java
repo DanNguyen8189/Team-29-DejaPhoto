@@ -1,13 +1,8 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -147,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-     * This method fills a DisplayCycle object with DejaPhotos objects. The method uses a
+     * This method fills a DisplayCycle object with DejaPhoto objects. The method uses a
      * PhotoLoader object to handle the details for retrieving photos.
      */
     private void loadPhotosIntoDisplayCycle() {
