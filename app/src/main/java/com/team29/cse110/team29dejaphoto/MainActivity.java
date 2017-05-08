@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 

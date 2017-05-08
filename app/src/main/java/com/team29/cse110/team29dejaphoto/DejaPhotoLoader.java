@@ -24,7 +24,7 @@ public class DejaPhotoLoader implements PhotoLoader {
     private final String TAG = "DejaPhotoLoader";
     /*
      * PROJECTIONS enumerates the pieces of data we want to retrieve for each photo.
-     * TITLE: String of the name of a photo (e.g. "IMG_123456789").
+     * TITLE: String for the name of a photo (e.g. "IMG_123456789").
      * LATITUDE: double value of latitude.
      * LONGITUDE: double value of the longitude.
      * DATE_ADDED: Time photo was taken, in units of milliseconds since January 1, 1970.
