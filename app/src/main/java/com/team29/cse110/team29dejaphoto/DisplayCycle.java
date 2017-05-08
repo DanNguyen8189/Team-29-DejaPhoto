@@ -101,7 +101,10 @@ public class DisplayCycle {
          */
         private boolean checkValidPrev() {
             Log.d(TAG, "Entering checkValidPrev method");
-            if(listIterator.hasPrevious()) return true;
+            if(listIterator.hasPrevious()) {
+                return true;
+            }
+            Log.d(TAG, "Invalid prev");
             return false;
         }
 
@@ -125,7 +128,9 @@ public class DisplayCycle {
          */
         private DejaPhoto getPrev() {
             Log.d(TAG, "Entering getPrev method");
-            if(!checkValidPrev()) return null;
+            if(!checkValidPrev()) {
+                return null;
+            }
             return listIterator.previous();
         }
 

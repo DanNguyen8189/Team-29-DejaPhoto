@@ -20,7 +20,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@mipmap/arrow_button_metal_green_left_t"
-            android:onClick="cycleBack" />
+            android:onClick="changeWallpaper2" />
 
         <ImageButton
             android:id="@+id/rightArrow"
