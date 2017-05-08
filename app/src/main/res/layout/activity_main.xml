@@ -40,6 +40,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Load Images"
-        android:onClick="loadPhotos"/>
+        android:onClick="onClickLoadPhotos"/>
 
 </android.support.constraint.ConstraintLayout>

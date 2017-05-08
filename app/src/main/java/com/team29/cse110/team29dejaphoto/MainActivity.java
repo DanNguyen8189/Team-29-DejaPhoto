@@ -1,13 +1,8 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -93,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     /*
      * This is the onClick method for the load images button.
      */
-    public void loadPhotos(View view) {
+    public void onClickLoadPhotos(View view) {
 
         loadPhotosButton.setEnabled(false);  /* Disable button immediately so user cannot
                                                 repeatedly load all photos */
@@ -119,9 +113,7 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_MEDIA : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-
-                    DejaPhoto[] gallery = getPhotosAsArray();
-                    fillDisplayCycle(gallery);
+                    loadPhotosIntoDisplayCycle();
                     Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
                     return;
 
@@ -160,63 +152,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private DejaPhoto[] getPhotosAsArray() {
+    /*
+     * This method fills a DisplayCycle object with DejaPhoto objects. The method uses a
+     * PhotoLoader object to handle the details for retrieving photos.
+     */
+    private void loadPhotosIntoDisplayCycle() {
 
-        Log.d(TAG, "Entering getPhotosAsArray method");
-        String[] projection = { MediaStore.Images.Media.TITLE,
-                MediaStore.Images.Media.LATITUDE,
-                MediaStore.Images.Media.LONGITUDE,
-                MediaStore.Images.Media.DATE_ADDED };
-
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                null,
-                null,
-                null);
-
-        int numOfPhotos = cursor.getCount();
-        if (numOfPhotos == 0 || numOfPhotos == 1) {
-            cursor.close();
-            return null;
-        }
-        DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
-        Log.d(TAG, "Retrieved " + numOfPhotos + " photos");
-
-        int titleIndex = cursor.getColumnIndex(MediaStore.Images.Media.TITLE);
-        int latIndex = cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE);
-        int longIndex = cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE);
-        int timeIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED);
-        int count = 0;
-
-        while (cursor.moveToNext()) {
-
-            String filename = cursor.getString(titleIndex) + ".jpg";
-            String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
-            File file = new File(absolutePath);
-            Uri uri = Uri.fromFile(file);
-
-            Log.d(TAG, filename);
-            gallery[count] = new DejaPhoto(uri,
-                    cursor.getDouble(latIndex),
-                    cursor.getDouble(longIndex),
-                    cursor.getLong(timeIndex));
-
-            count++;
-
-        }
-        cursor.close();
-
-        return gallery;
-
-    }
-
-    private void fillDisplayCycle(DejaPhoto[] gallery) {
-
-        if (gallery != null) {
-            for (int i = 0; i < gallery.length; i++) {
-                displayCycle.addToCycle(gallery[i]);
-            }
-        }
+        PhotoLoader photoLoader = new DejaPhotoLoader();
+        DejaPhoto[] gallery = photoLoader.getPhotosAsArray(this);
+        displayCycle.fillDisplayCycle(gallery);
 
     }
 

@@ -7,18 +7,18 @@ public class History {
 
     private LinkedList<DejaPhoto> historyList;
     private ListIterator<DejaPhoto> iterator;
+    private boolean forward;
     private int nelems;
-    private boolean movingBackInList = false;
 
     /** Default Constructor */
     public History() {
         historyList = new LinkedList<>(); //new LinkedList<DejaPhoto>();
         iterator = historyList.listIterator();
+        forward = true;
     }
 
     /**
      * Used to check if we are currently at the latest DejaPhoto in the history list.
-     * @param None
      * @return boolean - False if the number of photos in the list equal the counter.
      *                   Otherwise, returns true.
      */
@@ -28,7 +28,6 @@ public class History {
 
     /**
      * Used to check if we are currently at the oldest DejaPhoto in the history list.
-     * @param None
      * @return boolean - True if there are photos available when traversing backwards through
      *                   the history; false otherwise.
      */
@@ -39,30 +38,22 @@ public class History {
     /**
      * Used to increment the counter (which photo we are looking at in the history
      * list) and to get the next photo.
-     * @param None
      * @return DejaPhoto - the photo to be displayed
      */
     public DejaPhoto getNext() {
-
-        if(checkValidNext() && isMovingBackInList()) {
-            iterator.previous();
-            setMovingBackInList(false);
-        }
+        if(!forward) iterator.previous();
+        forward = true;
         return checkValidNext() ? iterator.previous() : null;
     }
 
     /**
      * Used to increment the iterator and to get the previous photo.
-     * @param None
      * @return DejaPhoto - the photo to be displayed
      *         null - there are no previous photos available
      */
     public DejaPhoto getPrev() {
-        if(!isMovingBackInList() && checkValidPrev()) {
-            iterator.next();
-            setMovingBackInList(true);
-        }
-
+        if(forward) iterator.next();
+        forward = false;
         return checkValidPrev() ? iterator.next() : null;
     }
 
@@ -102,12 +93,4 @@ public class History {
         return null;
     }
 
-    public void setMovingBackInList(boolean b) {
-
-        movingBackInList = b;
-    }
-
-    public boolean isMovingBackInList() {
-        return movingBackInList;
-    }
 }
