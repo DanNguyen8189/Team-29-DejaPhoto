@@ -23,6 +23,11 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     private int myScore;          /* Priority score of this photo */
 
+    /*
+     * Default constructor. All values are set to the Java default for their respective types.
+     */
+    public DejaPhoto() {}
+
     /**
      * DejaPhoto constructor. The photo's data including Uri, latitude, longitude, time taken,
      * and date taken, are passed as parameters to the constructor.
