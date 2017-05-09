@@ -35,7 +35,7 @@ public class GpsMath {
 
         double b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        return earthRd * b; //converts from km to feet.
+        return earthRd * b * FT_PER_KM; //converts from km to feet.
     }
 
 
