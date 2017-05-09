@@ -77,7 +77,7 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
             Toast.makeText(context, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
 
             Intent serviceIntent = new Intent();
-            serviceIntent.setAction("NEXT_BUTTON");
+            serviceIntent.setAction("PREV_BUTTON");
             context.sendBroadcast(serviceIntent);
 
             /*background = WallpaperManager.getInstance(context);
@@ -98,7 +98,7 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
             Toast.makeText(context, "Setting Next Wallpaper", Toast.LENGTH_SHORT).show();
 
             Intent serviceIntent = new Intent();
-            serviceIntent.setAction("PREV_BUTTON");
+            serviceIntent.setAction("NEXT_BUTTON");
             context.sendBroadcast(serviceIntent);
 
             /*background = WallpaperManager.getInstance(context);
