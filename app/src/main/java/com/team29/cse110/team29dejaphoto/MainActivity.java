@@ -3,6 +3,7 @@ package com.team29.cse110.team29dejaphoto;
 import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -28,10 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
     private DisplayCycle displayCycle = new DisplayCycle();
 
-
     Button loadPhotosButton; // click to load all photos
     ImageButton buttonLeft;  // click to cycle back
     ImageButton buttonRight; // click to cycle forward
+    Button startButton;
+    Button stopButton;
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
     private final int PERMISSIONS_NEXT_WALLPAPER = 2;     // int value for permission to change to the next wallpaper
@@ -47,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
         loadPhotosButton = (Button) findViewById(R.id.loadPhotos);
         buttonLeft = (ImageButton) findViewById(R.id.leftArrow);
         buttonRight = (ImageButton) findViewById(R.id.rightArrow);
+
+        startButton = (Button) findViewById(R.id.serviceButton);
+        stopButton = (Button) findViewById(R.id.stopServiceButton);
+
 
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -211,6 +217,16 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    public void starter(View view) {
+        Intent intent = new Intent(MainActivity.this, PhotoService.class);
+        startService(intent);
+    }
+
+    public void stopper(View view) {
+        Intent intent = new Intent(MainActivity.this, PhotoService.class);
+        stopService(intent);
     }
 
     /*

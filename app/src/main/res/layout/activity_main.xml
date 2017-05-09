@@ -16,6 +16,7 @@
         android:gravity="center_horizontal"
         >
 
+
         <ImageButton
             android:id="@+id/leftArrow"
             android:layout_width="100dp"
@@ -35,7 +36,9 @@
             android:onClick="changeWallpaper" />
 
     </RelativeLayout>
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <Button
         android:id="@+id/loadPhotos"
         android:layout_width="wrap_content"
@@ -43,4 +46,20 @@
         android:text="Load Images"
         android:onClick="onClickLoadPhotos"/>
 
+    <Button
+        android:id="@+id/serviceButton"
+        android:text="Start Service"
+        android:onClick="starter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/stopServiceButton"
+        android:text="Stop Service"
+        android:onClick="stopper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
 </android.support.constraint.ConstraintLayout>
