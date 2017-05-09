@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
         locationManager.requestLocationUpdates(locationProvider,
-                TWO_HOURS, ONE_K_FT, locationListener);
+                0, ONE_K_FT, locationListener);
 
 
 
