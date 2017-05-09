@@ -77,6 +77,10 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
         if (intent.getAction().equals(SWIPE_RIGHT)){
             Toast.makeText(context, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
 
+            Intent serviceIntent = new Intent();
+            serviceIntent.setAction("NEXT_BUTTON");
+            context.sendBroadcast(serviceIntent);
+
             /*background = WallpaperManager.getInstance(context);
             DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
             Log.d(TAG, "Previous Photo was successfully retrieved");
@@ -93,6 +97,10 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
         // Right Arrow was clicked - perform onClick action
         else  if (intent.getAction().equals(SWIPE_LEFT)) {
             Toast.makeText(context, "Setting Next Wallpaper", Toast.LENGTH_SHORT).show();
+
+            Intent serviceIntent = new Intent();
+            serviceIntent.setAction("PREV_BUTTON");
+            context.sendBroadcast(serviceIntent);
 
             /*background = WallpaperManager.getInstance(context);
             DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
