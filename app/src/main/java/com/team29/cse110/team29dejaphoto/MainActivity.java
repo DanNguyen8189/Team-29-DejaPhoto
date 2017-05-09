@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
     static final float ONE_K_FT = 305;
     private final String TAG = "MainActivity";
 
-    WallpaperManager background;
+    //WallpaperManager background;
 
-    private DisplayCycle displayCycle = new DisplayCycle();
+    //private DisplayCycle displayCycle = new DisplayCycle();
 
     Button loadPhotosButton; // click to load all photos
     ImageButton buttonLeft;  // click to cycle back
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
+/*
     // TODO fix toast when photo doesn't change
     public void cycleBack() {
         background = WallpaperManager.getInstance(getApplicationContext());
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+*/
     /*
      * This is the onClick method for the load images button.
      */
@@ -183,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
             }
             case PERMISSIONS_NEXT_WALLPAPER : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Setting Next Wallpaper", Toast.LENGTH_SHORT).show();
-                    cycleForward();
+                    //Toast.makeText(this, "Setting Next Wallpaper", Toast.LENGTH_SHORT).show();
+                    //cycleForward();
                     return;
                 }
                 else {
@@ -194,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
             }
             case PERMISSIONS_PREV_WALLPAPER : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
-                    cycleBack();
+                    //Toast.makeText(this, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
+                    //cycleBack();
                     return;
                 }
                 else {
@@ -234,13 +234,13 @@ public class MainActivity extends AppCompatActivity {
     /*
      * This method fills a DisplayCycle object with DejaPhoto objects. The method uses a
      * PhotoLoader object to handle the details for retrieving photos.
-     */
+
     private void loadPhotosIntoDisplayCycle() {
 
         PhotoLoader photoLoader = new DejaPhotoLoader();
         DejaPhoto[] gallery = photoLoader.getPhotosAsArray(this);
         displayCycle.fillDisplayCycle(gallery);
 
-    }
+    }*/
 
 }
