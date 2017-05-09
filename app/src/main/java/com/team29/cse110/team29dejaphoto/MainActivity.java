@@ -2,7 +2,11 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
 import android.app.WallpaperManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +20,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    static final long TWO_HOURS = 7200000;
+    static final float ONE_K_FT = 305;
     private final String TAG = "MainActivity";
 
     WallpaperManager background;
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
     private final int PERMISSIONS_NEXT_WALLPAPER = 2;     // int value for permission to change to the next wallpaper
     private final int PERMISSIONS_PREV_WALLPAPER = 3; // int value for permission to change to the previous wallpaper
+    private final int PERMISSIONS_LOCATION = 4; // int value for permission to access location
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,51 @@ public class MainActivity extends AppCompatActivity {
         loadPhotosButton = (Button) findViewById(R.id.loadPhotos);
         buttonLeft = (ImageButton) findViewById(R.id.leftArrow);
         buttonRight = (ImageButton) findViewById(R.id.rightArrow);
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.d(TAG, "onLocationChanged() called.");
+                Log.d(TAG, "Latitude is: " + String.valueOf(location.getLatitude()));
+                Log.d(TAG, "Longitude is: " + String.valueOf(location.getLongitude()));
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_LOCATION);
+            return;
+        }
+
+
+        LocationManager locationManager =
+                (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = LocationManager.GPS_PROVIDER;
+        locationManager.requestLocationUpdates(locationProvider,
+                0, ONE_K_FT, locationListener);
+
+
 
     }
 
@@ -138,6 +189,15 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
                     cycleBack();
+                    return;
+                }
+                else {
+                    Toast.makeText(this, "Error setting permissions", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            case PERMISSIONS_LOCATION : {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 else {
