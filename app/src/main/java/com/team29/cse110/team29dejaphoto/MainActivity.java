@@ -220,11 +220,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void starter(View view) {
+        Log.d(TAG, "Starter button pushed");
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
         startService(intent);
     }
 
     public void stopper(View view) {
+        Log.d(TAG, "Stopper button pushed");
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
         stopService(intent);
     }
