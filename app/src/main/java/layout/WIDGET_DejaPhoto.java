@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.team29.cse110.team29dejaphoto.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.PhotoService;
 import com.team29.cse110.team29dejaphoto.R;
 
 /**
