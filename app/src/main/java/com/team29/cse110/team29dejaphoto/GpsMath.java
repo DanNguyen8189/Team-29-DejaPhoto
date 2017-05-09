@@ -8,7 +8,7 @@ package com.team29.cse110.team29dejaphoto;
 public class GpsMath {
 
     static final long TWO_HOURS = 7200000;  //milliseconds to hours
-    static final float ONE_K_FT = 305;   //kilometers to feet
+    static final float ONE_K_FT = 305;   //how many meters in 1000 ft
     static final double earthRd = 6371;  //Radius of the earth in Km
     static final double FT_PER_KM = 3280.8399;  //Feet in 1 Km
 
