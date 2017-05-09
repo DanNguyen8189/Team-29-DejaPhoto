@@ -18,8 +18,8 @@ public class Priorities {
     }
 
     /** add a photo to the Priorities object */
-    public void add(DejaPhoto photo){
-        pq.add(photo);
+    public boolean add(DejaPhoto photo){
+        return pq.add(photo);
     }
 
     /** take off highest priority photo from priority queue and return it */
