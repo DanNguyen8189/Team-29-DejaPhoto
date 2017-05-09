@@ -28,17 +28,20 @@ public class DisplayCycle {
      * available, and fill the DisplayCycle at a later time. This is useful so the app does
      * not crash if the user presses the forwards/backwards button before images are loaded.
      */
-    public void fillDisplayCycle(DejaPhoto[] gallery) {
+    public boolean fillDisplayCycle(DejaPhoto[] gallery) {
         for (DejaPhoto photo : gallery) {
-            priorities.add(photo);
+            if(!priorities.add(photo)){
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * Add a single photo to album.
      */
-    public void addToCycle(DejaPhoto photo) {
-        priorities.add(photo);
+    public boolean addToCycle(DejaPhoto photo) {
+        return priorities.add(photo);
     }
 
     /**

@@ -95,33 +95,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    // TODO fix toast when photo doesn't change
     public void cycleBack() {
         background = WallpaperManager.getInstance(getApplicationContext());
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
         Log.d(TAG, "Previous Photo was successfully retrieved");
         try {
+
             background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
             Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 
+        catch (NullPointerException e) {
+            Log.d(TAG, "No Photo could be retrieved");
+        }
         catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
+    //TODO fix toast when photo doesn't change
     public void cycleForward() {
         background = WallpaperManager.getInstance(getApplicationContext());
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
         Log.d(TAG, "Next Photo was successfully retrieved");
         try {
+
             background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
             Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
+        }
+
+        catch (NullPointerException e) {
+            Log.d(TAG, "No Photo could be retrieved");
         }
 
         catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     /*

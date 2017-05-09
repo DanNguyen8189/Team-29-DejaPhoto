@@ -41,8 +41,10 @@ public class History {
      * @return DejaPhoto - the photo to be displayed
      */
     public DejaPhoto getNext() {
-        if(!forward) iterator.previous();
-        forward = true;
+        if(!forward && checkValidNext()) {
+            iterator.previous();
+            forward = true;
+        }
         return checkValidNext() ? iterator.previous() : null;
     }
 
@@ -52,8 +54,10 @@ public class History {
      *         null - there are no previous photos available
      */
     public DejaPhoto getPrev() {
-        if(forward) iterator.next();
-        forward = false;
+        if(forward && checkValidPrev()) {
+            iterator.next();
+            forward = false;
+        }
         return checkValidPrev() ? iterator.next() : null;
     }
 
@@ -84,12 +88,13 @@ public class History {
      * @return DejaPhoto cycled back to the front of the list
      */
     public DejaPhoto cycle() {
-        DejaPhoto toCycle = historyList.removeLast();
-        historyList.addFirst(toCycle);
-
-        iterator = historyList.listIterator();
-
-        return toCycle;
+        if(nelems != 0) {
+            DejaPhoto toCycle = historyList.removeLast();
+            historyList.addFirst(toCycle);
+            iterator = historyList.listIterator();
+            return toCycle;
+        }
+        return null;
     }
 
 }
