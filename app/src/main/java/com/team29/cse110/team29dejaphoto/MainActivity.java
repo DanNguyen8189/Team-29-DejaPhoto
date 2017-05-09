@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     /*
      * This is the onClick method for the load images button.
      */
