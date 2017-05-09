@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
     private final int PERMISSIONS_NEXT_WALLPAPER = 2;     // int value for permission to change to the next wallpaper
     private final int PERMISSIONS_PREV_WALLPAPER = 3; // int value for permission to change to the previous wallpaper
+    private final int PERMISSIONS_LOCATION = 4; // int value for permission to access location
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         != PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},100);
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_LOCATION);
             return;
         }
 
@@ -176,6 +177,15 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
                     cycleBack();
+                    return;
+                }
+                else {
+                    Toast.makeText(this, "Error setting permissions", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            case PERMISSIONS_LOCATION : {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 else {
