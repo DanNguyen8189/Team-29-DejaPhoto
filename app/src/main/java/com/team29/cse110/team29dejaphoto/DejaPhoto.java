@@ -82,7 +82,6 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         else {
             return -1;
         }
-
     }
 
 
@@ -164,8 +163,9 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         int includeLocation = mapBooleanToInt(isLocationOn);
         int includeDate = mapBooleanToInt(isDateOn);
         int includeTime = mapBooleanToInt(isTimeOn);
+        int recentlyViewed = mapBooleanToInt(isShownRecently());
 
-        myScore = getKarmaPoints() +
+        myScore = getKarmaPoints() - recentlyViewed +
                   includeLocation * getLocationPoints() +
                   includeDate * getDatePoints() +
                   includeTime * getTimeTakenPoints();
