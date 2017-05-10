@@ -8,43 +8,9 @@
 
     tools:context="com.team29.cse110.team29dejaphoto.MainActivity">
 
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="340dp"
-        android:gravity="center_horizontal"
-        >
-
-
-        <ImageButton
-            android:id="@+id/leftArrow"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@mipmap/arrow_button_metal_green_left_t"
-            android:onClick="changeWallpaper2" />
-
-        <ImageButton
-            android:id="@+id/rightArrow"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="135dp"
-            android:layout_marginStart="135dp"
-            android:layout_toEndOf="@id/leftArrow"
-            android:layout_toRightOf="@id/leftArrow"
-            android:background="@mipmap/arrow_button_metal_green_right_t"
-            android:onClick="changeWallpaper" />
-
-    </RelativeLayout>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <Button
-        android:id="@+id/loadPhotos"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Load Images"
-        android:onClick="onClickLoadPhotos"/>
+        android:layout_height="wrap_content">
 
     <Button
         android:id="@+id/serviceButton"

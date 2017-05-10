@@ -20,13 +20,10 @@ import com.team29.cse110.team29dejaphoto.R;
  */
 public class WIDGET_DejaPhoto extends AppWidgetProvider {
 
-    private final String TAG = "MainActivity"; // Used for logging
+    private final String TAG = "WIDGET_DejaPhoto"; // Used for logging
 
     public static String SWIPE_RIGHT = "swipe right"; // Variable indicating a right swipe action
     public static String SWIPE_LEFT = "swipe left"; // Variable indicating a left swipe action
-
-    WallpaperManager background; // Variable to hold the new background
-
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -80,18 +77,6 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
             Intent serviceIntent = new Intent();
             serviceIntent.setAction("PREV_BUTTON");
             context.sendBroadcast(serviceIntent);
-
-            /*background = WallpaperManager.getInstance(context);
-            DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
-            Log.d(TAG, "Previous Photo was successfully retrieved");
-            try {
-                background.setBitmap(MediaStore.Images.Media.getBitmap(context.getContentResolver(), dejaPhoto.getPhotoUri()));
-                Toast.makeText(context, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
-            }
-
-            catch (Exception e) {
-                e.printStackTrace();
-            }*/
         }
 
         // Right Arrow was clicked - perform onClick action
@@ -101,18 +86,6 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
             Intent serviceIntent = new Intent();
             serviceIntent.setAction("NEXT_BUTTON");
             context.sendBroadcast(serviceIntent);
-
-            /*background = WallpaperManager.getInstance(context);
-            DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
-            Log.d(TAG, "Next Photo was successfully retrieved");
-            try {
-                background.setBitmap(MediaStore.Images.Media.getBitmap(context.getContentResolver(), dejaPhoto.getPhotoUri()));
-                Toast.makeText(context, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
-            }
-
-            catch (Exception e) {
-                e.printStackTrace();
-            }*/
 
         }
     }
