@@ -70,6 +70,7 @@ public class PhotoService extends Service {
     @Override
     public void onDestroy() {
         Log.d(TAG, "Service stopped");
+        unregisterReceiver(receiver);
         super.onDestroy();
     }
 

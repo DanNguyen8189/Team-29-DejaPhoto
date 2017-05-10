@@ -2,6 +2,7 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -52,13 +53,12 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         ContentResolver contentResolver = context.getContentResolver();
         Cursor cursor = contentResolver.query(MEDIA_URI, PROJECTIONS, null, null, null);
+        if ( cursor == null ) {
+            return null;
+        }
 
         int numOfPhotos = cursor.getCount();
         Log.d(TAG, "Number of photos: " + numOfPhotos);
-        if ( numOfPhotos == 0 ) {
-            cursor.close();
-            return new DejaPhoto[]{};
-        }
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
