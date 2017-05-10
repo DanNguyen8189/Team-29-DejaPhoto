@@ -111,7 +111,6 @@ public class DisplayCycleTest {
         ds.getNextPhoto();// This is top of list with prev history
         assertTrue(ds.getPrevPhoto().equals(two));
         assertTrue(ds.getPrevPhoto().equals(three));
-        assertTrue(ds.getPrevPhoto().equals(one));
         assertNull(ds.getPrevPhoto());// end of history
 
 
