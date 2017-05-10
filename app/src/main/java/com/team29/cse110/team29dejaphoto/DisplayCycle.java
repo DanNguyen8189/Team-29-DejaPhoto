@@ -29,6 +29,10 @@ public class DisplayCycle {
      * not crash if the user presses the forwards/backwards button before images are loaded.
      */
     public boolean fillDisplayCycle(DejaPhoto[] gallery) {
+
+        // An empty gallery is valid to load from
+        if(gallery == null) return true;
+
         for (DejaPhoto photo : gallery) {
             if(!priorities.add(photo)){
                 return false;

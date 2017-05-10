@@ -26,6 +26,9 @@ public class DejaPhotoTest {
     DejaPhoto dejaVuAll; // A photo with deja vu in time and date
 
 
+    /**
+     * A helper function to instantiate the test objects before each test
+     */
     @Before
     public void setUp() {
 
@@ -52,7 +55,11 @@ public class DejaPhotoTest {
     }
 
 
-
+    /**
+     * This tests the the correct scores of the photos are returned.
+     *
+     * @throws Exception
+     */
     @Test
     public void getScore() throws Exception {
         assertEquals("Score of dejaVuAll:", 20, dejaVuAll.getScore());
@@ -60,16 +67,26 @@ public class DejaPhotoTest {
         assertEquals("Score of dejaVuDate:", 10, dejaVuDate.getScore());
     }
 
+    /**
+     * This tests that setting a score will properly modify the instance variable.
+     *
+     * @throws Exception
+     */
     @Test
     public void setScore() throws Exception {
 
+        assertFalse(photo.getScore()==20);
         photo.setScore(20);
-        assertEquals("Score of photo is set", 20, photo.getScore());
+        assertEquals("Testing that photo score is set", 20, photo.getScore());
     }
 
 
-
-
+    /**
+     * This tests that photos with null and non-null URI can return the URI.  Expected behavior
+     * for null URI is return null.  No URI is expected to be null, so no handling is done.
+     *
+     * @throws Exception
+     */
     @Test
     public void getPhotoUri() throws Exception {
         assertNull(emptyPhoto.getPhotoUri());
@@ -88,11 +105,25 @@ public class DejaPhotoTest {
     }
      */
 
+
+
+    /**
+     * Tests that shown recently flag is correct for newly created photos.
+     *
+     * @throws Exception
+     */
     @Test
     public void isShownRecently() throws Exception {
         assertFalse(photo.isShownRecently());
     }
 
+
+
+    /**
+     * Tests that instance variable is properly updated.
+     *
+     * @throws Exception
+     */
     @Test
     public void setShowRecently() throws Exception {
         photo.setShowRecently();
@@ -100,6 +131,12 @@ public class DejaPhotoTest {
     }
 
 
+    /**
+     * Tests that the time of zero-initialized photos is 0, also that photos with a valid time are
+     * non-zero.
+     *
+     * @throws Exception
+     */
     @Test
     public void getTime() throws Exception {
         assertEquals("Testing empty photo has 0 time", 0, emptyPhoto.getTime().getTimeInMillis());
@@ -108,6 +145,11 @@ public class DejaPhotoTest {
     }
 
 
+    /**
+     * Tests that the time instance variable is properly updated.
+     *
+     * @throws Exception
+     */
     @Test
     public void setTime() throws Exception {
 
@@ -117,6 +159,12 @@ public class DejaPhotoTest {
                       photo.getTime().getTimeInMillis() == 0);
     }
 
+
+    /**
+     * Tests that scores of photos are properly compared.
+     *
+     * @throws Exception
+     */
     @Test
     public void compareTo() throws Exception {
         assertEquals("Test comparing two empty photo objects", photo.compareTo(emptyPhoto), 0);
@@ -126,6 +174,11 @@ public class DejaPhotoTest {
     }
 
 
+    /**
+     * Tests that scores are properly updated when the updateScore method is run.
+     *
+     * @throws Exception
+     */
     @Test
     public void updateScore() throws Exception {
 
