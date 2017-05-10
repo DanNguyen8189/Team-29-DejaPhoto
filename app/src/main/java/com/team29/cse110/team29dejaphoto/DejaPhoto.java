@@ -167,7 +167,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     }
 
     public void setLongitude(double lon){
-        this.latitude = lon;
+        this.longitude = lon;
     }
 
 

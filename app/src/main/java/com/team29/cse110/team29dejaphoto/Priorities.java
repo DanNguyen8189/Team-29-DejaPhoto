@@ -80,7 +80,21 @@ public class Priorities {
     //returns 10 if location of photo is close to current location
     private int getLocationPoints(DejaPhoto photo)
     {
-        return 0;
+        double lat1 = getLat();
+        double long1 = getLon();
+        double lat2 = photo.getLatitude();
+        double long2 = photo.getLongitude();
+
+
+        double distance = GpsMath.distanceBetween(lat1,long1,lat2,long2);
+        if(distance <= 1000)
+        {
+            return 10;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     private int getTimeTakenPoints(DejaPhoto photo) {
@@ -116,6 +130,21 @@ public class Priorities {
      */
     private int mapBooleanToInt(boolean value) {
         return (value) ? 1 : 0;
+    }
+
+    public double getLat(){
+        return latitude;
+    }
+    public double getLon(){
+        return longitude;
+    }
+
+    public void setLat(double lat){
+        this.latitude = lat;
+    }
+
+    public void setLong(double lon){
+        this.longitude = lon;
     }
 
 }
