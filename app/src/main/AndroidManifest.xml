@@ -35,6 +35,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget__deja_photo_info" />
         </receiver>
+
+        <service android:name=".PhotoService">
+
+        </service>
     </application>
 
 </manifest>
