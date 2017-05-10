@@ -155,5 +155,20 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         myScore = newScore;
     }
 
+    public double getLatitude(){
+        return latitude;
+    }
+    public double getLongitude(){
+        return longitude;
+    }
+
+    public void setLatitude(double lat){
+        this.latitude = lat;
+    }
+
+    public void setLongitude(double lon){
+        this.latitude = lon;
+    }
+
 
 }

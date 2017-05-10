@@ -10,9 +10,11 @@ import java.util.PriorityQueue;
 public class Priorities {
 
     /* Check which features of DejaVu Mode are on */
-    private boolean isLocationOn;
-    private boolean isDateOn;
-    private boolean isTimeOn;
+    private boolean isLocationOn = true;
+    private boolean isDateOn = true;
+    private boolean isTimeOn = true;
+    private double latitude; //current latitude of device
+    private double longitude; //current longitude of device
 
     /* Priority Queue of DejaPhotos based on priority */
     private PriorityQueue<DejaPhoto> pq;
@@ -42,9 +44,7 @@ public class Priorities {
             temp.add(photo);
         }
         for(DejaPhoto photo : temp) {
-            int score = this.calcScoreOf(photo);
-            photo.setScore(score);
-            pq.add(photo);
+            this.add(photo);
         }
     }
 
@@ -61,7 +61,7 @@ public class Priorities {
         int recentlyViewed = mapBooleanToInt(photo.isShownRecently());
 
         myScore = getKarmaPoints(photo) - recentlyViewed +
-                includeLocation * getLocationPoints() +
+                includeLocation * getLocationPoints(photo) +
                 includeDate * getDatePoints(photo) +
                 includeTime * getTimeTakenPoints(photo);
 
@@ -76,7 +76,10 @@ public class Priorities {
         return mapBooleanToInt(photo.getKarma());
     }
 
-    private int getLocationPoints() {
+    //photo is Dejaphoto to get points for and x,y are lat and long of current location
+    //returns 10 if location of photo is close to current location
+    private int getLocationPoints(DejaPhoto photo)
+    {
         return 0;
     }
 
