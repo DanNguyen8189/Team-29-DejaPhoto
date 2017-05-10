@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@color/background_color"
 
     tools:context="com.team29.cse110.team29dejaphoto.MainActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:id="@+id/linearLayout"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
 
     <Button
         android:id="@+id/serviceButton"
@@ -28,4 +31,95 @@
 
 
 </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="394dp"
+        android:layout_height="307dp"
+        android:layout_marginTop="84dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.312"
+        android:layout_marginLeft="0dp">
+
+        <TextView
+            android:id="@+id/selectAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select the photo album"
+            android:textColor="@color/font_color"
+            android:textSize="30dp"
+            tools:layout_below="@+id/linearLayout"
+            tools:layout_editor_absoluteX="8dp"
+
+            tools:layout_editor_absoluteY="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="23dp"
+            android:layout_marginStart="23dp" />
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+
+            android:id="@+id/RadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="34dp"
+
+            android:orientation="vertical"
+            tools:layout_below="@+id/selectAlbum"
+            tools:layout_centerVertical="true"
+            tools:layout_editor_absoluteX="8dp"
+            android:layout_below="@+id/selectAlbum"
+            android:layout_alignLeft="@+id/selectAlbum"
+            android:layout_alignStart="@+id/selectAlbum"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp">
+
+            <RadioButton
+                android:id="@+id/DefaultAlbum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:checked="true"
+                android:onClick="onClickRadioButton"
+                android:text="Default Photo Album" />
+
+            <RadioButton
+                android:id="@+id/DejaAlbum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="26dp"
+                android:onClick="onClickRadioButton"
+                android:text="Custom Deja Photo Album" />
+
+
+        </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+
+            android:text="Create a Custom Deja Photo Album"
+
+
+            android:layout_marginBottom="15dp"
+
+            android:layout_alignParentBottom="true"
+
+            android:layout_alignRight="@+id/selectAlbum"
+            android:layout_alignEnd="@+id/selectAlbum" />
+
+    </RelativeLayout>
+
+
 </android.support.constraint.ConstraintLayout>

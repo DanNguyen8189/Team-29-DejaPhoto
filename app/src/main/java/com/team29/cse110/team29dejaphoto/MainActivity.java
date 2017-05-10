@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 
@@ -24,9 +26,11 @@ public class MainActivity extends AppCompatActivity {
     static final long TWO_HOURS = 7200000;
     static final float ONE_K_FT = 305;
     private final String TAG = "MainActivity";
+    boolean useDefaultGallery = true;
 
     Button startButton;
     Button stopButton;
+    RadioGroup radio;
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
     private final int PERMISSIONS_LOCATION = 2; // int value for permission to access location
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         startButton = (Button) findViewById(R.id.serviceButton);
         stopButton = (Button) findViewById(R.id.stopServiceButton);
-
+        radio = (RadioGroup) findViewById(R.id.RadioGroup);
 
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -127,5 +131,29 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Stopper button pushed");
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
         stopService(intent);
+    }
+
+    public void onClickRadioButton(View view) {
+
+        switch(view.getId()) {
+
+            case R.id.DefaultAlbum:
+                if(useDefaultGallery) {
+                    break;
+                }
+                else {
+                    useDefaultGallery = !useDefaultGallery;
+                    break;
+                }
+            case R.id.DejaAlbum:
+                if(useDefaultGallery) {
+                    useDefaultGallery = !useDefaultGallery;
+                    break;
+                }
+                else {
+                    break;
+                }
+        }
+
     }
 }
