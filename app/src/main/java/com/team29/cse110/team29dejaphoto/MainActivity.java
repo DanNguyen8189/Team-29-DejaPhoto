@@ -25,30 +25,17 @@ public class MainActivity extends AppCompatActivity {
     static final float ONE_K_FT = 305;
     private final String TAG = "MainActivity";
 
-    //WallpaperManager background;
-
-    //private DisplayCycle displayCycle = new DisplayCycle();
-
-    Button loadPhotosButton; // click to load all photos
-    ImageButton buttonLeft;  // click to cycle back
-    ImageButton buttonRight; // click to cycle forward
     Button startButton;
     Button stopButton;
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
-    private final int PERMISSIONS_NEXT_WALLPAPER = 2;     // int value for permission to change to the next wallpaper
-    private final int PERMISSIONS_PREV_WALLPAPER = 3; // int value for permission to change to the previous wallpaper
-    private final int PERMISSIONS_LOCATION = 4; // int value for permission to access location
+    private final int PERMISSIONS_LOCATION = 2; // int value for permission to access location
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        loadPhotosButton = (Button) findViewById(R.id.loadPhotos);
-        buttonLeft = (ImageButton) findViewById(R.id.leftArrow);
-        buttonRight = (ImageButton) findViewById(R.id.rightArrow);
 
         startButton = (Button) findViewById(R.id.serviceButton);
         stopButton = (Button) findViewById(R.id.stopServiceButton);
@@ -60,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onLocationChanged() called.");
                 Log.d(TAG, "Latitude is: " + String.valueOf(location.getLatitude()));
                 Log.d(TAG, "Longitude is: " + String.valueOf(location.getLongitude()));
-
             }
 
             @Override
@@ -79,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -90,78 +75,19 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
         LocationManager locationManager =
                 (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
         locationManager.requestLocationUpdates(locationProvider,
                 0, ONE_K_FT, locationListener);
 
-
-
-    }
-/*
-    // TODO fix toast when photo doesn't change
-    public void cycleBack() {
-        background = WallpaperManager.getInstance(getApplicationContext());
-        DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
-        Log.d(TAG, "Previous Photo was successfully retrieved");
-        try {
-
-            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
-            Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
-        }
-
-        catch (NullPointerException e) {
-            Log.d(TAG, "No Photo could be retrieved");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
-    //TODO fix toast when photo doesn't change
-    public void cycleForward() {
-        background = WallpaperManager.getInstance(getApplicationContext());
-        DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
-        Log.d(TAG, "Next Photo was successfully retrieved");
-        try {
-
-            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
-            Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
-        }
-
-        catch (NullPointerException e) {
-            Log.d(TAG, "No Photo could be retrieved");
-        }
-
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-*/
-    /*
-     * This is the onClick method for the load images button.
-     */
-    public void onClickLoadPhotos(View view) {
-
-        loadPhotosButton.setEnabled(false);  /* Disable button immediately so user cannot
-                                                repeatedly load all photos */
+    public void onClickLoadPhotos() {
 
         ActivityCompat.requestPermissions(this,
-                new String[] { Manifest.permission.READ_EXTERNAL_STORAGE},
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 PERMISSIONS_REQUEST_MEDIA);
-
-    }
-
-    public void changeWallpaper(View view) {
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.SET_WALLPAPER}, PERMISSIONS_NEXT_WALLPAPER);
-    }
-
-    public void changeWallpaper2(View view) {
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.SET_WALLPAPER}, PERMISSIONS_PREV_WALLPAPER);
     }
 
     @Override
@@ -170,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
         switch ( requestCode ) {
             case PERMISSIONS_REQUEST_MEDIA : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    loadPhotosIntoDisplayCycle();
                     Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
                     return;
 
@@ -181,28 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }
-            case PERMISSIONS_NEXT_WALLPAPER : {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Toast.makeText(this, "Setting Next Wallpaper", Toast.LENGTH_SHORT).show();
-                    //cycleForward();
-                    return;
-                }
-                else {
-                    Toast.makeText(this, "Error setting permissions", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-            case PERMISSIONS_PREV_WALLPAPER : {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Toast.makeText(this, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
-                    //cycleBack();
-                    return;
-                }
-                else {
-                    Toast.makeText(this, "Error setting permissions", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
+
             case PERMISSIONS_LOCATION : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     return;
@@ -222,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
     public void starter(View view) {
         Log.d(TAG, "Starter button pushed");
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
+
+        onClickLoadPhotos();
         startService(intent);
     }
 
@@ -230,17 +135,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
         stopService(intent);
     }
-
-    /*
-     * This method fills a DisplayCycle object with DejaPhoto objects. The method uses a
-     * PhotoLoader object to handle the details for retrieving photos.
-
-    private void loadPhotosIntoDisplayCycle() {
-
-        PhotoLoader photoLoader = new DejaPhotoLoader();
-        DejaPhoto[] gallery = photoLoader.getPhotosAsArray(this);
-        displayCycle.fillDisplayCycle(gallery);
-
-    }*/
-
 }
