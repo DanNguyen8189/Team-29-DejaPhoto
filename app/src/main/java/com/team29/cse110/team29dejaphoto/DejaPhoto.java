@@ -187,7 +187,8 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
         Calendar now = new GregorianCalendar();
 
-        if (Math.abs(time.get(Calendar.HOUR_OF_DAY) - now.get(Calendar.HOUR_OF_DAY)) > 2) {
+        if (Math.abs(time.get(Calendar.HOUR_OF_DAY) - now.get(Calendar.HOUR_OF_DAY)) > 2 &&
+            Math.abs(time.get(Calendar.HOUR_OF_DAY) - now.get(Calendar.HOUR_OF_DAY)) < 22) {
             return 0;
         }
         else {

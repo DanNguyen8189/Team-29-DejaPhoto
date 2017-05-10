@@ -44,13 +44,14 @@ public class DejaPhotoTest {
         dejaVuAll = new DejaPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
 
         // Adjust calendar to same day last week, but 3 hours earlier.  Only deja vu in date
+        calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_WEEK, -7);// 1 week ago
-        calendar.add(Calendar.HOUR, -3);// 3 hours earlier
+        calendar.add(Calendar.HOUR, 3);// 3 hours later
         dejaVuDate = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
         // Adjust calendar to different day of week, but within current 2 hrs. Only deja vu in time
-        calendar.add(Calendar.DAY_OF_WEEK,5);
-        calendar.add(Calendar.HOUR, 2);
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_WEEK,2);
         dejaVuTime = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
     }
 
