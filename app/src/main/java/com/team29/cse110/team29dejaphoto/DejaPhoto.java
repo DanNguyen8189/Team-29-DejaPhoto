@@ -44,7 +44,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         released = false;
         showRecently = false;
 
-        updateScore(true, true, true);  /* By default, score is calculated with all settings true */
+        //updateScore(true, true, true);  /* By default, score is calculated with all settings true */
 
     }
 
@@ -57,7 +57,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
                      boolean isLocationOn, boolean isDateOn, boolean isTimeOn) {
 
         this(photoUri, latitude, longitude, time);  /* Add regular photo data . . . */
-        updateScore(isLocationOn, isDateOn, isTimeOn);    /* ... and calculate custom score */
+        //updateScore(isLocationOn, isDateOn, isTimeOn);    /* ... and calculate custom score */
 
     }
 
@@ -155,67 +155,5 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         myScore = newScore;
     }
 
-    /*
-     * Updates the score for this DejaPhoto object, given settings for location, date, and time.
-     */
-    public void updateScore(boolean isLocationOn, boolean isDateOn, boolean isTimeOn) {
-
-        int includeLocation = mapBooleanToInt(isLocationOn);
-        int includeDate = mapBooleanToInt(isDateOn);
-        int includeTime = mapBooleanToInt(isTimeOn);
-        int recentlyViewed = mapBooleanToInt(isShownRecently());
-
-        myScore = getKarmaPoints() - recentlyViewed +
-                  includeLocation * getLocationPoints() +
-                  includeDate * getDatePoints() +
-                  includeTime * getTimeTakenPoints();
-
-    }
-
-
-    // Helper methods below
-
-    private int getKarmaPoints() {
-        return mapBooleanToInt(karma);
-    }
-
-    private int getLocationPoints() {
-        return 0;
-    }
-
-    private int getTimeTakenPoints() {
-
-        Calendar now = new GregorianCalendar();
-
-        if (Math.abs(time.get(Calendar.HOUR_OF_DAY) - now.get(Calendar.HOUR_OF_DAY)) > 2 &&
-            Math.abs(time.get(Calendar.HOUR_OF_DAY) - now.get(Calendar.HOUR_OF_DAY)) < 22) {
-            return 0;
-        }
-        else {
-            return 10;
-        }
-    }
-
-    private int getDatePoints() {
-
-        Calendar now = new GregorianCalendar();
-
-        if ( time.get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK) ) {
-            return 10;
-        }
-        else {
-            return 0;
-        }
-    }
-
-    /*
-     * To avoid a large, confusing if-else structure in the calculateScore method, simply
-     * use this method to map the boolean values to 0 (false) and 1 (true). Multiply these
-     * values with scores, so that multiplying by zero ignores a score, and 1 includes the
-     * score.
-     */
-    private int mapBooleanToInt(boolean value) {
-        return (value) ? 1 : 0;
-    }
 
 }
