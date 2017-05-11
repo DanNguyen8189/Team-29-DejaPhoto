@@ -31,7 +31,6 @@ public class PhotoService extends Service {
 
     private final String TAG = "PhotoService";
     static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
-    private final int PERMISSIONS_LOCATION = 2; // int value for permission to access location
 
     private class MyReceiver extends BroadcastReceiver {
 
@@ -75,6 +74,8 @@ public class PhotoService extends Service {
                 Log.d(TAG, "onLocationChanged() called.");
                 Log.d(TAG, "Latitude is: " + String.valueOf(location.getLatitude()));
                 Log.d(TAG, "Longitude is: " + String.valueOf(location.getLongitude()));
+                displayCycle.getPriorities().setLat(location.getLatitude());
+                displayCycle.getPriorities().setLong(location.getLongitude());
             }
 
             @Override

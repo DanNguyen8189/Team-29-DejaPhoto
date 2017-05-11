@@ -80,4 +80,9 @@ public class DisplayCycle {
         return history.getPrev();
     }
 
+    public Priorities getPriorities()
+    {
+        return this.priorities;
+    }
+
 }
