@@ -39,7 +39,6 @@ public class DejaPhotoLoader implements PhotoLoader {
     /* This is the Uri to the storage of all photos */
     private final Uri MEDIA_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-
     /*
      * This method searches all photos retrieved from the phone's storage and returns them as an
      * array of DejaPhoto objects. This method is intended to be used only once during the app's
