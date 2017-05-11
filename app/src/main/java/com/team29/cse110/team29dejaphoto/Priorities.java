@@ -76,7 +76,7 @@ public class Priorities {
         return mapBooleanToInt(photo.getKarma());
     }
 
-    //photo is Dejaphoto to get points for and x,y are lat and long of current location
+    //photo is Dejaphoto to get points for
     //returns 10 if location of photo is close to current location
     private int getLocationPoints(DejaPhoto photo)
     {
