@@ -23,8 +23,6 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final long TWO_HOURS = 7200000;
-    static final float ONE_K_FT = 305;
     private final String TAG = "MainActivity";
     boolean useDefaultGallery = true;
 
@@ -45,23 +43,6 @@ public class MainActivity extends AppCompatActivity {
         stopButton = (Button) findViewById(R.id.stopServiceButton);
         radio = (RadioGroup) findViewById(R.id.RadioGroup);
 
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                Log.d(TAG, "onLocationChanged() called.");
-                Log.d(TAG, "Latitude is: " + String.valueOf(location.getLatitude()));
-                Log.d(TAG, "Longitude is: " + String.valueOf(location.getLongitude()));
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            @Override
-            public void onProviderEnabled(String provider) {}
-
-            @Override
-            public void onProviderDisabled(String provider) {}
-        };
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
@@ -73,11 +54,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        LocationManager locationManager =
-                (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        String locationProvider = LocationManager.GPS_PROVIDER;
-        locationManager.requestLocationUpdates(locationProvider,
-                0, ONE_K_FT, locationListener);
 
     }
 

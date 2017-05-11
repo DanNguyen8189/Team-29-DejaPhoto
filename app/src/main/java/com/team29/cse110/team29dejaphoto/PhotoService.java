@@ -1,5 +1,6 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.Manifest;
 import android.app.IntentService;
 import android.app.Service;
 import android.app.WallpaperManager;
@@ -7,8 +8,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,6 +30,8 @@ public class PhotoService extends Service {
     private BroadcastReceiver receiver;
 
     private final String TAG = "PhotoService";
+    static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
+    private final int PERMISSIONS_LOCATION = 2; // int value for permission to access location
 
     private class MyReceiver extends BroadcastReceiver {
 
@@ -59,6 +68,39 @@ public class PhotoService extends Service {
         receiver = new MyReceiver();
         registerReceiver(receiver, filter);
         super.onCreate();
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.d(TAG, "onLocationChanged() called.");
+                Log.d(TAG, "Latitude is: " + String.valueOf(location.getLatitude()));
+                Log.d(TAG, "Longitude is: " + String.valueOf(location.getLongitude()));
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            @Override
+            public void onProviderEnabled(String provider) {}
+
+            @Override
+            public void onProviderDisabled(String provider) {}
+        };
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+            LocationManager locationManager =
+                    (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            String locationProvider = LocationManager.GPS_PROVIDER;
+            locationManager.requestLocationUpdates(locationProvider,
+                    0, FIVE_HUNDRED_FT, locationListener);
+        }
+
+
+
     }
 
     @Override
