@@ -132,4 +132,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    public void onCreateCustomAlbum(View view) {
+
+        Intent intent = new Intent(getApplicationContext(), CustomAlbumActivity.class);
+        startActivity(intent);
+    }
+
 }

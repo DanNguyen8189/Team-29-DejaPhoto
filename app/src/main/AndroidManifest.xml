@@ -36,9 +36,17 @@
                 android:resource="@xml/widget__deja_photo_info" />
         </receiver>
 
-        <service android:name=".PhotoService">
+        <service android:name=".PhotoService"></service>
 
-        </service>
+        <activity
+            android:name=".CustomAlbumActivity"
+            android:label="@string/title_activity_custom_album"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.team29.cse110.team29dejaphoto.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

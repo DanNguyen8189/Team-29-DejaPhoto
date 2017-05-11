@@ -173,36 +173,4 @@ public class DejaPhotoTest {
         assertEquals("Test comparing photo with emptyPhoto", photo.compareTo(emptyPhoto), 1);
         assertEquals("Test comparing emptyPhoto with photo", emptyPhoto.compareTo(photo), -1);
     }
-
-
-    /**
-     * Tests that scores are properly updated when the updateScore method is run.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void updateScore() throws Exception {
-
-        assertTrue(dejaVuAll.compareTo(dejaVuDate) == 1);
-        assertTrue(dejaVuAll.compareTo(dejaVuTime) == 1);
-        assertTrue(dejaVuDate.compareTo(dejaVuTime) == 0);
-
-        // set dejaVuTime to current time, giving it highest priority
-        dejaVuTime.setTime(Calendar.getInstance());
-        assertFalse(dejaVuTime.getScore()>=dejaVuAll.getScore());// Score hasn't changed yet
-        dejaVuTime.updateScore(true, true, true);// Update score by increasing
-        assertTrue(dejaVuTime.getScore()>=dejaVuAll.getScore());
-
-        // Update calendar to a time with no deja vu.
-        calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR, -3);
-        calendar.add(Calendar.DAY_OF_WEEK, -2);
-        dejaVuTime.setTime(calendar);
-
-        assertTrue(dejaVuTime.getScore()>=dejaVuAll.getScore());
-        dejaVuTime.updateScore(true,true,true);// Update score by decreasing
-        assertFalse(dejaVuTime.getScore()>=dejaVuAll.getScore());
-
-    }
-
 }

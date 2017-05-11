@@ -20,7 +20,11 @@ public class Priorities {
     private PriorityQueue<DejaPhoto> pq;
 
     public Priorities() {
+
         pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());
+        isLocationOn = true;
+        isDateOn = true;
+        isTimeOn = true;
     }
 
     /** add a photo to the Priorities object */

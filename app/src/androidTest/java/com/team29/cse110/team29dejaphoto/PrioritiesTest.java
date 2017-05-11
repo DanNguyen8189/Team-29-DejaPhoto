@@ -1,5 +1,7 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.net.Uri;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +20,6 @@ public class PrioritiesTest {
     DejaPhoto newPhoto;
     Calendar calendar = Calendar.getInstance();
     Long time;
-    Long pastTime;
 
     /**
      * A helper method for instantiating test objects before every test.
@@ -87,4 +88,36 @@ public class PrioritiesTest {
 
     }
 
+    @Test
+    public void calcScoreof() throws Exception {
+        p = new Priorities();
+        calendar = Calendar.getInstance();
+
+        assertEquals("Get score of photo 0", 0, p.calcScoreOf(gallery[0]) );
+        assertEquals("Get score of photo 1", 0, p.calcScoreOf(gallery[1]) );
+        assertEquals("Get score of photo 2", 20, p.calcScoreOf(gallery[2]) );
+
+        // Give photo 0 time and day deja vu
+        gallery[0].setTime(calendar);
+        assertEquals("Photo 0 now has both time and day deja vu", 20, p.calcScoreOf(gallery[0]));
+
+        calendar.add(Calendar.HOUR, 3);// add 3 hours to calendar
+
+        // Give photo 1 only day deja vu
+        gallery[1].setTime(calendar);
+        assertEquals("Photo 1 now has day deja vu", 10, p.calcScoreOf(gallery[1]));
+
+        // Give photo 2 only time deja vu
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_WEEK,-2);
+
+        gallery[2].setTime(calendar);
+        assertEquals("Photo 2 now has only time deja vu", 10, p.calcScoreOf(gallery[2]));
+
+        // Give photo 2 no deja vu
+        calendar.add(Calendar.HOUR, 3);
+        gallery[2].setTime(calendar);
+        assertEquals("Photo 2 now has no deja vu", 0, p.calcScoreOf(gallery[2]));
+
+    }
 }

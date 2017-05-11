@@ -115,12 +115,8 @@
                     android:layout_height="50dp"
                     android:layout_below="@+id/RadioGroup"
                     android:layout_alignEnd="@+id/selectAlbum"
-
-
-
-
+                    android:onClick="onCreateCustomAlbum"
                     android:layout_alignRight="@+id/selectAlbum"
-
                     android:layout_marginBottom="15dp"
                     android:text="Create a Custom Deja Photo Album" />
 

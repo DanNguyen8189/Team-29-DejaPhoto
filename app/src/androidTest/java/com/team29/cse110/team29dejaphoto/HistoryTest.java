@@ -70,7 +70,9 @@ public class HistoryTest {
         for (DejaPhoto d: gallery) {
             history.addPhoto(d);
         }
-        assertTrue(history.getPrev().equals(gallery[8]));
+        for(int i = 8; i >= 0; i-- ) {
+            assertTrue(history.getPrev().equals(gallery[i]));
+        }
     }
 
 
