@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     location.setClickable(true);
                     time.setClickable(true);
                     date.setClickable(true);
-                    toggleSetting(IsDejaVuModeOn);
+                    toggleSetting(IsDejaVuModeOn, true);
                 }
 
                 else {
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     location.setClickable(false);
                     time.setClickable(false);
                     date.setClickable(false);
-                    toggleSetting(IsDejaVuModeOn);
+                    toggleSetting(IsDejaVuModeOn, false);
                 }
             }
         });
@@ -126,12 +126,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     locationToggle.setText("Location enabled");
-                    toggleSetting(IsLocationOn);
+                    toggleSetting(IsLocationOn, true);
                 }
 
                 else {
                     locationToggle.setText("Location disabled");
-                    toggleSetting(IsLocationOn);
+                    toggleSetting(IsLocationOn, false);
                 }
             }
         });
@@ -141,12 +141,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     timeToggle.setText("Time enabled");
-                    toggleSetting(IsTimeOn);
+                    toggleSetting(IsTimeOn, true);
                 }
 
                 else {
                     timeToggle.setText("Time disabled");
-                    toggleSetting(IsTimeOn);
+                    toggleSetting(IsTimeOn, false);
                 }
             }
         });
@@ -156,12 +156,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     dateToggle.setText("Date enabled");
-                    toggleSetting(IsDateOn);
+                    toggleSetting(IsDateOn, true);
                 }
 
                 else {
                     dateToggle.setText("Date disabled");
-                    toggleSetting(IsDateOn);
+                    toggleSetting(IsDateOn, false);
                 }
             }
         });
@@ -260,19 +260,21 @@ public class MainActivity extends AppCompatActivity {
      * Method to toggle boolean values stored in SharedPreferences. The settingName parameter is the
      * key value for the boolean you want to change.
      */
-    private void toggleSetting(String settingName) {
+    private void toggleSetting(String settingName, boolean onOff) {
 
         SharedPreferences.Editor editor  = dejaPreferences.edit();
 
         boolean setting = dejaPreferences.getBoolean(settingName, true);
         Log.d(TAG, "" + setting);
 
-        if (setting) {
+        /*if (setting) {
             editor.putBoolean(settingName, false);
         }
         else {
             editor.putBoolean(settingName, true);
-        }
+        }*/
+
+        editor.putBoolean(settingName, onOff);
 
         if ( editor.commit() ) {
             Log.d(TAG, "Successfully edited preferences");
