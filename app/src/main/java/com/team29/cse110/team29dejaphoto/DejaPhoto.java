@@ -14,9 +14,9 @@ import java.util.GregorianCalendar;
 public class DejaPhoto implements Comparable<DejaPhoto> {
 
     private Uri photoUri;         /* Uri for this photo */
+    private Calendar time;        /* This Calendar object will hold the time this photo was taken */
     private double latitude;      /* Lat and long coordinates where this photo was taken */
     private double longitude;
-    private Calendar time;        /* This Calendar object will hold the time this photo was taken */
 
     private boolean karma;        /* Flags for karma, released, and whether the photo has been */
     private boolean released;     /* shown recently */
@@ -24,7 +24,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     private int myScore;          /* Priority score of this photo */
 
-    /*
+    /**
      * Default constructor. All values are set to the Java default for their respective types.
      */
     public DejaPhoto() {}
@@ -41,13 +41,10 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         this.time = new GregorianCalendar();
         this.time.setTimeInMillis(time);
 
-        karma = false;
-        released = false;
-        showRecently = false;
-
         //updateScore(true, true, true);  /* By default, score is calculated with all settings true */
     }
 
+    // TODO Don't think this constructor is needed anymore but unsure
     /*
      * DejaPhoto constuctor. This constructor call the regular constructor, then updates the
      * score for custom values of isLocationOn, isDateOn, and isTimeOn. This constructor is to
@@ -85,66 +82,44 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     }
 
 
-    // Getters and Setters
+    /* Getters and Setters */
 
-    /**
-     * Returns Uri
-     */
+
     public Uri getPhotoUri() {
         return photoUri;
     }
 
-    /**
-     * Returns karma of this DejaPhoto object.
-     * @return karma (true or false).
-     */
     public boolean getKarma() {
         return karma;
     }
 
-    /**
-     * Set karma flag to true.
-     */
     public void setKarma() {
         karma = true;
     }
 
-    /**
-     * Returns released flag of this DejaPhoto object.
-     * @return released (true or false).
-     */
     public boolean isReleased() {
         return released;
     }
 
-    /**
-     * Set release flag to true;
-     */
     public void setReleased() {
         released = true;
     }
 
-    /**
-     * Returns shownRecently flag of this DejaPhoto object.
-     * @return shownRecently (true or false).
-     */
     public boolean isShownRecently() {
         return showRecently;
     }
-    /**
-     * Set showRecently flag to true.
-     */
+
     public void setShowRecently() {
         showRecently = true;
+    }
+
+    public Calendar getTime() {
+        return time;
     }
 
     public void setTime(Calendar newTime)
     {
         this.time = newTime;
-    }
-
-    public Calendar getTime() {
-        return time;
     }
 
     public int getScore() {
@@ -158,6 +133,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     public double getLatitude(){
         return latitude;
     }
+
     public double getLongitude(){
         return longitude;
     }
@@ -171,89 +147,71 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     }
 
 
+    /* Score Calculation */
 
-    /* Score Calcuclation */
+    // TODO Change to SharedPreferences
 
     /* Check which features of DejaVu Mode are on */
     private boolean isLocationOn = true;
     private boolean isDateOn = true;
     private boolean isTimeOn = true;
 
-
-    public void updateScore(Location location) {
-        setScore(calcScoreOf(this, location));
-    }
-
-    /*
+    /**
      * Updates the score for this DejaPhoto object, given settings for location, date, and time.
      */
-    public int calcScoreOf(DejaPhoto photo, Location location) {
+    public void updateScore(Location location) {
 
-        int myScore = 0;
+        // TODO SharedPreferences
         int includeLocation = mapBooleanToInt(isLocationOn);
         int includeDate = mapBooleanToInt(isDateOn);
         int includeTime = mapBooleanToInt(isTimeOn);
-        int recentlyViewed = mapBooleanToInt(photo.isShownRecently());
+        int recentlyViewed = mapBooleanToInt(isShownRecently());
 
-        myScore = getKarmaPoints(photo) - recentlyViewed +
-                includeLocation * getLocationPoints(photo, location) +
-                includeDate * getDatePoints(photo) +
-                includeTime * getTimeTakenPoints(photo);
-
-        return myScore;
-
+        myScore = getKarmaPoints() - recentlyViewed +
+                  includeLocation * getLocationPoints(location) +
+                  includeDate * getDatePoints() +
+                  includeTime * getTimeTakenPoints();
     }
 
-    // Helper methods below
+    /* Private Score Calculation Helper Methods */
 
-    private int getKarmaPoints(DejaPhoto photo) {
-        return mapBooleanToInt(photo.getKarma());
+    private int getKarmaPoints() {
+        return mapBooleanToInt(getKarma());
     }
 
-    //photo is Dejaphoto to get points for
-    //returns 10 if location of photo is close to current location
-    private int getLocationPoints(DejaPhoto photo, Location location)
-    {
-        double lat1 = location.getLatitude();
-        double long1 = location.getLongitude();
-        double lat2 = photo.getLatitude();
-        double long2 = photo.getLongitude();
+    /**
+     * photo is Dejaphoto to get points for
+     * @returns 10 if location of photo is close to current location
+     */
+    private int getLocationPoints(Location location) {
 
+        double distance = GpsMath.distanceBetween(
+                location.getLatitude(), location.getLongitude(),
+                getLatitude(), getLongitude()
+        );
 
-        double distance = GpsMath.distanceBetween(lat1,long1,lat2,long2);
-        if(distance <= 1000)
-        {
-            return 10;
-        }
-        else
-        {
-            return 0;
-        }
+        return distance <= 1000 ? 10 : 0;
     }
 
-    private int getTimeTakenPoints(DejaPhoto photo) {
+    private int getTimeTakenPoints() {
 
         Calendar now = new GregorianCalendar();
+        boolean notWithinTimeframe =
+                Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
+                        - now.get(Calendar.HOUR_OF_DAY)) > 2 &&
+                Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
+                        - now.get(Calendar.HOUR_OF_DAY)) < 22;
 
-        if (Math.abs(photo.getTime().get(Calendar.HOUR_OF_DAY) - now.get(Calendar.HOUR_OF_DAY)) > 2 &&
-                Math.abs(photo.getTime().get(Calendar.HOUR_OF_DAY) - now.get(Calendar.HOUR_OF_DAY)) < 22) {
-            return 0;
-        }
-        else {
-            return 10;
-        }
+        return notWithinTimeframe ? 0 : 10;
     }
 
-    private int getDatePoints(DejaPhoto photo) {
+    private int getDatePoints() {
 
         Calendar now = new GregorianCalendar();
+        boolean sameDayOfWeek =
+                getTime().get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK);
 
-        if ( photo.getTime().get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK) ) {
-            return 10;
-        }
-        else {
-            return 0;
-        }
+        return sameDayOfWeek ? 10 : 0;
     }
 
     /*
@@ -265,21 +223,5 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     private int mapBooleanToInt(boolean value) {
         return (value) ? 1 : 0;
     }
-
-    public double getLat(){
-        return latitude;
-    }
-    public double getLon(){
-        return longitude;
-    }
-
-    public void setLat(double lat){
-        this.latitude = lat;
-    }
-
-    public void setLong(double lon){
-        this.longitude = lon;
-    }
-
 
 }
