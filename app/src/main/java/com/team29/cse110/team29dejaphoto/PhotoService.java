@@ -1,7 +1,6 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
-import android.app.IntentService;
 import android.app.Service;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -9,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -40,6 +38,7 @@ public class PhotoService extends Service {
     /* CONSTANTS */
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
+
 
     /**
      * Custom Widget Action Receiver inner class
@@ -74,22 +73,19 @@ public class PhotoService extends Service {
         }
     }
 
-    /* Default PhotoService Constructor */
-    public PhotoService() {
-        displayCycle = new DisplayCycle();
-        background = WallpaperManager.getInstance(getApplicationContext());
-    }
-
     @Override
     public void onCreate() {
 
         /* Forward Permissions Check */
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if(!(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED &&
            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) stopSelf();
+                == PackageManager.PERMISSION_GRANTED)) stopSelf();
 
-        /* Handles initializaing receiver and binding filter to only receive widget intents */
+        /* Initialize WallpaperManager object */
+        background = WallpaperManager.getInstance(getApplicationContext());
+
+        /* Handles initializing receiver and binding filter to only receive widget intents */
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("NEXT_BUTTON");
@@ -128,7 +124,7 @@ public class PhotoService extends Service {
 
         PhotoLoader photoLoader = new DejaPhotoLoader();
 
-        displayCycle.addToCycle(photoLoader.getPhotosAsArray(this));
+        displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
         displayCycle.updatePriorities(
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         );
@@ -166,7 +162,8 @@ public class PhotoService extends Service {
                     MediaStore.Images.Media.getBitmap(this.getContentResolver(),
                                                       dejaPhoto.getPhotoUri())
             );
-            Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 
         catch (NullPointerException e) {
@@ -178,7 +175,7 @@ public class PhotoService extends Service {
         }
     }
 
-    //TODO fix toast when photo doesn't change
+    // TODO fix toast when photo doesn't change
     public void cycleForward() {
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
         Log.d(TAG, "Next Photo retrieved");
@@ -188,7 +185,8 @@ public class PhotoService extends Service {
                     MediaStore.Images.Media.getBitmap(this.getContentResolver(),
                                                       dejaPhoto.getPhotoUri())
             );
-            Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 
         catch (NullPointerException e) {
