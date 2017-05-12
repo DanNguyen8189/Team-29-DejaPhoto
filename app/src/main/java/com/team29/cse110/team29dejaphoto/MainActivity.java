@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +25,15 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "MainActivity";
+
+    SharedPreferences dejaPreferences;
+    public static final String DEJA_PREFS = "Deja_Preferences";
+    public static final String IsDejaVuModeOn = "IsDejaVuModeOn";
+    public static final String IsLocationOn = "IsLocationOn";
+    public static final String IsTimeOn = "IsTimeOn";
+    public static final String IsDateOn = "IsDateOn";
+
+
     boolean useDefaultGallery = true;
 
     Button startButton;
@@ -38,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dejaPreferences = getSharedPreferences(DEJA_PREFS, 0);
+
 
         startButton = (Button) findViewById(R.id.serviceButton);
         stopButton = (Button) findViewById(R.id.stopServiceButton);
@@ -131,6 +144,30 @@ public class MainActivity extends AppCompatActivity {
                 }
         }
 
+    }
+
+    /*
+     * Method to toggle boolean values stored in SharedPreferences. The settingName parameter is the
+     * key value for the boolean you want to change.
+     */
+    private void toggleSetting(String settingName) {
+
+        SharedPreferences.Editor editor  = dejaPreferences.edit();
+
+        boolean isDejaModeOn = dejaPreferences.getBoolean(settingName, true);
+        if (isDejaModeOn) {
+            editor.putBoolean(settingName, false);
+        }
+        else {
+            editor.putBoolean(settingName, true);
+        }
+
+        if ( editor.commit() ) {
+            Log.d(TAG, "Successfully edited preferences");
+        }
+        else {
+            Log.d(TAG, "Could not edit preferences");
+        }
     }
 
     public void onCreateCustomAlbum(View view) {

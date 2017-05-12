@@ -12,7 +12,7 @@ import android.util.Log;
 import java.io.File;
 
 /**
- * Created by DavidDuplantier on 5/8/17.
+ * Created by David Duplantier on 5/8/17.
  */
 
 /*
