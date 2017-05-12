@@ -15,10 +15,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,8 +32,17 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     boolean useDefaultGallery = true;
 
-    Button startButton;
-    Button stopButton;
+    TextView appToggle;
+    TextView dejavuToggle;
+    TextView locationToggle;
+    TextView timeToggle;
+    TextView dateToggle;
+    Switch appOnOff;
+    Switch dejavu;
+    Switch location;
+    Switch time;
+    Switch date;
+
     RadioGroup radio;
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
@@ -39,10 +54,98 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startButton = (Button) findViewById(R.id.serviceButton);
-        stopButton = (Button) findViewById(R.id.stopServiceButton);
         radio = (RadioGroup) findViewById(R.id.RadioGroup);
 
+        appToggle = (TextView) findViewById(R.id.appSwitch);
+        dejavuToggle = (TextView) findViewById(R.id.dejavuText);
+        locationToggle = (TextView) findViewById(R.id.locationText);
+        timeToggle = (TextView) findViewById(R.id.timeText);
+        dateToggle = (TextView) findViewById(R.id.dateText);
+
+        appOnOff = (Switch) findViewById(R.id.serviceButton);
+        dejavu = (Switch) findViewById(R.id.dejavuMode);
+        location = (Switch) findViewById(R.id.location);
+        time = (Switch) findViewById(R.id.time);
+        date = (Switch) findViewById(R.id.date);
+
+        appOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    appToggle.setText("DejaPhoto is enabled");
+                    starter();
+                }
+
+                else {
+                    appToggle.setText("DejaPhoto is disabled");
+                    stopper();
+                }
+            }
+        });
+
+        dejavu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    dejavuToggle.setText("DejaVu enabled");
+                    location.setChecked(true);
+                    time.setChecked(true);
+                    date.setChecked(true);
+                    location.setClickable(true);
+                    time.setClickable(true);
+                    date.setClickable(true);
+                }
+
+                else {
+                    dejavuToggle.setText("DejaVu disabled");
+                    location.setChecked(false);
+                    time.setChecked(false);
+                    date.setChecked(false);
+                    location.setClickable(false);
+                    time.setClickable(false);
+                    date.setClickable(false);
+                }
+            }
+        });
+
+        location.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    locationToggle.setText("Location enabled");
+                }
+
+                else {
+                    locationToggle.setText("Location disabled");
+                }
+            }
+        });
+
+        time.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    timeToggle.setText("Time enabled");
+                }
+
+                else {
+                    timeToggle.setText("Time disabled");
+                }
+            }
+        });
+
+        date.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    dateToggle.setText("Date enabled");
+                }
+
+                else {
+                    dateToggle.setText("Date disabled");
+                }
+            }
+        });
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
@@ -53,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_LOCATION);
             return;
         }
-
 
     }
 
@@ -95,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void starter(View view) {
+    public void starter() {
         Log.d(TAG, "Starter button pushed");
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
 
@@ -103,11 +205,13 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
-    public void stopper(View view) {
+    public void stopper() {
         Log.d(TAG, "Stopper button pushed");
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
         stopService(intent);
     }
+
+
 
     public void onClickRadioButton(View view) {
 

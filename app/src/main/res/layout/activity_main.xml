@@ -21,20 +21,16 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <Button
+                <Switch
                     android:id="@+id/serviceButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="starter"
-                    android:text="Start Service" />
+                    android:layout_height="wrap_content" />
 
-                <Button
-                    android:id="@+id/stopServiceButton"
+                <TextView
+                    android:id="@+id/appSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="stopper"
-                    android:text="Stop Service" />
-
+                    android:text="DejaPhoto is disabled"/>
 
             </LinearLayout>
 
@@ -149,16 +145,18 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/settings"
                     android:layout_marginTop="20dp"
-                    android:layout_marginLeft="40dp"/>
+                    android:layout_marginLeft="40dp"
+                    android:checked="true" />
 
                 <TextView
+                    android:id="@+id/dejavuText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/dejavuMode"
                     android:layout_below="@+id/settings"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
-                    android:text="Text here"
+                    android:text="DejaVu Mode enabled"
                     android:textSize="20dp"/>
 
                 <Switch
@@ -168,7 +166,18 @@
                     android:layout_below="@+id/dejavuMode"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
-                    />
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/locationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/location"
+                    android:layout_below="@+id/dejavuMode"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Location enabled"
+                    android:textSize="20dp"/>
 
                 <Switch
                     android:id="@+id/time"
@@ -176,7 +185,40 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/location"
                     android:layout_marginTop="20dp"
-                    android:layout_marginLeft="40dp"/>
+                    android:layout_marginLeft="40dp"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/timeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/time"
+                    android:layout_below="@+id/location"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Time enabled"
+                    android:textSize="20dp"/>
+
+                <Switch
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/time"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/dateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/date"
+                    android:layout_below="@+id/time"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Date enabled"
+                    android:textSize="20dp"/>
+
             </RelativeLayout>
 
 </RelativeLayout>

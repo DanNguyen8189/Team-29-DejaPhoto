@@ -20,7 +20,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Created by David Duplantier, Dan, and Wis on 5/9/17.
+ * Created by David Duplantier, Dan, Wis and Brian on 5/9/17.
  */
 
 public class PhotoService extends Service {
