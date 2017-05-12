@@ -35,6 +35,7 @@ public class PhotoService extends Service {
     /* Observers */
     private BroadcastReceiver receiver;
     private LocationListener locationListener;
+    private LocationManager locationManager;
 
     /* CONSTANTS */
     private static final String TAG = "PhotoService";
@@ -82,6 +83,12 @@ public class PhotoService extends Service {
     @Override
     public void onCreate() {
 
+        /* Forward Permissions Check */
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED &&
+           ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) stopSelf();
+
         /* Handles initializaing receiver and binding filter to only receive widget intents */
 
         IntentFilter filter = new IntentFilter();
@@ -113,21 +120,18 @@ public class PhotoService extends Service {
         };
 
         /* Initializes and configures the LocationListener */
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                0, FIVE_HUNDRED_FT, locationListener);
 
-            LocationManager locationManager =
-                    (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            String locationProvider = LocationManager.GPS_PROVIDER;
-            locationManager.requestLocationUpdates(locationProvider,
-                    0, FIVE_HUNDRED_FT, locationListener);
-        }
+        /* Initializes DisplayCycle with photos from the system */
 
-        /* Initializes DisplayCycle with photos from system */
         PhotoLoader photoLoader = new DejaPhotoLoader();
-        displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
+
+        displayCycle.addToCycle(photoLoader.getPhotosAsArray(this));
+        displayCycle.updatePriorities(
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        );
 
         super.onCreate();
     }
