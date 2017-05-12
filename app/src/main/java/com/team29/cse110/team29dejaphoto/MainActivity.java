@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
 
     SharedPreferences dejaPreferences;
+    public static final String IsAppRunning = "IsAppRunning";
     public static final String DEJA_PREFS = "Deja_Preferences";
     public static final String IsDejaVuModeOn = "IsDejaVuModeOn";
     public static final String IsLocationOn = "IsLocationOn";
@@ -84,11 +85,13 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     appToggle.setText("DejaPhoto is enabled");
+                    toggleSetting(IsAppRunning, true);
                     starter();
                 }
 
                 else {
                     appToggle.setText("DejaPhoto is disabled");
+                    toggleSetting(IsAppRunning, false);
                     stopper();
                 }
             }
