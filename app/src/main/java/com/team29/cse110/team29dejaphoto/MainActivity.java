@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     location.setClickable(true);
                     time.setClickable(true);
                     date.setClickable(true);
+                    toggleSetting(IsDejaVuModeOn);
                 }
 
                 else {
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     location.setClickable(false);
                     time.setClickable(false);
                     date.setClickable(false);
+                    toggleSetting(IsDejaVuModeOn);
                 }
             }
         });
@@ -124,10 +126,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     locationToggle.setText("Location enabled");
+                    toggleSetting(IsLocationOn);
                 }
 
                 else {
                     locationToggle.setText("Location disabled");
+                    toggleSetting(IsLocationOn);
                 }
             }
         });
@@ -137,10 +141,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     timeToggle.setText("Time enabled");
+                    toggleSetting(IsTimeOn);
                 }
 
                 else {
                     timeToggle.setText("Time disabled");
+                    toggleSetting(IsTimeOn);
                 }
             }
         });
@@ -150,10 +156,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     dateToggle.setText("Date enabled");
+                    toggleSetting(IsDateOn);
                 }
 
                 else {
                     dateToggle.setText("Date disabled");
+                    toggleSetting(IsDateOn);
                 }
             }
         });
@@ -257,6 +265,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor  = dejaPreferences.edit();
 
         boolean setting = dejaPreferences.getBoolean(settingName, true);
+        Log.d(TAG, "" + setting);
+
         if (setting) {
             editor.putBoolean(settingName, false);
         }
