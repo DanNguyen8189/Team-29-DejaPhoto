@@ -173,7 +173,9 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
                   includeTime * getTimeTakenPoints();
     }
 
+
     /* Private Score Calculation Helper Methods */
+
 
     private int getKarmaPoints() {
         return mapBooleanToInt(getKarma());

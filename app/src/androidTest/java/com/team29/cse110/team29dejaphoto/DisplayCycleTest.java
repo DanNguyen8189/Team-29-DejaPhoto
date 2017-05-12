@@ -1,9 +1,8 @@
 package com.team29.cse110.team29dejaphoto;
 
 import java.util.Calendar;
-import android.net.Uri;
+
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -61,9 +60,9 @@ public class DisplayCycleTest {
     public void testFillDisplayCycle() throws Exception {
 
         // Test that empty display cycle is successfully filled
-        assertTrue(ds.fillDisplayCycle(testGalleryEmpty));
+        assertTrue(ds.addToCycle(testGalleryEmpty));
         // Test that non-empty display cycle is successfully filled
-        assertTrue(ds.fillDisplayCycle(testGalleryOneElement));
+        assertTrue(ds.addToCycle(testGalleryOneElement));
     }
 
 
@@ -76,11 +75,11 @@ public class DisplayCycleTest {
     public void addToCycle() throws Exception {
 
         // Test that photo is successfully added to an empty cycle
-        ds.fillDisplayCycle(testGalleryEmpty);
+        ds.addToCycle(testGalleryEmpty);
         assertTrue(ds.addToCycle(new DejaPhoto(null, 0, 0, 0L)));
 
         // Test that photo is successfully added to a non-empty cycle
-        ds.fillDisplayCycle(testGalleryOneElement);
+        ds.addToCycle(testGalleryOneElement);
         assertTrue(ds.addToCycle(new DejaPhoto(null, 0, 0, 0L)));
     }
 
@@ -100,18 +99,18 @@ public class DisplayCycleTest {
     public void getNextPhoto() throws Exception {
 
         // Test get next on an empty cycle
-        ds.fillDisplayCycle(testGalleryEmpty);
+        ds.addToCycle(testGalleryEmpty);
         assertNull(ds.getNextPhoto());
 
         // Test get next on a one-element set
         ds = new DisplayCycle();
-        ds.fillDisplayCycle(testGalleryOneElement);
+        ds.addToCycle(testGalleryOneElement);
         assertTrue(ds.getNextPhoto().equals(one));
         assertTrue(ds.getNextPhoto().equals(one)); // NOTE: Perhaps not ideal functionality
 
         // Test get next on a three-element set
         ds = new DisplayCycle();
-        ds.fillDisplayCycle(testGalleryThreeElements);
+        ds.addToCycle(testGalleryThreeElements);
         assertTrue(ds.getNextPhoto().equals(one));
         assertTrue(ds.getNextPhoto().equals(two));
         assertTrue(ds.getNextPhoto().equals(three));
@@ -119,7 +118,7 @@ public class DisplayCycleTest {
 
         // Test get next on a full history set
         ds = new DisplayCycle();
-        ds.fillDisplayCycle(testGalleryManyElements);
+        ds.addToCycle(testGalleryManyElements);
         ds.getNextPhoto();
         for(int i = testGalleryManyElements.length - 1; i >= 0 ; i-- ) {
             assertTrue(ds.getNextPhoto().equals(testGalleryManyElements[i]) );
@@ -139,19 +138,19 @@ public class DisplayCycleTest {
     public void getPrevPhoto() throws Exception {
 
         // Test get prev on an empty cycle
-        ds.fillDisplayCycle(testGalleryEmpty);
+        ds.addToCycle(testGalleryEmpty);
         assertNull(ds.getPrevPhoto());
 
         // Test get prev on a one-element set
         ds = new DisplayCycle();
-        ds.fillDisplayCycle(testGalleryOneElement);
+        ds.addToCycle(testGalleryOneElement);
         assertNull(ds.getPrevPhoto());
         ds.getNextPhoto();
         assertNull(ds.getPrevPhoto());
 
         // Test get prev on a three-element set
         ds = new DisplayCycle();
-        ds.fillDisplayCycle(testGalleryThreeElements);
+        ds.addToCycle(testGalleryThreeElements);
         ds.getNextPhoto();
         ds.getNextPhoto();
         ds.getNextPhoto();
@@ -162,7 +161,7 @@ public class DisplayCycleTest {
 
         // Test get prev on a full history set
         ds = new DisplayCycle();
-        ds.fillDisplayCycle(testGalleryManyElements);
+        ds.addToCycle(testGalleryManyElements);
         ds.getNextPhoto();
         for(int i = testGalleryManyElements.length - 1; i >= 0 ; i-- ) {
             ds.getNextPhoto();

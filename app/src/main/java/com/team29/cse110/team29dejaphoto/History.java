@@ -1,5 +1,7 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.location.Location;
+
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -96,4 +98,15 @@ public class History {
         }
         return null;
     }
+
+    /**
+     * Update the priorites of all DejaPhoto Objects held by this History structure
+     * @param location The new current location to update score with respects to
+     */
+    public void updatePriorities(Location location) {
+        for(DejaPhoto photo : historyList) {
+            photo.updateScore(location);
+        }
+    }
+
 }

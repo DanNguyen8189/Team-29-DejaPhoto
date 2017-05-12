@@ -26,55 +26,78 @@ import android.widget.Toast;
 
 public class PhotoService extends Service {
 
-    private DisplayCycle displayCycle = new DisplayCycle();
-    private WallpaperManager background;
-    private BroadcastReceiver receiver;
+    /* Underlying Object that handles image cycling */
+    private DisplayCycle displayCycle;
 
+    /* Homescreen background setter */
+    private WallpaperManager background;
+
+    /* Observers */
+    private BroadcastReceiver receiver;
     private LocationListener locationListener;
 
-    private final String TAG = "PhotoService";
-    static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
+    /* CONSTANTS */
+    private static final String TAG = "PhotoService";
+    private static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
 
+    /**
+     * Custom Widget Action Receiver inner class
+     */
     private class MyReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             switch(intent.getAction()) {
                 case "NEXT_BUTTON":
-                    Log.d("PhotoService", "next button intent received");
+                    Log.d(TAG, "Next button intent received");
+
                     cycleForward();
                     break;
+
                 case "PREV_BUTTON":
-                    Log.d("PhotoService", "prev button intent received");
+                    Log.d(TAG, "Prev button intent received");
+
                     cycleBack();
                     break;
-                case "KARMA":
-                    Log.d("PhotoService", "karma button intent received");
+
+                case "KARMA_BUTTON":
+                    Log.d(TAG, "Karma button intent received");
+
                     break;
-                case "RELEASE":
-                    Log.d("PhotoService", "release button intent received");
+
+                case "RELEASE_BUTTON":
+                    Log.d(TAG, "Release button intent received");
+
                     break;
             }
         }
     }
 
+    /* Default PhotoService Constructor */
+    public PhotoService() {
+        displayCycle = new DisplayCycle();
+        background = WallpaperManager.getInstance(getApplicationContext());
+    }
+
     @Override
     public void onCreate() {
+
+        /* Handles initializaing receiver and binding filter to only receive widget intents */
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("NEXT_BUTTON");
         filter.addAction("PREV_BUTTON");
+
         receiver = new MyReceiver();
         registerReceiver(receiver, filter);
 
+        /* Location Observer */
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 Log.d(TAG, "onLocationChanged() called.");
                 Log.d(TAG, "Latitude is: " + String.valueOf(location.getLatitude()));
                 Log.d(TAG, "Longitude is: " + String.valueOf(location.getLongitude()));
-//                displayCycle.getPriorities().setLat(location.getLatitude());
-//                displayCycle.getPriorities().setLong(location.getLongitude());
 
                 displayCycle.updatePriorities(location);
             }
@@ -89,6 +112,7 @@ public class PhotoService extends Service {
             public void onProviderDisabled(String provider) {}
         };
 
+        /* Initializes and configures the LocationListener */
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -101,9 +125,9 @@ public class PhotoService extends Service {
                     0, FIVE_HUNDRED_FT, locationListener);
         }
 
+        /* Initializes DisplayCycle with photos from system */
         PhotoLoader photoLoader = new DejaPhotoLoader();
-        DejaPhoto[] gallery = photoLoader.getPhotosAsArray(this);
-        displayCycle.fillDisplayCycle(gallery);
+        displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
 
         super.onCreate();
     }
@@ -111,12 +135,14 @@ public class PhotoService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Service started");
+
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         Log.d(TAG, "Service stopped");
+
         unregisterReceiver(receiver);
         super.onDestroy();
     }
@@ -128,32 +154,36 @@ public class PhotoService extends Service {
 
     // TODO fix toast when photo doesn't change
     public void cycleBack() {
-        background = WallpaperManager.getInstance(getApplicationContext());
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
-        Log.d(TAG, "Previous Photo was successfully retrieved");
-        try {
+        Log.d(TAG, "Previous Photo retrieved");
 
-            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
+        try {
+            background.setBitmap(
+                    MediaStore.Images.Media.getBitmap(this.getContentResolver(),
+                                                      dejaPhoto.getPhotoUri())
+            );
             Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 
         catch (NullPointerException e) {
             Log.d(TAG, "No Photo could be retrieved");
         }
+
         catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     //TODO fix toast when photo doesn't change
     public void cycleForward() {
-        background = WallpaperManager.getInstance(getApplicationContext());
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
-        Log.d(TAG, "Next Photo was successfully retrieved");
-        try {
+        Log.d(TAG, "Next Photo retrieved");
 
-            background.setBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), dejaPhoto.getPhotoUri()));
+        try {
+            background.setBitmap(
+                    MediaStore.Images.Media.getBitmap(this.getContentResolver(),
+                                                      dejaPhoto.getPhotoUri())
+            );
             Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 

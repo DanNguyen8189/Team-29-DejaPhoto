@@ -24,13 +24,21 @@ public class DisplayCycle {
         }
     }
 
-    /*
-     * Fill the DisplayCycle object with an array of DejaPhoto objects. This method is intended
+    /**
+     * Add a single photo to album.
+     */
+    public boolean addToCycle(DejaPhoto photo) {
+        return priorities.add(photo);
+    }
+
+    /**
+     * Overloaded to add an array of DejaPhoto objects to the DisplayCycle. This method is intended
      * to allow instantiating a DisplayCycle object before an array of DejaPhoto objects becomes
      * available, and fill the DisplayCycle at a later time. This is useful so the app does
      * not crash if the user presses the forwards/backwards button before images are loaded.
+     * @param gallery - The input array of DejaPhotos to add to the DisplayCycle
      */
-    public boolean fillDisplayCycle(DejaPhoto[] gallery) {
+    public boolean addToCycle(DejaPhoto[] gallery) {
 
         // An empty gallery is valid to load from
         if(gallery == null) return true;
@@ -41,13 +49,6 @@ public class DisplayCycle {
             }
         }
         return true;
-    }
-
-    /**
-     * Add a single photo to album.
-     */
-    public boolean addToCycle(DejaPhoto photo) {
-        return priorities.add(photo);
     }
 
     /**
@@ -83,9 +84,10 @@ public class DisplayCycle {
     }
 
     /**
-     * Updates the priorities of each DejaPhoto in priorities.
+     * Updates the priorities of each DejaPhoto in the DisplayCycle.
      */
     public void updatePriorities(Location location) {
+        history.updatePriorities(location);
         priorities.updatePriorities(location);
     }
 
