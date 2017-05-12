@@ -62,9 +62,9 @@ public class TimeTests {
         photo3 = new DejaPhoto(null,0,0,0l);
         photo3.setTime(midnight);
 
-        photo1.updateScore(true,true,true);
+        /*photo1.updateScore(true,true,true);
         photo2.updateScore(true, true, true);
-        photo3.updateScore(true, true, true);
+        photo3.updateScore(true, true, true);*/
     }
 
 
