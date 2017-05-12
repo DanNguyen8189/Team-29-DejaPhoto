@@ -27,7 +27,7 @@ public class PhotoService extends Service {
     /* Underlying Object that handles image cycling */
     private DisplayCycle displayCycle;
 
-    /* Homescreen background setter */
+    /* Home screen background setter */
     private WallpaperManager background;
 
     /* Observers */
@@ -77,6 +77,7 @@ public class PhotoService extends Service {
     public void onCreate() {
 
         /* Forward Permissions Check */
+        // TODO Handle no permissions and/or GPS/Network disabled
         if(!(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED &&
            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -125,6 +126,7 @@ public class PhotoService extends Service {
         PhotoLoader photoLoader = new DejaPhotoLoader();
 
         displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
+        // TODO More robust handling of score initialization
         displayCycle.updatePriorities(
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         );

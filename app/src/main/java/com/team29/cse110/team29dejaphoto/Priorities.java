@@ -3,10 +3,7 @@ package com.team29.cse110.team29dejaphoto;
 import android.location.Location;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
 import java.util.PriorityQueue;
 
 public class Priorities {
@@ -14,6 +11,7 @@ public class Priorities {
     /* Priority Queue of DejaPhotos based on priority */
     private PriorityQueue<DejaPhoto> pq;
 
+    /** Default Constructor */
     public Priorities() {
         pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());
     }

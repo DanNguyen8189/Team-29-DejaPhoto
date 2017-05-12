@@ -2,7 +2,6 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.location.Location;
 import android.net.Uri;
-import android.util.Log;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -15,8 +14,8 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     private Uri photoUri;         /* Uri for this photo */
     private Calendar time;        /* This Calendar object will hold the time this photo was taken */
-    private double latitude;      /* Lat and long coordinates where this photo was taken */
-    private double longitude;
+    private Location location;    /* Location object composing lat and long
+                                     coordinates where this photo was taken */
 
     private boolean karma;        /* Flags for karma, released, and whether the photo has been */
     private boolean released;     /* shown recently */
@@ -36,10 +35,11 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     public DejaPhoto(Uri photoUri, double latitude, double longitude, Long time) {
 
         this.photoUri = photoUri;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.time = new GregorianCalendar();
         this.time.setTimeInMillis(time);
+        this.location = new Location("");
+        this.location.setLatitude(latitude);
+        this.location.setLongitude(longitude);
 
         //updateScore(true, true, true);  /* By default, score is calculated with all settings true */
     }
@@ -79,6 +79,90 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         else {
             return -1;
         }
+    }
+
+
+    /* Score Calculation */
+
+
+    // TODO Change to SharedPreferences
+
+    /* Check which features of DejaVu Mode are on */
+    private boolean isLocationOn = true;
+    private boolean isDateOn     = true;
+    private boolean isTimeOn     = true;
+
+    /**
+     * Updates the score for this DejaPhoto object, given settings for location, date, and time.
+     */
+    public void updateScore(Location location) {
+
+        // TODO SharedPreferences
+        int includeLocation = mapBooleanToInt(isLocationOn);
+        int includeDate     = mapBooleanToInt(isDateOn);
+        int includeTime     = mapBooleanToInt(isTimeOn);
+        int recentlyViewed  = mapBooleanToInt(isShownRecently());
+
+        myScore = getKarmaPoints() - recentlyViewed +
+                  includeLocation * getLocationPoints(location) +
+                  includeDate * getDatePoints() +
+                  includeTime * getTimeTakenPoints();
+    }
+
+
+    /* Private Score Calculation Helper Methods */
+
+
+    private int getKarmaPoints() {
+        return mapBooleanToInt(getKarma());
+    }
+
+    /**
+     * photo is Dejaphoto to get points for
+     * @returns 10 if location of photo is close to current location
+     */
+    private int getLocationPoints(Location location) {
+        /*
+        TODO should we use the built-in android location distance method instead?
+        double distance = location.distanceTo(this.location);
+        */
+        double distance = GpsMath.distanceBetween(
+                location.getLatitude(), location.getLongitude(),
+                getLatitude(), getLongitude()
+        );
+
+        return distance <= 1000 ? 10 : 0;
+    }
+
+    private int getTimeTakenPoints() {
+
+        Calendar now = new GregorianCalendar();
+        boolean notWithinTimeframe =
+                Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
+                        - now.get(Calendar.HOUR_OF_DAY)) > 2 &&
+                Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
+                        - now.get(Calendar.HOUR_OF_DAY)) < 22;
+
+        return notWithinTimeframe ? 0 : 10;
+    }
+
+    private int getDatePoints() {
+
+        Calendar now = new GregorianCalendar();
+        boolean sameDayOfWeek =
+                getTime().get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK);
+
+        return sameDayOfWeek ? 10 : 0;
+    }
+
+    /*
+     * To avoid a large, confusing if-else structure in the calculateScore method, simply
+     * use this method to map the boolean values to 0 (false) and 1 (true). Multiply these
+     * values with scores, so that multiplying by zero ignores a score, and 1 includes the
+     * score.
+     */
+    private int mapBooleanToInt(boolean value) {
+        return (value) ? 1 : 0;
     }
 
 
@@ -129,101 +213,21 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     public void setScore(int newScore) {
         myScore = newScore;
     }
-
+    // TODO Maybe get/set Location instead??
     public double getLatitude(){
-        return latitude;
+        return location.getLatitude();
     }
 
     public double getLongitude(){
-        return longitude;
+        return location.getLongitude();
     }
 
     public void setLatitude(double lat){
-        this.latitude = lat;
+        this.location.setLatitude(lat);
     }
 
     public void setLongitude(double lon){
-        this.longitude = lon;
-    }
-
-
-    /* Score Calculation */
-
-    // TODO Change to SharedPreferences
-
-    /* Check which features of DejaVu Mode are on */
-    private boolean isLocationOn = true;
-    private boolean isDateOn = true;
-    private boolean isTimeOn = true;
-
-    /**
-     * Updates the score for this DejaPhoto object, given settings for location, date, and time.
-     */
-    public void updateScore(Location location) {
-
-        // TODO SharedPreferences
-        int includeLocation = mapBooleanToInt(isLocationOn);
-        int includeDate = mapBooleanToInt(isDateOn);
-        int includeTime = mapBooleanToInt(isTimeOn);
-        int recentlyViewed = mapBooleanToInt(isShownRecently());
-
-        myScore = getKarmaPoints() - recentlyViewed +
-                  includeLocation * getLocationPoints(location) +
-                  includeDate * getDatePoints() +
-                  includeTime * getTimeTakenPoints();
-    }
-
-
-    /* Private Score Calculation Helper Methods */
-
-
-    private int getKarmaPoints() {
-        return mapBooleanToInt(getKarma());
-    }
-
-    /**
-     * photo is Dejaphoto to get points for
-     * @returns 10 if location of photo is close to current location
-     */
-    private int getLocationPoints(Location location) {
-
-        double distance = GpsMath.distanceBetween(
-                location.getLatitude(), location.getLongitude(),
-                getLatitude(), getLongitude()
-        );
-
-        return distance <= 1000 ? 10 : 0;
-    }
-
-    private int getTimeTakenPoints() {
-
-        Calendar now = new GregorianCalendar();
-        boolean notWithinTimeframe =
-                Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
-                        - now.get(Calendar.HOUR_OF_DAY)) > 2 &&
-                Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
-                        - now.get(Calendar.HOUR_OF_DAY)) < 22;
-
-        return notWithinTimeframe ? 0 : 10;
-    }
-
-    private int getDatePoints() {
-
-        Calendar now = new GregorianCalendar();
-        boolean sameDayOfWeek =
-                getTime().get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK);
-
-        return sameDayOfWeek ? 10 : 0;
-    }
-
-    /*
-     * To avoid a large, confusing if-else structure in the calculateScore method, simply
-     * use this method to map the boolean values to 0 (false) and 1 (true). Multiply these
-     * values with scores, so that multiplying by zero ignores a score, and 1 includes the
-     * score.
-     */
-    private int mapBooleanToInt(boolean value) {
-        return (value) ? 1 : 0;
+        this.location.setLongitude(lon);
     }
 
 }

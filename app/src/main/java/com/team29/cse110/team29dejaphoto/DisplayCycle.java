@@ -25,18 +25,26 @@ public class DisplayCycle {
     }
 
     /**
-     * Add a single photo to album.
+     * Add a single photo to the display cycle.
+     *
+     * @param photo - The DejaPhoto object to add to the DisplayCycle
+     * @return True - If the photo was added to the display cycle
+     *         False - otherwise
      */
     public boolean addToCycle(DejaPhoto photo) {
         return priorities.add(photo);
     }
 
     /**
-     * Overloaded to add an array of DejaPhoto objects to the DisplayCycle. This method is intended
-     * to allow instantiating a DisplayCycle object before an array of DejaPhoto objects becomes
-     * available, and fill the DisplayCycle at a later time. This is useful so the app does
-     * not crash if the user presses the forwards/backwards button before images are loaded.
+     * Overloaded to add an array of DejaPhoto objects to the display cycle. This method
+     * is intended to allow instantiating a DisplayCycle object before an array of DejaPhoto
+     * objects becomes available, and fill the DisplayCycle at a later time. This is
+     * useful so the app does not crash if the user presses the forwards/backwards button
+     * before images are loaded.
+     *
      * @param gallery - The input array of DejaPhotos to add to the DisplayCycle
+     * @return True - if any photo from the gallery was added to the DisplayCycle
+     *         False - otherwise
      */
     public boolean addToCycle(DejaPhoto[] gallery) {
 
@@ -54,6 +62,7 @@ public class DisplayCycle {
     /**
      * Used to get the next photo in the sequence, calling other helper methods to
      * determine where to get the next photo.
+     *
      * @return DejaPhoto - photo to be displayed
      */
     public DejaPhoto getNextPhoto() {
@@ -76,6 +85,7 @@ public class DisplayCycle {
     /**
      * Used to get the previous photo in the sequence, calling other helper methods to
      * determine where to get the previous photo.
+     *
      * @return DejaPhoto - photo to be displayed
      *         null - there are no previous photos available
      */
@@ -85,8 +95,12 @@ public class DisplayCycle {
 
     /**
      * Updates the priorities of each DejaPhoto in the DisplayCycle.
+     *
+     * @param location - The location for which scores are to be calculated with respects to
      */
     public void updatePriorities(Location location) {
+        if(location == null) return;
+
         history.updatePriorities(location);
         priorities.updatePriorities(location);
     }
