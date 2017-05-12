@@ -154,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences.Editor editor  = dejaPreferences.edit();
 
-        boolean isDejaModeOn = dejaPreferences.getBoolean(settingName, true);
-        if (isDejaModeOn) {
+        boolean setting = dejaPreferences.getBoolean(settingName, true);
+        if (setting) {
             editor.putBoolean(settingName, false);
         }
         else {
