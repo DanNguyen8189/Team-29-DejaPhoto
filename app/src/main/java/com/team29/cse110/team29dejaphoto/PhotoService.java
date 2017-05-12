@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -28,6 +29,8 @@ public class PhotoService extends Service {
     private DisplayCycle displayCycle = new DisplayCycle();
     private WallpaperManager background;
     private BroadcastReceiver receiver;
+
+    private LocationListener locationListener;
 
     private final String TAG = "PhotoService";
     static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
@@ -57,25 +60,23 @@ public class PhotoService extends Service {
 
     @Override
     public void onCreate() {
-        PhotoLoader photoLoader = new DejaPhotoLoader();
-        DejaPhoto[] gallery = photoLoader.getPhotosAsArray(this);
-        displayCycle.fillDisplayCycle(gallery);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("NEXT_BUTTON");
         filter.addAction("PREV_BUTTON");
         receiver = new MyReceiver();
         registerReceiver(receiver, filter);
-        super.onCreate();
 
-        LocationListener locationListener = new LocationListener() {
+        locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 Log.d(TAG, "onLocationChanged() called.");
                 Log.d(TAG, "Latitude is: " + String.valueOf(location.getLatitude()));
                 Log.d(TAG, "Longitude is: " + String.valueOf(location.getLongitude()));
-                displayCycle.getPriorities().setLat(location.getLatitude());
-                displayCycle.getPriorities().setLong(location.getLongitude());
+//                displayCycle.getPriorities().setLat(location.getLatitude());
+//                displayCycle.getPriorities().setLong(location.getLongitude());
+
+                displayCycle.updatePriorities(location);
             }
 
             @Override
@@ -100,8 +101,11 @@ public class PhotoService extends Service {
                     0, FIVE_HUNDRED_FT, locationListener);
         }
 
+        PhotoLoader photoLoader = new DejaPhotoLoader();
+        DejaPhoto[] gallery = photoLoader.getPhotosAsArray(this);
+        displayCycle.fillDisplayCycle(gallery);
 
-
+        super.onCreate();
     }
 
     @Override

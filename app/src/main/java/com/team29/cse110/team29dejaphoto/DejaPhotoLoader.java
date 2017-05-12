@@ -12,7 +12,7 @@ import android.util.Log;
 import java.io.File;
 
 /**
- * Created by DavidDuplantier on 5/8/17.
+ * Created by David Duplantier on 5/8/17.
  */
 
 /*
@@ -38,7 +38,6 @@ public class DejaPhotoLoader implements PhotoLoader {
 
     /* This is the Uri to the storage of all photos */
     private final Uri MEDIA_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
 
     /*
      * This method searches all photos retrieved from the phone's storage and returns them as an

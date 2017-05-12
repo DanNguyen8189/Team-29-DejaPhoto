@@ -1,5 +1,7 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.location.Location;
+
 /**
  * Created by Noah on 5/8/2017.
  * To handle all of your GPS distance calculating needs.
@@ -38,5 +40,8 @@ public class GpsMath {
         return earthRd * b * FT_PER_KM; //converts from km to feet.
     }
 
-
+//    static double distanceBetween(Location loc1, Location loc2) {
+//        return distanceBetween(loc1.getLatitude(), loc1.getLongitude(),
+//                               loc2.getLatitude(), loc2.getLongitude());
+//    }
 }

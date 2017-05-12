@@ -1,5 +1,7 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.location.Location;
+
 public class DisplayCycle {
 
     /* Initialize member variables for DisplayCycle */
@@ -80,9 +82,11 @@ public class DisplayCycle {
         return history.getPrev();
     }
 
-    public Priorities getPriorities()
-    {
-        return this.priorities;
+    /**
+     * Updates the priorities of each DejaPhoto in priorities.
+     */
+    public void updatePriorities(Location location) {
+        priorities.updatePriorities(location);
     }
 
 }
