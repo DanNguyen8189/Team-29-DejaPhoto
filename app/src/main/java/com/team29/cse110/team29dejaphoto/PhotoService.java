@@ -178,8 +178,6 @@ public class PhotoService extends Service {
     public void cycleBack() {
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
 
-
-
         try {
             Location location = new Location("");
             location.setLatitude(dejaPhoto.getLatitude());
@@ -198,6 +196,11 @@ public class PhotoService extends Service {
                     "End of history", Toast.LENGTH_SHORT).show();
         }
 
+        catch (IllegalStateException e) {
+            Log.d(TAG, "Uri does not exist - photo was deleted");
+            cycleBack();
+        }
+
         catch (Exception e) {
             e.printStackTrace();
         }
@@ -206,9 +209,6 @@ public class PhotoService extends Service {
     // TODO fix toast when photo doesn't change
     public void cycleForward() {
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
-
-
-
 
 
         try {
@@ -224,6 +224,11 @@ public class PhotoService extends Service {
 
         catch (NullPointerException e) {
             Log.d(TAG, "No Photo could be retrieved");
+        }
+
+        catch (IllegalStateException e) {
+            Log.d(TAG, "Uri not longer exists - this photo was deleted.");
+            cycleForward();
         }
 
         catch (Exception e) {
