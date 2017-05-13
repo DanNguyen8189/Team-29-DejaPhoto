@@ -174,26 +174,23 @@ public class PhotoService extends Service {
         return null;
     }
 
-    // TODO fix toast when photo doesn't change
     public void cycleBack() {
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
 
         try {
-            Location location = new Location("");
-            location.setLatitude(dejaPhoto.getLatitude());
-            location.setLongitude(dejaPhoto.getLongitude());
+            background.setBitmap(backgroundImage(
+                    MediaStore.Images.Media.getBitmap(
+                            this.getContentResolver(),
+                            dejaPhoto.getPhotoUri()),
+                    dejaPhoto.getLocation())
+            );
 
-            background.setBitmap(backgroundImage(MediaStore.Images.Media.getBitmap(this.getContentResolver(),dejaPhoto.getPhotoUri()), location));
-            Log.d(TAG, "Previous Photo retrieved");
-
-            Toast.makeText(this,
-                    "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Displaying Previous Photo: " + dejaPhoto.getPhotoUri());
         }
 
         catch (NullPointerException e) {
             Log.d(TAG, "No Photo could be retrieved");
-            Toast.makeText(this,
-                    "End of history", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "End of history", Toast.LENGTH_SHORT).show();
         }
 
         catch (IllegalStateException e) {
@@ -206,20 +203,18 @@ public class PhotoService extends Service {
         }
     }
 
-    // TODO fix toast when photo doesn't change
     public void cycleForward() {
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
 
-
         try {
-            Location location = new Location("");
-            location.setLatitude(dejaPhoto.getLatitude());
-            location.setLongitude(dejaPhoto.getLongitude());
+            background.setBitmap(backgroundImage(
+                    MediaStore.Images.Media.getBitmap(
+                            this.getContentResolver(),
+                            dejaPhoto.getPhotoUri()),
+                    dejaPhoto.getLocation())
+            );
 
-            background.setBitmap(backgroundImage(MediaStore.Images.Media.getBitmap(this.getContentResolver(),dejaPhoto.getPhotoUri()), location));
-
-            Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Next Photo retrieved");
+            Log.d(TAG, "Displaying Next Photo: " + dejaPhoto.getPhotoUri());
         }
 
         catch (NullPointerException e) {
@@ -235,7 +230,6 @@ public class PhotoService extends Service {
             e.printStackTrace();
         }
     }
-
 
     /**
      * This method takes a bitmap image and location information, and returns a modified bitmap
