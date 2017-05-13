@@ -23,10 +23,6 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     private int myScore;          /* Priority score of this photo */
 
-    /**
-     * Default constructor. All values are set to the Java default for their respective types.
-     */
-    public DejaPhoto() {}
 
     /**
      * DejaPhoto constructor. The photo's data including Uri, latitude, longitude, time taken,
@@ -43,20 +39,6 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
         //updateScore(true, true, true);  /* By default, score is calculated with all settings true */
     }
-
-    // TODO Don't think this constructor is needed anymore but unsure
-    /*
-     * DejaPhoto constuctor. This constructor call the regular constructor, then updates the
-     * score for custom values of isLocationOn, isDateOn, and isTimeOn. This constructor is to
-     * be used when creating new DejaPhoto objects when DejaPhoto settings are customized.
-     */
-//    public DejaPhoto(Uri photoUri, double latitude, double longitude, Long time, String date,
-//                     boolean isLocationOn, boolean isDateOn, boolean isTimeOn) {
-//
-//        this(photoUri, latitude, longitude, time);  /* Add regular photo data . . . */
-//        //updateScore(isLocationOn, isDateOn, isTimeOn);    /* ... and calculate custom score */
-//
-//    }
 
     /**
      * Used to compare to DejaPhoto objects by their priority score.
@@ -128,7 +110,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         */
         double distance = GpsMath.distanceBetween(
                 location.getLatitude(), location.getLongitude(),
-                getLatitude(), getLongitude()
+                this.location.getLatitude(), this.location.getLongitude()
         );
 
         return distance <= 1000 ? 10 : 0;
@@ -213,21 +195,13 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     public void setScore(int newScore) {
         myScore = newScore;
     }
-    // TODO Maybe get/set Location instead??
-    public double getLatitude(){
-        return location.getLatitude();
+
+    public Location getLocation(){
+        return location;
     }
 
-    public double getLongitude(){
-        return location.getLongitude();
-    }
-
-    public void setLatitude(double lat){
-        this.location.setLatitude(lat);
-    }
-
-    public void setLongitude(double lon){
-        this.location.setLongitude(lon);
+    public void setLocation(Location location){
+        this.location = location;
     }
 
 }
