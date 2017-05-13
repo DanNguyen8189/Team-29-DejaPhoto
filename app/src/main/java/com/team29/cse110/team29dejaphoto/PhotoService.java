@@ -177,19 +177,25 @@ public class PhotoService extends Service {
     // TODO fix toast when photo doesn't change
     public void cycleBack() {
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
-        Log.d(TAG, "Previous Photo retrieved");
+
+
 
         try {
-            background.setBitmap(
-                    MediaStore.Images.Media.getBitmap(this.getContentResolver(),
-                                                      dejaPhoto.getPhotoUri())
-            );
+            Location location = new Location("");
+            location.setLatitude(dejaPhoto.getLatitude());
+            location.setLongitude(dejaPhoto.getLongitude());
+
+            background.setBitmap(backgroundImage(MediaStore.Images.Media.getBitmap(this.getContentResolver(),dejaPhoto.getPhotoUri()), location));
+            Log.d(TAG, "Previous Photo retrieved");
+
             Toast.makeText(this,
                     "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 
         catch (NullPointerException e) {
             Log.d(TAG, "No Photo could be retrieved");
+            Toast.makeText(this,
+                    "End of history", Toast.LENGTH_SHORT).show();
         }
 
         catch (Exception e) {
@@ -201,19 +207,19 @@ public class PhotoService extends Service {
     public void cycleForward() {
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
 
-        Location location = new Location("");
-        location.setLatitude(dejaPhoto.getLatitude());
-        location.setLongitude(dejaPhoto.getLongitude());
 
-        Log.d(TAG, "Next Photo retrieved");
+
+
 
         try {
+            Location location = new Location("");
+            location.setLatitude(dejaPhoto.getLatitude());
+            location.setLongitude(dejaPhoto.getLongitude());
+
             background.setBitmap(backgroundImage(MediaStore.Images.Media.getBitmap(this.getContentResolver(),dejaPhoto.getPhotoUri()), location));
-           // background.setBitmap(
-             //       MediaStore.Images.Media.getBitmap(this.getContentResolver(),
-               //                                       dejaPhoto.getPhotoUri())
-            //);
+
             Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Next Photo retrieved");
         }
 
         catch (NullPointerException e) {
