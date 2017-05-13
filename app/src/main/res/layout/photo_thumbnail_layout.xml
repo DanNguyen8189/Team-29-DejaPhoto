@@ -8,10 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:background="@color/background_color">
+
         <CheckBox
             android:layout_width="30dp"
             android:layout_height="50dp"
-            android:id="@+id/inlcudePhotoBox"/>
+            android:id="@+id/inlcudePhotoBox"
+            />
         <TextView
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -33,7 +35,8 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:clickable="true">
 
+    </ImageView>
 
 </LinearLayout>

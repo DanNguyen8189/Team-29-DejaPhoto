@@ -10,7 +10,8 @@
 
 <ScrollView
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/scrollView">
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -101,6 +102,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginBottom="26dp"
                         android:onClick="onClickRadioButton"
+                        android:enabled="false"
                         android:text="Custom Deja Photo Album" />
 
 
@@ -114,7 +116,8 @@
                     android:onClick="onCreateCustomAlbum"
                     android:layout_alignRight="@+id/selectAlbum"
                     android:layout_marginBottom="15dp"
-                    android:text="Create a Custom Deja Photo Album" />
+                    android:text="Create a Custom Deja Photo Album"
+                    android:enabled="false"/>
 
 
             </RelativeLayout>
@@ -147,7 +150,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
                     android:checked="true" />
-<TextView
+
+                <TextView
                     android:id="@+id/dejavuText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -218,8 +222,11 @@
                     android:text="Date enabled"
                     android:textSize="20dp"/>
 
+
             </RelativeLayout>
+
 
 </RelativeLayout>
     </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

@@ -8,15 +8,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by David Duplantier, Dan, Wis and Brian on 5/9/17.
@@ -180,15 +200,20 @@ public class PhotoService extends Service {
     // TODO fix toast when photo doesn't change
     public void cycleForward() {
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
+
+        Location location = new Location("");
+        location.setLatitude(dejaPhoto.getLatitude());
+        location.setLongitude(dejaPhoto.getLongitude());
+
         Log.d(TAG, "Next Photo retrieved");
 
         try {
-            background.setBitmap(
-                    MediaStore.Images.Media.getBitmap(this.getContentResolver(),
-                                                      dejaPhoto.getPhotoUri())
-            );
-            Toast.makeText(this,
-                    "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
+            background.setBitmap(backgroundImage(MediaStore.Images.Media.getBitmap(this.getContentResolver(),dejaPhoto.getPhotoUri()), location));
+           // background.setBitmap(
+             //       MediaStore.Images.Media.getBitmap(this.getContentResolver(),
+               //                                       dejaPhoto.getPhotoUri())
+            //);
+            Toast.makeText(this, "Displaying Photo: " + dejaPhoto.getPhotoUri(), Toast.LENGTH_SHORT).show();
         }
 
         catch (NullPointerException e) {
@@ -198,6 +223,50 @@ public class PhotoService extends Service {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * This method takes a bitmap image and location information, and returns a modified bitmap
+     * with location info in the bottom left corner. If no information is available (i.e. location
+     * is empty), appropriate text is printed.
+     *
+     * @param bitmap the background image to be modified
+     * @param location location info of the image
+     * @return returns image with location info as bitmap
+     * @throws Exception ArrayIndexOutOfBounds when no location info
+     */
+    public Bitmap backgroundImage(Bitmap bitmap, Location location) throws Exception {
+
+        String locationTag;
+
+        // Geocoder to get address from remote server
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> list = geocoder.getFromLocation(location.getLatitude(),
+                                                      location.getLongitude(),1);
+
+        // Generate new bitmap and paint objects for modification
+        Bitmap newBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(newBitmap);
+        Paint paint = new Paint();
+        Rect rect = new Rect();
+        paint.setColor(Color.RED);
+        paint.setTextSize(10);
+
+        // get address for location
+        try {
+
+            locationTag = list.get(0).getAddressLine(0);
+        }// if no valid location
+        catch(Exception e) {
+
+            locationTag = "No location info\navailable";
+        }
+
+        // Write location info to bitmap and return
+        paint.getTextBounds(locationTag, 0, locationTag.length(), rect);
+        canvas.drawText(locationTag, 0, newBitmap.getHeight() - 30, paint);
+        return newBitmap;
     }
 
 }
