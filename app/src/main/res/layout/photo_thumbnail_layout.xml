@@ -12,7 +12,7 @@
         <CheckBox
             android:layout_width="30dp"
             android:layout_height="50dp"
-            android:id="@+id/inlcudePhotoBox"
+            android:id="@+id/includePhotoBox"
             />
         <TextView
             android:layout_width="100dp"
