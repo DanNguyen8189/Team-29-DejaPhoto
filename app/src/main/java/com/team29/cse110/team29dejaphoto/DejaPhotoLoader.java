@@ -23,6 +23,8 @@ public class DejaPhotoLoader implements PhotoLoader {
 
 
     private final String TAG = "DejaPhotoLoader";
+
+
     /*
      * PROJECTIONS enumerates the pieces of data we want to retrieve for each photo.
      * TITLE: String for the name of a photo (e.g. "IMG_123456789").
@@ -36,8 +38,16 @@ public class DejaPhotoLoader implements PhotoLoader {
             MediaStore.Images.Media.DATE_ADDED };
 
 
-    /* This is the Uri to the storage of all photos */
+    /* Indices of columns from query (same as order defined in PROJECTIONS) */
+    private final int TITLE_INDEX      = 0;
+    private final int LAT_INDEX        = 1;
+    private final int LONG_INDEX       = 2;
+    private final int DATE_ADDED_INDEX = 3;
+
+
+    /* This is the Uri for the storage of all photos */
     private final Uri MEDIA_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
 
     /*
      * This method searches all photos retrieved from the phone's storage and returns them as an
@@ -61,23 +71,18 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
-        int titleIndex = cursor.getColumnIndex(MediaStore.Images.Media.TITLE);
-        int latIndex = cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE);
-        int longIndex = cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE);
-        int timeIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED);
-
         int count = 0;
         while ( cursor.moveToNext() ) {
 
-            String filename = cursor.getString(titleIndex) + ".jpg";
+            String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
             gallery[count] = new DejaPhoto(uri,
-                    cursor.getDouble(latIndex),
-                    cursor.getDouble(longIndex),
-                    cursor.getLong(timeIndex));
+                    cursor.getDouble(LAT_INDEX),
+                    cursor.getDouble(LONG_INDEX),
+                    cursor.getLong(DATE_ADDED_INDEX));
 
             count++;
         }
