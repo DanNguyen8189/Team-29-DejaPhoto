@@ -111,6 +111,8 @@ public class PhotoService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction("NEXT_BUTTON");
         filter.addAction("PREV_BUTTON");
+        filter.addAction("KARMA_BUTTON");
+        filter.addAction("RELEASE_BUTTON");
 
         receiver = new MyReceiver();
         registerReceiver(receiver, filter);
@@ -138,6 +140,7 @@ public class PhotoService extends Service {
 
         /* Initializes and configures the LocationListener */
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        // TODO Add time
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 0, FIVE_HUNDRED_FT, locationListener);
 

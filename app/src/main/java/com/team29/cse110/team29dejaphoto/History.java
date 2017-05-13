@@ -5,12 +5,15 @@ import android.location.Location;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+/**
+ * Manages history of previous photos
+ */
 public class History {
 
-    private LinkedList<DejaPhoto> historyList;
+    private LinkedList<DejaPhoto> historyList; // Underlying List structure
     private ListIterator<DejaPhoto> iterator;
-    private boolean forward;
-    private int nelems;
+    private boolean forward;                   // Whether the iterator is currently moving forward
+    private int nelems;                        // Number of elements
 
     /** Default Constructor */
     public History() {
@@ -21,6 +24,7 @@ public class History {
 
     /**
      * Used to check if we are currently at the latest DejaPhoto in the history list.
+     *
      * @return boolean - False if the number of photos in the list equal the counter.
      *                   Otherwise, returns true.
      */
@@ -30,6 +34,7 @@ public class History {
 
     /**
      * Used to check if we are currently at the oldest DejaPhoto in the history list.
+     *
      * @return boolean - True if there are photos available when traversing backwards through
      *                   the history; false otherwise.
      */
@@ -40,6 +45,7 @@ public class History {
     /**
      * Used to increment the counter (which photo we are looking at in the history
      * list) and to get the next photo.
+     *
      * @return DejaPhoto - the photo to be displayed
      */
     public DejaPhoto getNext() {
@@ -52,6 +58,7 @@ public class History {
 
     /**
      * Used to increment the iterator and to get the previous photo.
+     *
      * @return DejaPhoto - the photo to be displayed
      *         null - there are no previous photos available
      */
@@ -66,6 +73,7 @@ public class History {
     /**
      * Used to remove DejaPhoto's from the history list when it reaches 10
      * photos, and to add DejaPhoto's to the history when we swipe left.
+     *
      * @param photo - Photo to add from priority queue to history list
      * @return DejaPhoto - Photo to be added back into the PQ if removed from
      *                     the list
@@ -101,6 +109,7 @@ public class History {
 
     /**
      * Update the priorites of all DejaPhoto Objects held by this History structure
+     *
      * @param location The new current location to update score with respects to
      */
     public void updatePriorities(Location location) {
