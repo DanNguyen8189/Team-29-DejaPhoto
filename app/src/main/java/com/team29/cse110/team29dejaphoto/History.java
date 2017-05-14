@@ -141,18 +141,18 @@ public class History {
         //at beginning or middle of history
         else
         {
-            DejaPhoto released = iterator.next();
-            released.setReleased();
+                DejaPhoto released = iterator.next();
+                released.setReleased();
 
-            //maps to ints so can be stored in database
-            int karma = released.mapBooleanToInt(released.getKarma());
-            int release = released.mapBooleanToInt(released.isReleased());
+                //maps to ints so can be stored in database
+                int karma = released.mapBooleanToInt(released.getKarma());
+                int release = released.mapBooleanToInt(released.isReleased());
 
-            //adds photo on list of released photos
-            PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(),
-                    karma, release);
-            iterator.remove();
-            nelems--;
+                //adds photo on list of released photos
+                PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(),
+                        karma, release);
+                iterator.remove();
+                nelems--;
         }
     }
 
