@@ -1,6 +1,5 @@
 package com.team29.cse110.team29dejaphoto;
 
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
 
@@ -13,16 +12,26 @@ import java.util.GregorianCalendar;
 
 public class DejaPhoto implements Comparable<DejaPhoto> {
 
+    /* Photo Metadata */
+
     private Uri photoUri;         // Uri for this photo
     private Calendar time;        // This Calendar object will hold the time this photo was taken
     private Location location;    // Location object composing lat and long
                                   // coordinates where this photo was taken
+
+    /* DejaPhoto properties */
 
     private boolean karma;        // Flags for karma, released, and whether the photo has been
     private boolean released;     // shown recently
     private boolean showRecently;
 
     private int myScore;          // Priority score of this photo
+
+    /* Constants */
+
+    private static final double METERS_TO_FEET = 3.28084;
+    private static final int NEAR_RADIUS = 1000;
+    private static final int SCORE_UNIT = 10;
 
 
     /**
@@ -68,6 +77,9 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     /**
      * Updates the score for this DejaPhoto object, given settings for location, date, and time.
+     *
+     * @param location - The current location of the user/device
+     *        prefs    - The DejaVu Mode preferences current enabled by the user
      */
     public void updateScore(Location location, Preferences prefs) {
 
@@ -86,22 +98,20 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     }
 
     /**
-     * photo is Dejaphoto to get points for
-     * @returns 10 if location of photo is close to current location
+     * Calculates the score of this DejaPhoto based on location
+     *
+     * @returns SCORE_UNIT - If the location of the photo is close to the current location
      */
     private int getLocationPoints(Location location) {
-        /*
-        TODO should we use the built-in android location distance method instead?
-        double distance = location.distanceTo(this.location);
-        */
-        double distance = GpsMath.distanceBetween(
-                location.getLatitude(), location.getLongitude(),
-                this.location.getLatitude(), this.location.getLongitude()
-        );
-
-        return distance <= 1000 ? 10 : 0;
+        return (location.distanceTo(this.location) * METERS_TO_FEET) <= NEAR_RADIUS
+                ? SCORE_UNIT : 0;
     }
 
+    /**
+     * Calculates the score of this DejaPhoto based on time
+     *
+     * @returns SCORE_UNIT - If the time when the photo was taken is close to the current time
+     */
     private int getTimeTakenPoints() {
 
         Calendar now = new GregorianCalendar();
@@ -111,16 +121,21 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
                 Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
                         - now.get(Calendar.HOUR_OF_DAY)) < 22;
 
-        return notWithinTimeframe ? 0 : 10;
+        return notWithinTimeframe ? 0 : SCORE_UNIT;
     }
 
+    /**
+     * Calculates the score of this DejaPhoto based on the day of the week
+     *
+     * @returns SCORE_UNIT - If the day that the photo was taken is the current day of the week
+     */
     private int getDatePoints() {
 
         Calendar now = new GregorianCalendar();
         boolean sameDayOfWeek =
                 getTime().get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK);
 
-        return sameDayOfWeek ? 10 : 0;
+        return sameDayOfWeek ? SCORE_UNIT : 0;
     }
 
     /*

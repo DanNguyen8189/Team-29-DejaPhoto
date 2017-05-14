@@ -60,7 +60,7 @@ public class PhotoService extends Service {
     /* SharedPreferences */
     private SharedPreferences sp;
 
-    /* CONSTANTS */
+    /* Constants */
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
     private static final long TWO_HOURS = 7200000; // Two hours in milliseconds
@@ -106,8 +106,8 @@ public class PhotoService extends Service {
         // TODO Handle no permissions and/or GPS/Network disabled
         if(!(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED &&
-           ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)) stopSelf();
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED)) return;
 
         /* Initialize WallpaperManager object */
         background = WallpaperManager.getInstance(getApplicationContext());
@@ -157,7 +157,7 @@ public class PhotoService extends Service {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // TODO Add time
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                TWO_HOURS, FIVE_HUNDRED_FT, locationListener);
+                0, FIVE_HUNDRED_FT, locationListener);
 
         /* Initializes DisplayCycle with photos from the system */
 
@@ -174,6 +174,8 @@ public class PhotoService extends Service {
                 )
         );
 
+        Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
+
         super.onCreate();
     }
 
@@ -188,7 +190,7 @@ public class PhotoService extends Service {
     public void onDestroy() {
         Log.d(TAG, "Service stopped");
 
-        unregisterReceiver(receiver);
+        if(receiver != null) unregisterReceiver(receiver);
         super.onDestroy();
     }
 

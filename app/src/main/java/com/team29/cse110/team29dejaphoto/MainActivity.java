@@ -1,32 +1,20 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
-import android.app.WallpaperManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-
-import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -68,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup radio;
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
-    private final int PERMISSIONS_LOCATION = 2; // int value for permission to access location
+    private final int PERMISSIONS_LOCATION = 2;      // int value for permission to access location
+    private final int PERMISSIONS_REQUEST_ALL = 3;   // int value for both permissions combined
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -292,26 +281,37 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    /* Permissions Handling */
+
+    public boolean checkPermissions() {
 
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
+                != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_LOCATION);
-            return;
+                        != PackageManager.PERMISSION_GRANTED) {
+
+            return false;
+
+        } else if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            return false;
         }
 
-        moveTaskToBack(true);
+        return true;
     }
 
-    public void onClickLoadPhotos() {
+    public void requestAllPermissions() {
 
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                PERMISSIONS_REQUEST_MEDIA);
+                new String[] {
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                },
+                PERMISSIONS_REQUEST_ALL);
     }
 
     @Override
@@ -320,7 +320,6 @@ public class MainActivity extends AppCompatActivity {
         switch ( requestCode ) {
             case PERMISSIONS_REQUEST_MEDIA : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else {
@@ -338,6 +337,18 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }
+
+            case PERMISSIONS_REQUEST_ALL : {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    starter();
+                    return;
+                }
+                else {
+                    Toast.makeText(this, "Error setting permissions", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
             default: {
                 Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
                 return;
@@ -345,12 +356,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /* Start/Stop Service Toggle Listeners */
+
+
     public void starter() {
         Log.d(TAG, "Starter button pushed");
-        Intent intent = new Intent(MainActivity.this, PhotoService.class);
 
-        onClickLoadPhotos();
-        startService(intent);
+        if(checkPermissions()) {
+            Intent intent = new Intent(MainActivity.this, PhotoService.class);
+            startService(intent);
+
+        } else {
+            requestAllPermissions();
+        }
     }
 
     public void stopper() {
@@ -360,6 +379,8 @@ public class MainActivity extends AppCompatActivity {
         stopService(intent);
     }
 
+
+    /* Others */
 
 
     public void onClickRadioButton(View view) {
