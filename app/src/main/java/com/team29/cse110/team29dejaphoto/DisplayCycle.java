@@ -116,30 +116,20 @@ public class DisplayCycle {
         priorities.updatePriorities(location, prefs);
     }
 
-    public void release(SQLiteDatabase db)
-    {
-        history.remove(db);
-    }
+    public void release(SQLiteDatabase db) {
 
-    /*
-     * This method gets the currently displayed photo in History, then enters a new record in the
-     * database that records this photo has karma.
-     */
-    public void giveKarma(SQLiteDatabase db) {
-
-        DejaPhoto currPhoto = history.getCurrentlyDisplayedPhoto();
-
-        if (!currPhoto.getKarma()) {
-            Log.d(TAG, "Currently display photo does not have karma - creating new database record");
-            currPhoto.setKarma();
-            int karma = 1;
-            int released = 0;
-            PhotoDatabaseHelper.insertPhoto(db, currPhoto.getTime().getTimeInMillis(), karma, released);
+        if ( history.isHistoryEmpty() ) {
+            Log.d(TAG, "No photos in history yet");
+            return;
         }
         else {
-            Log.d(TAG, "Currently displayed photo already has karma.");
+            history.remove(db);
         }
 
+    }
+
+    public void removeCurrPhotoFromHistory() {
+        history.removeFromHistory();
     }
 
 }

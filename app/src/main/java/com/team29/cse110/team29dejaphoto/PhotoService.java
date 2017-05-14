@@ -59,6 +59,7 @@ public class PhotoService extends Service {
 
     /* Home screen background setter */
     private WallpaperManager background;
+    private DejaPhoto currDisplayedPhoto;
 
     Location myLocation;
 
@@ -268,6 +269,9 @@ public class PhotoService extends Service {
         /* Set previous photo */
 
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
+        if ( dejaPhoto != null ) {
+            currDisplayedPhoto = dejaPhoto;
+        }
 
         try {
             background.setBitmap(backgroundImage(
@@ -304,6 +308,9 @@ public class PhotoService extends Service {
         /* Set next photo */
 
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
+        if ( dejaPhoto != null ) {
+            currDisplayedPhoto = dejaPhoto;
+        }
 
         try {
             background.setBitmap(backgroundImage(
@@ -382,21 +389,41 @@ public class PhotoService extends Service {
 
     /*
      * This method delegates the DisplayCycle to find the currently displayed photo, release it
-     * from displayCycle, and enter new record in the database.
+     * from displayCycle, and enter new record in the database. Afterwards, the method cycles to
+     * the next photo.
      */
-    public void releasePhoto()
-   {
-        displayCycle.release(db);
-        cycleForward();
+    public void releasePhoto() {
+
+        if ( currDisplayedPhoto != null ) {
+            Log.d(TAG, "Releasing currently displayed photo");
+            currDisplayedPhoto.setReleased();
+            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 0, 1);
+            displayCycle.removeCurrPhotoFromHistory();
+            cycleForward();
+
+            //displayCycle.release(db);
+            //cycleForward();
+        }
+        else {
+            Log.d(TAG, "No reference to currently displayed photo - cannot release");
+        }
+
    }
 
    /*
-    * This method delegates the DisplayCycle to find the currently displayed photo and enter a new
-    * record in the database.
+    * This method gives karma to the currently displayed photo, then enters a new record in the
+    * database.
     */
    public void givePhotoKarma() {
 
-       displayCycle.giveKarma(db);
+       if ( currDisplayedPhoto != null ) {
+           Log.d(TAG, "Setting karma on currently displayed photo");
+           currDisplayedPhoto.getKarma();
+           PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
+       }
+       else {
+           Log.d(TAG, "No reference to currently displayed photo - cannot set karma");
+       }
 
    }
 

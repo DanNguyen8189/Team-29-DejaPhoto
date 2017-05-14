@@ -23,6 +23,10 @@ public class History {
         forward = true;
     }
 
+    public boolean isHistoryEmpty() {
+        return nelems == 0;
+    }
+
     /**
      * Used to check if we are currently at the latest DejaPhoto in the history list.
      *
@@ -120,8 +124,10 @@ public class History {
     }
 
 
-    public void remove(SQLiteDatabase db)
-    {
+    public void remove(SQLiteDatabase db) {
+
+        //DejaPhoto currPhoto = getCurrentlyDisplayedPhoto();
+
         //at end of history
         if(!checkValidPrev())
         {
@@ -145,31 +151,29 @@ public class History {
                 released.setReleased();
 
                 //maps to ints so can be stored in database
-                int karma = released.mapBooleanToInt(released.getKarma());
-                int release = released.mapBooleanToInt(released.isReleased());
+                int karma = 0;
+                int release = 1;
 
                 //adds photo on list of released photos
-                PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(),
-                        karma, release);
+                PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(), karma, release);
                 iterator.remove();
                 nelems--;
         }
     }
 
-    public DejaPhoto getCurrentlyDisplayedPhoto() {
+    public void removeFromHistory() {
 
-        DejaPhoto currPhoto;
-
-        if (forward) {
-            currPhoto = iterator.next();
+        if ( !checkValidPrev() ) {
+            // We're at the end of history
             iterator.previous();
         }
         else {
-            currPhoto = iterator.previous();
+            // We're at the beginning or in the middle of history
             iterator.next();
         }
-
-        return currPhoto;
+        // Now remove from history
+        iterator.remove();
+        nelems--;
     }
 
 }
