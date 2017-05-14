@@ -2,11 +2,16 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.util.Log;
 
 /**
  * Manages the photos to be displayed on the homescreen
  */
 public class DisplayCycle {
+
+
+    /* TAG to log debug statements for this class */
+    private final static String TAG = "DisplayCycle";
 
     /* Initialize member variables for DisplayCycle */
     private History history;
@@ -114,6 +119,27 @@ public class DisplayCycle {
     public void release(SQLiteDatabase db)
     {
         history.remove(db);
+    }
+
+    /*
+     * This method gets the currently displayed photo in History, then enters a new record in the
+     * database that records this photo has karma.
+     */
+    public void giveKarma(SQLiteDatabase db) {
+
+        DejaPhoto currPhoto = history.getCurrentlyDisplayedPhoto();
+
+        if (!currPhoto.getKarma()) {
+            Log.d(TAG, "Currently display photo does not have karma - creating new database record");
+            currPhoto.setKarma();
+            int karma = 1;
+            int released = 0;
+            PhotoDatabaseHelper.insertPhoto(db, currPhoto.getTime().getTimeInMillis(), karma, released);
+        }
+        else {
+            Log.d(TAG, "Currently displayed photo already has karma.");
+        }
+
     }
 
 }

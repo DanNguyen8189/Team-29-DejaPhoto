@@ -156,4 +156,20 @@ public class History {
         }
     }
 
+    public DejaPhoto getCurrentlyDisplayedPhoto() {
+
+        DejaPhoto currPhoto;
+
+        if (forward) {
+            currPhoto = iterator.next();
+            iterator.previous();
+        }
+        else {
+            currPhoto = iterator.previous();
+            iterator.next();
+        }
+
+        return currPhoto;
+    }
+
 }

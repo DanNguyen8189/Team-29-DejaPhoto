@@ -32,7 +32,6 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     private static final double METERS_TO_FEET = 3.28084;
     private static final int NEAR_RADIUS = 1000;
-    private static final int MILLIS_IN_SEC = 1000;
     private static final int SCORE_UNIT = 10;
 
 
@@ -44,7 +43,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
         this.photoUri = photoUri;
         this.time = new GregorianCalendar();
-        this.time.setTimeInMillis(time * MILLIS_IN_SEC);
+        this.time.setTimeInMillis(time);
         this.location = new Location("");
         this.location.setLatitude(latitude);
         this.location.setLongitude(longitude);
