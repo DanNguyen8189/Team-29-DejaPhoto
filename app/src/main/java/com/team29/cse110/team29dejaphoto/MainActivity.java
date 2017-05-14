@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,12 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
 
     public static SharedPreferences dejaPreferences;
-    public static final String IsAppRunning = "IsAppRunning";
     public static final String DEJA_PREFS = "Deja_Preferences";
+    public static final String IsAppRunning = "IsAppRunning";
     public static final String IsDejaVuModeOn = "IsDejaVuModeOn";
     public static final String IsLocationOn = "IsLocationOn";
     public static final String IsTimeOn = "IsTimeOn";
     public static final String IsDateOn = "IsDateOn";
+    public static final String UpdateInterval = "UpdateInterval";
 
 
     boolean useDefaultGallery = true;
@@ -48,16 +50,20 @@ public class MainActivity extends AppCompatActivity {
     TextView locationToggle;
     TextView timeToggle;
     TextView dateToggle;
+    TextView updateIntervalText;
+    TextView updateIntervalNumber;
     Switch appOnOff;
     Switch dejavu;
     Switch location;
     Switch time;
     Switch date;
+    SeekBar upDateInterval;
     CompoundButton.OnCheckedChangeListener appOnOffSwitchListener;
     CompoundButton.OnCheckedChangeListener dejavuSwitchListener;
     CompoundButton.OnCheckedChangeListener locationSwitchListener;
     CompoundButton.OnCheckedChangeListener timeSwitchListener;
     CompoundButton.OnCheckedChangeListener dateSwitchListener;
+    SeekBar.OnSeekBarChangeListener timeInterValListener;
 
     RadioGroup radio;
 
@@ -78,12 +84,15 @@ public class MainActivity extends AppCompatActivity {
         locationToggle = (TextView) findViewById(R.id.locationText);
         timeToggle = (TextView) findViewById(R.id.timeText);
         dateToggle = (TextView) findViewById(R.id.dateText);
+        updateIntervalText = (TextView) findViewById(R.id.updateIntervalText);
+        updateIntervalNumber = (TextView) findViewById(R.id.updateIntervalNumber);
 
         appOnOff = (Switch) findViewById(R.id.serviceButton);
         dejavu = (Switch) findViewById(R.id.dejavuMode);
         location = (Switch) findViewById(R.id.location);
         time = (Switch) findViewById(R.id.time);
         date = (Switch) findViewById(R.id.date);
+        upDateInterval = (SeekBar) findViewById(R.id.updateIntervalBar);
 
         appOnOffSwitchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -181,14 +190,35 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        timeInterValListener = new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                SharedPreferences.Editor editor  = dejaPreferences.edit();
+                editor.putInt(UpdateInterval, progress);
+                editor.apply();
+                updateIntervalNumber.setText("" + (progress+1) + "hrs");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        };
+
         appOnOff.setOnCheckedChangeListener(appOnOffSwitchListener);
         dejavu.setOnCheckedChangeListener(dejavuSwitchListener);
         location.setOnCheckedChangeListener(locationSwitchListener);
         time.setOnCheckedChangeListener(timeSwitchListener);
         date.setOnCheckedChangeListener(dateSwitchListener);
+        upDateInterval.setOnSeekBarChangeListener(timeInterValListener);
 
         /* check settings set in the sharedpreferences */
-        SharedPreferences.Editor editor  = dejaPreferences.edit();
+        /*SharedPreferences.Editor editor  = dejaPreferences.edit();*/
 
         boolean appRunCheck = dejaPreferences.contains(IsAppRunning);
 
@@ -249,6 +279,9 @@ public class MainActivity extends AppCompatActivity {
                 dejavu.setChecked(true);
                 dejavu.setChecked(false);
             }
+
+            /*check what update interval the user has set*/
+            upDateInterval.setProgress(dejaPreferences.getInt(UpdateInterval, 2));
         }
         else{
             Log.d(TAG, "disable app");
@@ -258,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
             dejavu.setChecked(false);
 
         }
+
 
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
