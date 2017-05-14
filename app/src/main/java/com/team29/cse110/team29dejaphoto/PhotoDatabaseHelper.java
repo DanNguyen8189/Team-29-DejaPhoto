@@ -44,10 +44,14 @@ public class PhotoDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-    }
+    /*
+     * This method is called when the database structure is updated. We do not need to implement
+     * this right now, since the database structure will not be updated.
+     */
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+
 
     /* Insert a new record into the database. This method should be called whenever the release
      * button has been pressed, or the karma button has been pressed on a photo that does not have
