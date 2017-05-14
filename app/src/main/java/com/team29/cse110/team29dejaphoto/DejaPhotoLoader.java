@@ -2,8 +2,9 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -45,6 +46,9 @@ public class DejaPhotoLoader implements PhotoLoader {
     private final int DATE_ADDED_INDEX = 3;
 
 
+    private final String[] PHOTOS_PROJECTIONS = { "DATE_ADDED", "KARMA", "RELEASED" };
+
+
     /* This is the Uri for the storage of all photos */
     private final Uri MEDIA_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
@@ -60,9 +64,16 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         Log.d(TAG, "Entering getPhotosAsArray method");
 
+        SQLiteOpenHelper photoDatabaseHelper = new PhotoDatabaseHelper(context);
+        SQLiteDatabase dbRead = photoDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase dbWrite = photoDatabaseHelper.getWritableDatabase();
+
         ContentResolver contentResolver = context.getContentResolver();
         Cursor cursor = contentResolver.query(MEDIA_URI, PROJECTIONS, null, null, null);
-        if ( cursor == null ) {
+        Cursor readCursor = dbRead.query("PHOTOS", PHOTOS_PROJECTIONS, null, null, null, null, "DATE_ADDED ASC");
+        Cursor writeCursor = dbWrite.query("PHOTOS", PHOTOS_PROJECTIONS, null, null, null, null, "DATE_ADDED ASC");
+
+        if ( cursor == null || readCursor == null || writeCursor == null ) {
             return null;
         }
 
@@ -72,7 +83,50 @@ public class DejaPhotoLoader implements PhotoLoader {
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
         int count = 0;
+        boolean canMove = true;
+        long dateAddedDB;
+        long dateAdded;
         while ( cursor.moveToNext() ) {
+
+            if ( readCursor.getCount() != 0 ) {
+                Log.d(TAG, "Our database has photos");
+                dateAddedDB = readCursor.getLong(0);
+                while(dateAddedDB < cursor.getLong(DATE_ADDED_INDEX))
+                {
+                    dbWrite.delete("PHOTOS", "DATE_ADDED = " + dateAddedDB, null);
+                    readCursor.moveToNext();
+                    dateAddedDB = readCursor.getLong(0);
+                }
+
+                if(dateAddedDB == cursor.getLong(DATE_ADDED_INDEX))
+                {
+                    if(readCursor.getInt(3) == 1) {
+                        cursor.moveToNext();
+                    }
+                    else {
+
+                        String filename = cursor.getString(TITLE_INDEX) + ".jpg";
+                        String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
+                        File file = new File(absolutePath);
+                        Uri uri = Uri.fromFile(file);
+
+                        DejaPhoto dejaPhoto = new DejaPhoto(uri,
+                                cursor.getDouble(LAT_INDEX),
+                                cursor.getDouble(LONG_INDEX),
+                                cursor.getLong(DATE_ADDED_INDEX));
+                        dejaPhoto.setKarma();
+                        gallery[count] = dejaPhoto;
+                        count++;
+                        cursor.moveToNext();
+
+                    }
+                }
+            }
+
+            if ( readCursor.getCount() != 0 && readCursor.getInt(3) == 1 ) {
+                Log.d(TAG, "Please skip to the next iteration - we don't want duplicate photos");
+                continue;
+            }
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
