@@ -28,6 +28,7 @@ public class Priorities {
      */
     public boolean add(DejaPhoto photo) {
         if(photo == null) return false;
+
         return pq.add(photo);
     }
 
