@@ -250,7 +250,7 @@
                     android:layout_toRightOf="@+id/updateIntervalText"
                     android:layout_marginTop="40dp"
                     android:layout_marginLeft="30dp"
-                    android:text="2 hrs"
+                    android:text="5 minutes"
                     android:textSize="20dp"
                     />
 
@@ -264,15 +264,10 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
                     android:layout_marginBottom="30dp"
-                    android:max="11"
-                    android:progress="2"
+                    android:max="359"
+                    android:progress="5"
                     />
 
-
-                <SeekBar
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
             </RelativeLayout>
 
 
