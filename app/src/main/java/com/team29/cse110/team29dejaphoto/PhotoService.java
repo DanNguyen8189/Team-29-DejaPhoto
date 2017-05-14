@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -37,6 +38,8 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -276,6 +279,8 @@ public class PhotoService extends Service {
      */
     public Bitmap backgroundImage(Bitmap bitmap, Location location) throws Exception {
 
+        Log.d(TAG, "Writing address to bitmap");
+
         String locationTag;
 
         // Geocoder to get address from remote server
@@ -304,6 +309,9 @@ public class PhotoService extends Service {
         // Write location info to bitmap and return
         paint.getTextBounds(locationTag, 0, locationTag.length(), rect);
         canvas.drawText(locationTag, 0, newBitmap.getHeight() - 30, paint);
+
+        Log.d(TAG, "Printed location on photo: " + locationTag);
+
         return newBitmap;
     }
 
