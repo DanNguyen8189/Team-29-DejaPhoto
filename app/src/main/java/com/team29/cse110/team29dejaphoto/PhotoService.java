@@ -67,7 +67,6 @@ public class PhotoService extends Service {
 
     /* Constants */
     private static final String TAG = "PhotoService";
-
     private static final float FIVE_HUNDRED_FT = 152;   // Number of meters in a 500 feet
     private static final long TWO_HOURS = 7200000;      // Two hours in milliseconds
     private static final int PAINT_SIZE_CONSTANT = 50;  // Constant to derive brush size
@@ -103,6 +102,7 @@ public class PhotoService extends Service {
                 case "KARMA_BUTTON":
                     Log.d(TAG, "Karma button intent received");
 
+                    givePhotoKarma();
                     break;
 
                 case "RELEASE_BUTTON":
@@ -338,10 +338,24 @@ public class PhotoService extends Service {
         return newBitmap;
     }
 
+    /*
+     * This method delegates the DisplayCycle to find the currently displayed photo, release it
+     * from displayCycle, and enter new record in the database.
+     */
     public void releasePhoto()
    {
         displayCycle.release(db);
         cycleForward();
+   }
+
+   /*
+    * This method delegates the DisplayCycle to find the currently displayed photo and enter a new
+    * record in the database.
+    */
+   public void givePhotoKarma() {
+
+       displayCycle.giveKarma(db);
+
    }
 
 }
