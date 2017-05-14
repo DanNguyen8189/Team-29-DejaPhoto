@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "MainActivity";
 
-    SharedPreferences dejaPreferences;
+    public static SharedPreferences dejaPreferences;
     public static final String IsAppRunning = "IsAppRunning";
     public static final String DEJA_PREFS = "Deja_Preferences";
     public static final String IsDejaVuModeOn = "IsDejaVuModeOn";
@@ -53,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
     Switch location;
     Switch time;
     Switch date;
+    CompoundButton.OnCheckedChangeListener appOnOffSwitchListener;
+    CompoundButton.OnCheckedChangeListener dejavuSwitchListener;
+    CompoundButton.OnCheckedChangeListener locationSwitchListener;
+    CompoundButton.OnCheckedChangeListener timeSwitchListener;
+    CompoundButton.OnCheckedChangeListener dateSwitchListener;
 
     RadioGroup radio;
 
@@ -80,24 +85,31 @@ public class MainActivity extends AppCompatActivity {
         time = (Switch) findViewById(R.id.time);
         date = (Switch) findViewById(R.id.date);
 
-        appOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        appOnOffSwitchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    Log.d(TAG, "app is ON");
                     appToggle.setText("DejaPhoto is enabled");
                     toggleSetting(IsAppRunning, true);
+                    dejavu.setClickable(true);
+                    dejavu.setChecked(true);
                     starter();
                 }
 
                 else {
+                    Log.d(TAG, "app is OFF");
                     appToggle.setText("DejaPhoto is disabled");
+                    Log.d(TAG, "Dejaphoto disable called");
                     toggleSetting(IsAppRunning, false);
+                    dejavu.setChecked(false);
+                    dejavu.setClickable(false);
                     stopper();
                 }
             }
-        });
+        };
 
-        dejavu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        dejavuSwitchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -122,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
                     toggleSetting(IsDejaVuModeOn, false);
                 }
             }
-        });
+        };
 
-        location.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        locationSwitchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -137,9 +149,9 @@ public class MainActivity extends AppCompatActivity {
                     toggleSetting(IsLocationOn, false);
                 }
             }
-        });
+        };
 
-        time.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        timeSwitchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -152,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
                     toggleSetting(IsTimeOn, false);
                 }
             }
-        });
+        };
 
-        date.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        dateSwitchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -167,7 +179,86 @@ public class MainActivity extends AppCompatActivity {
                     toggleSetting(IsDateOn, false);
                 }
             }
-        });
+        };
+
+        appOnOff.setOnCheckedChangeListener(appOnOffSwitchListener);
+        dejavu.setOnCheckedChangeListener(dejavuSwitchListener);
+        location.setOnCheckedChangeListener(locationSwitchListener);
+        time.setOnCheckedChangeListener(timeSwitchListener);
+        date.setOnCheckedChangeListener(dateSwitchListener);
+
+        /* check settings set in the sharedpreferences */
+        SharedPreferences.Editor editor  = dejaPreferences.edit();
+
+        boolean appRunCheck = dejaPreferences.contains(IsAppRunning);
+
+        /*check if app is supposed to be running*/
+        if(appRunCheck){
+            //boolean userSetApp = dejaPreferences.getBoolean(IsAppRunning, true);
+            //if(userSetApp){
+                appOnOff.setOnCheckedChangeListener(null);
+                appOnOff.setChecked(true);
+                appOnOff.setOnCheckedChangeListener(appOnOffSwitchListener);
+            //}
+            /*else{
+                appOnOff.setOnCheckedChangeListener(null);
+                appOnOff.setChecked(false);
+                appOnOff.setOnCheckedChangeListener(appOnOffSwitchListener);
+            }*/
+
+            /*check what user has DejavuMode enabled */
+            if(dejaPreferences.getBoolean(IsDejaVuModeOn, true)){
+                dejavu.setOnCheckedChangeListener(null);
+                dejavu.setChecked(true);
+                dejavu.setOnCheckedChangeListener(dejavuSwitchListener);
+
+                /*check if user has location enabled */
+                if(dejaPreferences.getBoolean(IsLocationOn, true)){
+                    location.setOnCheckedChangeListener(null);
+                    location.setChecked(true);
+                    location.setOnCheckedChangeListener(locationSwitchListener);
+                }
+                else{
+                    location.setChecked(true);
+                    location.setChecked(false);
+                }
+
+                /*check if user has location on */
+                if(dejaPreferences.getBoolean(IsTimeOn, true)){
+                    time.setOnCheckedChangeListener(null);
+                    time.setChecked(true);
+                    time.setOnCheckedChangeListener(timeSwitchListener);
+                }
+                else{
+                    time.setChecked(true);
+                    time.setChecked(false);
+                }
+
+                /*check if user has date on */
+                if(dejaPreferences.getBoolean(IsDateOn, true)){
+                    date.setOnCheckedChangeListener(null);
+                    date.setChecked(true);
+                    date.setOnCheckedChangeListener(dateSwitchListener);
+                }
+                else{
+                    date.setChecked(true);
+                    date.setChecked(false);
+                }
+            }
+            else{
+                dejavu.setChecked(true);
+                dejavu.setChecked(false);
+            }
+        }
+        else{
+            Log.d(TAG, "disable app");
+            appOnOff.setChecked(true);
+            appOnOff.setChecked(false);
+            dejavu.setChecked(true);
+            dejavu.setChecked(false);
+
+        }
+
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
@@ -230,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
     public void stopper() {
         Log.d(TAG, "Stopper button pushed");
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
+        dejaPreferences.edit().clear().apply();
         stopService(intent);
     }
 

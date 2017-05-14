@@ -1,5 +1,6 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
 
@@ -12,16 +13,16 @@ import java.util.GregorianCalendar;
 
 public class DejaPhoto implements Comparable<DejaPhoto> {
 
-    private Uri photoUri;         /* Uri for this photo */
-    private Calendar time;        /* This Calendar object will hold the time this photo was taken */
-    private Location location;    /* Location object composing lat and long
-                                     coordinates where this photo was taken */
+    private Uri photoUri;         // Uri for this photo
+    private Calendar time;        // This Calendar object will hold the time this photo was taken
+    private Location location;    // Location object composing lat and long
+                                  // coordinates where this photo was taken
 
-    private boolean karma;        /* Flags for karma, released, and whether the photo has been */
-    private boolean released;     /* shown recently */
+    private boolean karma;        // Flags for karma, released, and whether the photo has been
+    private boolean released;     // shown recently
     private boolean showRecently;
 
-    private int myScore;          /* Priority score of this photo */
+    private int myScore;          // Priority score of this photo
 
 
     /**
@@ -36,8 +37,6 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         this.location = new Location("");
         this.location.setLatitude(latitude);
         this.location.setLongitude(longitude);
-
-        //updateScore(true, true, true);  /* By default, score is calculated with all settings true */
     }
 
     /**
@@ -67,28 +66,17 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     /* Score Calculation */
 
 
-    // TODO Change to SharedPreferences
-
-    /* Check which features of DejaVu Mode are on */
-    private boolean isLocationOn = true;
-    private boolean isDateOn     = true;
-    private boolean isTimeOn     = true;
-
     /**
      * Updates the score for this DejaPhoto object, given settings for location, date, and time.
      */
     public void updateScore(Location location) {
 
-        // TODO SharedPreferences
-        int includeLocation = mapBooleanToInt(isLocationOn);
-        int includeDate     = mapBooleanToInt(isDateOn);
-        int includeTime     = mapBooleanToInt(isTimeOn);
-        int recentlyViewed  = mapBooleanToInt(isShownRecently());
+        SharedPreferences sp = MainActivity.dejaPreferences;
 
-        myScore = getKarmaPoints() - recentlyViewed +
-                  includeLocation * getLocationPoints(location) +
-                  includeDate * getDatePoints() +
-                  includeTime * getTimeTakenPoints();
+        myScore = getKarmaPoints() - mapBooleanToInt(isShownRecently()) +
+                  mapBooleanToInt(sp.getBoolean("isLocationOn", true)) * getLocationPoints(location) +
+                  mapBooleanToInt(sp.getBoolean("isDateOn", true)) * getDatePoints() +
+                  mapBooleanToInt(sp.getBoolean("isTimeOn", true)) * getTimeTakenPoints();
     }
 
 

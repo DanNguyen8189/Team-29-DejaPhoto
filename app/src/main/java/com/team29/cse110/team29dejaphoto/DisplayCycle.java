@@ -2,6 +2,9 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.location.Location;
 
+/**
+ * Manages the photos to be displayed on the homescreen
+ */
 public class DisplayCycle {
 
     /* Initialize member variables for DisplayCycle */
@@ -10,12 +13,14 @@ public class DisplayCycle {
 
     /** Default Constructor */
     public DisplayCycle() {
+
         history = new History();
         priorities = new Priorities();
     }
 
     /** Overloaded Constructor */
     public DisplayCycle(DejaPhoto[] gallery) {
+
         history = new History();
         priorities = new Priorities();
 

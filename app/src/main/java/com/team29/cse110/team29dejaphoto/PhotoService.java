@@ -58,6 +58,7 @@ public class PhotoService extends Service {
     /* CONSTANTS */
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
+    private static final long TWO_HOURS = 7200000; // Two hours in milliseconds
 
 
     /**
@@ -111,6 +112,8 @@ public class PhotoService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction("NEXT_BUTTON");
         filter.addAction("PREV_BUTTON");
+        filter.addAction("KARMA_BUTTON");
+        filter.addAction("RELEASE_BUTTON");
 
         receiver = new MyReceiver();
         registerReceiver(receiver, filter);
@@ -138,8 +141,9 @@ public class PhotoService extends Service {
 
         /* Initializes and configures the LocationListener */
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        // TODO Add time
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                0, FIVE_HUNDRED_FT, locationListener);
+                TWO_HOURS, FIVE_HUNDRED_FT, locationListener);
 
         /* Initializes DisplayCycle with photos from the system */
 

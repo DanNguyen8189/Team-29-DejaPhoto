@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
+/**
+ * Manages the photos to be shown to the user that is not in history
+ */
 public class Priorities {
 
-    /* Priority Queue of DejaPhotos based on priority */
+    /* Priority Queue of DejaPhotos based on scores */
     private PriorityQueue<DejaPhoto> pq;
 
     /** Default Constructor */
@@ -16,17 +19,31 @@ public class Priorities {
         pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());
     }
 
-    /** add a photo to the Priorities object */
+    /**
+     * Adds a photo to the Priorities object
+     *
+     * @param photo - The photo to be added into the sorted structure
+     * @return True - If the photo is added
+     *         False - Otherwise
+     */
     public boolean add(DejaPhoto photo) {
         return pq.add(photo);
     }
 
-    /** take off highest priority photo from priority queue and return it */
+    /**
+     * Takes off the highest priority photo from the structure and returns it
+     *
+     * @return DejaPhoto - The DejaPhoto with the highest score
+     */
     public DejaPhoto getNewPhoto(){
         return pq.poll();
     }
 
-    /** Updates the priorities */
+    /**
+     * Updates the priorities of each DejaPhoto object in the structure
+     *
+     * @param location - The new current location to update score with respects to
+     */
     public void updatePriorities(Location location) {
         // Naive implementation
         ArrayList<DejaPhoto> temp = new ArrayList<>();
@@ -36,7 +53,7 @@ public class Priorities {
         }
         pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());
         for (DejaPhoto photo : temp) {
-            this.add(photo);
+            pq.add(photo);
         }
     }
 
