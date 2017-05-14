@@ -66,7 +66,7 @@ public class PhotoService extends Service {
 
     /* Constants */
     private static final String TAG = "PhotoService";
-    private static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
+    private static final float FIVE_HUNDRED_FT = 152; //number of meters in 500 feet
     private static final long TWO_HOURS = 7200000; // Two hours in milliseconds
     private static final int PAINT_SIZE_CONSTANT = 50;
 
