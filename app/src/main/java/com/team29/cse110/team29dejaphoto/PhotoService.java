@@ -416,13 +416,13 @@ public class PhotoService extends Service {
     */
    public void givePhotoKarma() {
 
-       if ( currDisplayedPhoto != null ) {
+       if ( currDisplayedPhoto != null && !currDisplayedPhoto.getKarma() ) {
            Log.d(TAG, "Setting karma on currently displayed photo");
            currDisplayedPhoto.setKarma();
            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
        }
        else {
-           Log.d(TAG, "No reference to currently displayed photo - cannot set karma");
+           Log.d(TAG, "No reference to currently displayed photo - cannot set karma, or photo already has karma");
        }
 
    }
