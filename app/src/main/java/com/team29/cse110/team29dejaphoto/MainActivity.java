@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup radio;
 
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
-    private final int PERMISSIONS_LOCATION = 2; // int value for permission to access location
-    private final int PERMISSIONS_REQUEST_ALL = 3;
+    private final int PERMISSIONS_LOCATION = 2;      // int value for permission to access location
+    private final int PERMISSIONS_REQUEST_ALL = 3;   // int value for both permissions combined
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -307,8 +307,6 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_ALL : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     starter();
-
-                    Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else {

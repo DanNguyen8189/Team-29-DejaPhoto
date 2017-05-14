@@ -60,7 +60,7 @@ public class PhotoService extends Service {
     /* SharedPreferences */
     private SharedPreferences sp;
 
-    /* CONSTANTS */
+    /* Constants */
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
     private static final long TWO_HOURS = 7200000; // Two hours in milliseconds
@@ -173,6 +173,8 @@ public class PhotoService extends Service {
                         sp.getBoolean("isTimeOn", true)
                 )
         );
+
+        Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
 
         super.onCreate();
     }
