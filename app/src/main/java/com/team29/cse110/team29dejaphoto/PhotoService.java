@@ -396,8 +396,13 @@ public class PhotoService extends Service {
 
         if ( currDisplayedPhoto != null ) {
             Log.d(TAG, "Releasing currently displayed photo");
-            displayCycle.release(db);
+            currDisplayedPhoto.setReleased();
+            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 0, 1);
+            displayCycle.removeCurrPhotoFromHistory();
             cycleForward();
+
+            //displayCycle.release(db);
+            //cycleForward();
         }
         else {
             Log.d(TAG, "No reference to currently displayed photo - cannot release");
