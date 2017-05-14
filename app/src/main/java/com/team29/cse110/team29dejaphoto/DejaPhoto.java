@@ -105,7 +105,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      *
      * @returns SCORE_UNIT - If the location of the photo is close to the current location
      */
-    private int getLocationPoints(Location location) {
+    public int getLocationPoints(Location location) {
         return (location.distanceTo(this.location) * METERS_TO_FEET) <= NEAR_RADIUS
                 ? SCORE_UNIT : 0;
     }
@@ -115,21 +115,28 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      *
      * @returns SCORE_UNIT - If the time when the photo was taken is close to the current time
      */
-    private int getTimeTakenPoints() {
+    public int getTimeTakenPoints() {
 
         Calendar lCalendar = Calendar.getInstance();
         lCalendar.setTime(getTime().getTime());
         lCalendar.add(Calendar.HOUR, -2);
+        lCalendar.set(1, 1, 1);
 
         Calendar uCalendar = Calendar.getInstance();
         uCalendar.setTime(getTime().getTime());
         uCalendar.add(Calendar.HOUR, 2);
+        uCalendar.set(1, 1, 1);
 
         Calendar now = new GregorianCalendar();
+        now.set(1, 1, 1);
         Date currTime = now.getTime();
 
+//        System.out.println("LOWER BOUND: " + lCalendar.getTime());
+//        System.out.println("TIME NOW: " + now.getTime());
+//        System.out.println("UPPER BOUND: " + uCalendar.getTime());
         boolean withinTimeFrame
                 = currTime.after(lCalendar.getTime()) && currTime.before(uCalendar.getTime());
+//        System.out.println("WITHIN TIME: " + withinTimeFrame);
 
         return withinTimeFrame ? SCORE_UNIT : 0;
     }
@@ -139,7 +146,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      *
      * @returns SCORE_UNIT - If the day that the photo was taken is the current day of the week
      */
-    private int getDatePoints() {
+    public int getDatePoints() {
 
         Calendar now = new GregorianCalendar();
         boolean sameDayOfWeek =

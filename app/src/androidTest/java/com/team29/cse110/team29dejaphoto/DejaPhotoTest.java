@@ -38,7 +38,7 @@ public class DejaPhotoTest {
     DejaPhoto dejaVuLocation;// a Photo with deja vu in only location
     DejaPhoto noDejaVu;// A photo with no deja vu
 
-    Preferences prefAllOn = new Preferences(true, true, true);
+    Preferences prefAllOn = new Preferences(true,true,true);
 
 
     /**
@@ -60,13 +60,14 @@ public class DejaPhotoTest {
 
         // Adjust calendar to same day last week, but 3 hours earlier.  Only deja vu in date
         calendar = Calendar.getInstance();
+       // calendar.set(2017, 05, 13, 12, 47);
         calendar.add(Calendar.DAY_OF_WEEK, -7);// 1 week ago
         calendar.add(Calendar.HOUR, 3);// 3 hours later
         dejaVuDate = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
         // Adjust calendar to different day of week, but within current 2 hrs. Only deja vu in time
         calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_WEEK,2);
+        calendar.add(Calendar.DAY_OF_WEEK,-2);
         dejaVuTime = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
         // Adjust calender to different time, and add local location
