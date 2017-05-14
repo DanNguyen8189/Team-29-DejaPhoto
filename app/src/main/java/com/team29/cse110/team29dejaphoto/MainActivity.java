@@ -215,10 +215,10 @@ public class MainActivity extends AppCompatActivity {
         if(appRunCheck){
             //boolean userSetApp = dejaPreferences.getBoolean(IsAppRunning, true);
             //if(userSetApp){
-                appOnOff.setOnCheckedChangeListener(null);
+                //appOnOff.setOnCheckedChangeListener(null);
                 appOnOff.setChecked(true);
                 appToggle.setText("DejaPhoto is enabled");
-                appOnOff.setOnCheckedChangeListener(appOnOffSwitchListener);
+                //appOnOff.setOnCheckedChangeListener(appOnOffSwitchListener);
             //}
             /*else{
                 appOnOff.setOnCheckedChangeListener(null);
