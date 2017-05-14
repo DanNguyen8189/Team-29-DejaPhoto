@@ -7,4 +7,6 @@
     <color name="background_color">#e5ffee</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="dark_teal">#117F6b</color>
+    <color name="white">#FFFFFF</color>
 </resources>

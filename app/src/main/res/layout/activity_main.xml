@@ -67,7 +67,7 @@
                     android:layout_marginStart="23dp"
 
                     android:text="Select the photo album"
-                    android:textColor="@color/font_color"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="30dp"
                     tools:layout_below="@+id/linearLayout"
                     tools:layout_editor_absoluteX="8dp"
@@ -112,7 +112,7 @@
                         android:layout_marginBottom="26dp"
                         android:onClick="onClickRadioButton"
                         android:enabled="false"
-                        android:text="Custom Deja Photo Album" />
+                        android:text="Custom Deja Photo Album (Coming soon!)" />
 
 
                 </RadioGroup>

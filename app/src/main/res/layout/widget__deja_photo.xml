@@ -8,10 +8,18 @@
         android:id="@+id/leftArrow"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:background="@mipmap/arrow_button_metal_green_left_t"
+        android:background="@mipmap/leftarrow2"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Previous"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:layout_below="@id/leftArrow"/>
 
     <ImageButton
         android:id="@+id/rightArrow"
@@ -19,30 +27,67 @@
         android:layout_height="70dp"
         android:layout_marginStart="135dp"
         android:layout_marginLeft="135dp"
-        android:background="@mipmap/arrow_button_metal_green_right_t"
+        android:background="@mipmap/rightarrow2"
         android:layout_alignTop="@+id/leftArrow"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:layout_below="@+id/rightArrow"
+        android:layout_alignLeft="@+id/rightArrow"
+        android:layout_alignStart="@+id/rightArrow"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp" />
 
     <ImageButton
         android:id="@+id/karmaButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:background="@mipmap/goodkarma"
+        android:background="@mipmap/givingkarma"
         android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp"
         android:layout_alignTop="@+id/releaseButton"
         android:layout_toRightOf="@+id/releaseButton"
         android:layout_toEndOf="@+id/releaseButton" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Give Karma"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:layout_below="@+id/karmaButton"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp" />
+
     <ImageButton
         android:id="@+id/releaseButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:background="@mipmap/birdrelease"
+        android:background="@mipmap/releasebird"
         android:layout_alignTop="@+id/leftArrow"
         android:layout_toLeftOf="@+id/rightArrow"
         android:layout_toStartOf="@+id/rightArrow" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Release"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:id="@+id/textView"
+        android:layout_below="@+id/releaseButton"
+        android:layout_toLeftOf="@+id/rightArrow"
+        android:layout_toStartOf="@+id/rightArrow"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp" />
 
 
 </RelativeLayout>
