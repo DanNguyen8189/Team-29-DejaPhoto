@@ -144,7 +144,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      * values with scores, so that multiplying by zero ignores a score, and 1 includes the
      * score.
      */
-    private int mapBooleanToInt(boolean value) {
+    public int mapBooleanToInt(boolean value) {
         return (value) ? 1 : 0;
     }
 
