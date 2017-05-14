@@ -71,8 +71,8 @@ public class PhotoService extends Service {
 
 
     /* Database for storing released and karma information */
-    private PhotoDatabaseHelper DbHelper = new PhotoDatabaseHelper(this);
-    private SQLiteDatabase db = DbHelper.getWritableDatabase();
+    //private PhotoDatabaseHelper DbHelper = new PhotoDatabaseHelper(this);
+    //private SQLiteDatabase db = DbHelper.getWritableDatabase();
 
 
 
@@ -105,6 +105,7 @@ public class PhotoService extends Service {
                 case "RELEASE_BUTTON":
                     Log.d(TAG, "Release button intent received");
 
+                    //releasePhoto();
                     break;
             }
         }
@@ -317,9 +318,10 @@ public class PhotoService extends Service {
 
 
 
-    public void releasePhoto()
-    {
-
-    }
+    //public void releasePhoto()
+   //{
+   //     displayCycle.release(db);
+    //    cycleForward();
+   // }
 
 }
