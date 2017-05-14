@@ -112,9 +112,9 @@ public class History {
      *
      * @param location The new current location to update score with respects to
      */
-    public void updatePriorities(Location location) {
+    public void updatePriorities(Location location, Preferences prefs) {
         for(DejaPhoto photo : historyList) {
-            photo.updateScore(location);
+            photo.updateScore(location, prefs);
         }
     }
 

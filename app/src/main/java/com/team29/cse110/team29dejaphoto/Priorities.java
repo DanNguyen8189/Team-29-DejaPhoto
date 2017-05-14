@@ -44,11 +44,11 @@ public class Priorities {
      *
      * @param location - The new current location to update score with respects to
      */
-    public void updatePriorities(Location location) {
+    public void updatePriorities(Location location, Preferences prefs) {
         // Naive implementation
         ArrayList<DejaPhoto> temp = new ArrayList<>();
         for (DejaPhoto photo : pq) {
-            photo.updateScore(location);
+            photo.updateScore(location, prefs);
             temp.add(photo);
         }
         pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());

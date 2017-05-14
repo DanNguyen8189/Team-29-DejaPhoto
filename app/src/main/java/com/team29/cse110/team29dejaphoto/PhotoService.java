@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,6 +27,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -54,6 +56,9 @@ public class PhotoService extends Service {
     private BroadcastReceiver receiver;
     private LocationListener locationListener;
     private LocationManager locationManager;
+
+    /* SharedPreferences */
+    private SharedPreferences sp;
 
     /* CONSTANTS */
     private static final String TAG = "PhotoService";
@@ -107,6 +112,9 @@ public class PhotoService extends Service {
         /* Initialize WallpaperManager object */
         background = WallpaperManager.getInstance(getApplicationContext());
 
+        /* Initialize SharedPreferences object */
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+
         /* Handles initializing receiver and binding filter to only receive widget intents */
 
         IntentFilter filter = new IntentFilter();
@@ -126,7 +134,13 @@ public class PhotoService extends Service {
                 Log.d(TAG, "Latitude is: " + String.valueOf(location.getLatitude()));
                 Log.d(TAG, "Longitude is: " + String.valueOf(location.getLongitude()));
 
-                displayCycle.updatePriorities(location);
+                displayCycle.updatePriorities(location,
+                        new Preferences(
+                            sp.getBoolean("isLocationOn", true),
+                            sp.getBoolean("isDateOn", true),
+                            sp.getBoolean("isTimeOn", true)
+                        )
+                );
             }
 
             @Override
@@ -152,7 +166,12 @@ public class PhotoService extends Service {
         displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
         // TODO More robust handling of score initialization
         displayCycle.updatePriorities(
-                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
+                new Preferences(
+                        sp.getBoolean("isLocationOn", true),
+                        sp.getBoolean("isDateOn", true),
+                        sp.getBoolean("isTimeOn", true)
+                )
         );
 
         super.onCreate();

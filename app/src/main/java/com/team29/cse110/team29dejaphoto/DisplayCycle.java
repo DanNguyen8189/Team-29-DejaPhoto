@@ -103,11 +103,11 @@ public class DisplayCycle {
      *
      * @param location - The location for which scores are to be calculated with respects to
      */
-    public void updatePriorities(Location location) {
+    public void updatePriorities(Location location, Preferences prefs) {
         if(location == null) return;
 
-        history.updatePriorities(location);
-        priorities.updatePriorities(location);
+        history.updatePriorities(location, prefs);
+        priorities.updatePriorities(location, prefs);
     }
 
 }
