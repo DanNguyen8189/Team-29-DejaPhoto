@@ -72,8 +72,8 @@ public class PhotoService extends Service {
 
 
     /* Database for storing released and karma information */
-    //private PhotoDatabaseHelper DbHelper = new PhotoDatabaseHelper(this);
-    //private SQLiteDatabase db = DbHelper.getWritableDatabase();
+    private PhotoDatabaseHelper DbHelper;
+    private SQLiteDatabase db;
 
 
 
@@ -106,7 +106,7 @@ public class PhotoService extends Service {
                 case "RELEASE_BUTTON":
                     Log.d(TAG, "Release button intent received");
 
-                    //releasePhoto();
+                    releasePhoto();
                     break;
             }
         }
@@ -127,6 +127,10 @@ public class PhotoService extends Service {
 
         /* Initialize SharedPreferences object */
         sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+
+        DbHelper = new PhotoDatabaseHelper(this);
+        db = DbHelper.getWritableDatabase();
 
         /* Handles initializing receiver and binding filter to only receive widget intents */
 
@@ -321,10 +325,10 @@ public class PhotoService extends Service {
 
 
 
-    //public void releasePhoto()
-   //{
-   //     displayCycle.release(db);
-    //    cycleForward();
-   // }
+    public void releasePhoto()
+   {
+        displayCycle.release(db);
+        cycleForward();
+   }
 
 }
