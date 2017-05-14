@@ -237,7 +237,6 @@ public class PhotoService extends Service {
 
         catch (IllegalStateException e) {
             Log.d(TAG, "Uri does not exist - photo was deleted");
-            cycleBack();
         }
 
         catch (Exception e) {
@@ -256,7 +255,8 @@ public class PhotoService extends Service {
                     dejaPhoto.getLocation())
             );
 
-            Log.d(TAG, "Displaying Next Photo: " + dejaPhoto.getPhotoUri());
+            Log.d(TAG, "Displaying Next Photo: "
+                    + dejaPhoto.getPhotoUri() + " (" + dejaPhoto.getScore() + ")");
         }
 
         catch (NullPointerException e) {
@@ -265,7 +265,6 @@ public class PhotoService extends Service {
 
         catch (IllegalStateException e) {
             Log.d(TAG, "Uri not longer exists - this photo was deleted.");
-            cycleForward();
         }
 
         catch (Exception e) {
