@@ -88,6 +88,7 @@ public class DejaPhotoLoader implements PhotoLoader {
         long dateAdded;
         while ( cursor.moveToNext() ) {
 
+            /* causes bugs for now
             if ( readCursor.getCount() != 0 ) {
                 Log.d(TAG, "Our database has photos");
                 dateAddedDB = readCursor.getLong(0);
@@ -128,6 +129,7 @@ public class DejaPhotoLoader implements PhotoLoader {
                 Log.d(TAG, "Please skip to the next iteration - we don't want duplicate photos");
                 continue;
             }
+            */
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
