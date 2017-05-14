@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SharedPreferences.Editor editor  = dejaPreferences.edit();
-                editor.putInt(UpdateInterval, progress);
+                editor.putInt(UpdateInterval, progress + 1);
                 editor.apply();
                 updateIntervalNumber.setText("" + (progress+1) + "hrs");
             }
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             /*check what update interval the user has set*/
-            upDateInterval.setProgress(dejaPreferences.getInt(UpdateInterval, 2));
+            upDateInterval.setProgress(dejaPreferences.getInt(UpdateInterval, 2) -1);
         }
         else{
             Log.d(TAG, "disable app");
