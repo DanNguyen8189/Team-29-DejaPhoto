@@ -24,6 +24,8 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
 
     public static String SWIPE_RIGHT = "swipe right"; // Variable indicating a right swipe action
     public static String SWIPE_LEFT = "swipe left"; // Variable indicating a left swipe action
+    public static String GIVE_KARMA = "give karma"; // Variable indicating a give karma action
+    public static String RELEASE_PHOTO = "release photo"; // Variable indicating a release photo action
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -35,6 +37,8 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
             RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.widget__deja_photo);
             remoteView.setOnClickPendingIntent(R.id.rightArrow, getPendingSelfIntent(context, SWIPE_LEFT));
             remoteView.setOnClickPendingIntent(R.id.leftArrow, getPendingSelfIntent(context, SWIPE_RIGHT));
+            remoteView.setOnClickPendingIntent(R.id.karmaButton, getPendingSelfIntent(context, GIVE_KARMA));
+            remoteView.setOnClickPendingIntent(R.id.releaseButton, getPendingSelfIntent(context, RELEASE_PHOTO));
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteView);
         }
@@ -72,7 +76,7 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
 
         // Left Arrow was clicked - perform onClick action
         if (intent.getAction().equals(SWIPE_RIGHT)){
-            Toast.makeText(context, "Setting Prev Wallpaper", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Setting Previous Wallpaper");
 
             Intent serviceIntent = new Intent();
             serviceIntent.setAction("PREV_BUTTON");
@@ -81,12 +85,29 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
 
         // Right Arrow was clicked - perform onClick action
         else  if (intent.getAction().equals(SWIPE_LEFT)) {
-            Toast.makeText(context, "Setting Next Wallpaper", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Setting Next Wallpaper");
 
             Intent serviceIntent = new Intent();
             serviceIntent.setAction("NEXT_BUTTON");
             context.sendBroadcast(serviceIntent);
+        }
 
+        // Karma button was clicked - perform onClick action
+        else if (intent.getAction().equals(GIVE_KARMA)) {
+            Log.d(TAG, "Giving photo karma");
+
+            Intent serviceIntent = new Intent();
+            serviceIntent.setAction("KARMA_BUTTON");
+            context.sendBroadcast(serviceIntent);
+        }
+
+        // Release button was clicked - perform onClick action
+        else if (intent.getAction().equals(RELEASE_PHOTO)) {
+            Log.d(TAG, "Releasing photo");
+
+            Intent serviceIntent = new Intent();
+            serviceIntent.setAction("RELEASE_BUTTON");
+            context.sendBroadcast(serviceIntent);
         }
     }
 }

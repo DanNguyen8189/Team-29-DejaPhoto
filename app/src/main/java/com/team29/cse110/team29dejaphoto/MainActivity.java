@@ -270,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        moveTaskToBack(true);
     }
 
     public void onClickLoadPhotos() {

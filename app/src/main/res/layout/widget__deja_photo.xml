@@ -6,8 +6,8 @@
 
     <ImageButton
         android:id="@+id/leftArrow"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:background="@mipmap/arrow_button_metal_green_left_t"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
@@ -15,14 +15,34 @@
 
     <ImageButton
         android:id="@+id/rightArrow"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginStart="135dp"
         android:layout_marginLeft="135dp"
         android:background="@mipmap/arrow_button_metal_green_right_t"
         android:layout_alignTop="@+id/leftArrow"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:id="@+id/karmaButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@mipmap/goodkarma"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_alignTop="@+id/releaseButton"
+        android:layout_toRightOf="@+id/releaseButton"
+        android:layout_toEndOf="@+id/releaseButton" />
+
+    <ImageButton
+        android:id="@+id/releaseButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@mipmap/birdrelease"
+        android:layout_alignTop="@+id/leftArrow"
+        android:layout_toLeftOf="@+id/rightArrow"
+        android:layout_toStartOf="@+id/rightArrow" />
 
 
 </RelativeLayout>

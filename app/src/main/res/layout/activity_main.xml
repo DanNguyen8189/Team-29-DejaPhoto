@@ -222,6 +222,11 @@
                     android:text="Date enabled"
                     android:textSize="20dp"/>
 
+                <SeekBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dateText"/>
+
 
             </RelativeLayout>
 
