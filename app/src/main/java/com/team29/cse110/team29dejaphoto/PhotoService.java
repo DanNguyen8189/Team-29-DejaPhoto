@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -70,6 +71,13 @@ public class PhotoService extends Service {
     private static final int PAINT_SIZE_CONSTANT = 50;
 
 
+    /* Database for storing released and karma information */
+    //private PhotoDatabaseHelper DbHelper = new PhotoDatabaseHelper(this);
+    //private SQLiteDatabase db = DbHelper.getWritableDatabase();
+
+
+
+
     /**
      * Custom Widget Action Receiver inner class
      */
@@ -98,6 +106,7 @@ public class PhotoService extends Service {
                 case "RELEASE_BUTTON":
                     Log.d(TAG, "Release button intent received");
 
+                    //releasePhoto();
                     break;
             }
         }
@@ -309,5 +318,13 @@ public class PhotoService extends Service {
 
         return newBitmap;
     }
+
+
+
+    //public void releasePhoto()
+   //{
+   //     displayCycle.release(db);
+    //    cycleForward();
+   // }
 
 }
