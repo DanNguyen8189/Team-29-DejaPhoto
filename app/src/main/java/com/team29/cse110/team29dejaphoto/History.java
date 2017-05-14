@@ -1,5 +1,6 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 
 import java.util.LinkedList;
@@ -115,6 +116,41 @@ public class History {
     public void updatePriorities(Location location, Preferences prefs) {
         for(DejaPhoto photo : historyList) {
             photo.updateScore(location, prefs);
+        }
+    }
+
+
+    public void remove(SQLiteDatabase db)
+    {
+        //at end of history
+        if(!checkValidPrev())
+        {
+            DejaPhoto released = iterator.previous();
+            released.setReleased();
+
+            //maps to ints so can be stored in database
+            int karma = released.mapBooleanToInt(released.getKarma());
+            int release = released.mapBooleanToInt(released.isReleased());
+
+            //adds photo on list of released photos
+            PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(),
+                    karma, release);
+            iterator.remove();
+        }
+        //at beginning or middle of history
+        else
+        {
+            DejaPhoto released = iterator.next();
+            released.setReleased();
+
+            //maps to ints so can be stored in database
+            int karma = released.mapBooleanToInt(released.getKarma());
+            int release = released.mapBooleanToInt(released.isReleased());
+
+            //adds photo on list of released photos
+            PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(),
+                    karma, release);
+            iterator.remove();
         }
     }
 
