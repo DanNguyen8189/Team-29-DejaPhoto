@@ -418,7 +418,7 @@ public class PhotoService extends Service {
 
        if ( currDisplayedPhoto != null ) {
            Log.d(TAG, "Setting karma on currently displayed photo");
-           currDisplayedPhoto.getKarma();
+           currDisplayedPhoto.setKarma();
            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
        }
        else {
