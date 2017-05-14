@@ -83,12 +83,14 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      * @param location - The current location of the user/device
      *        prefs    - The DejaVu Mode preferences current enabled by the user
      */
-    public void updateScore(Location location, Preferences prefs) {
+    public int updateScore(Location location, Preferences prefs) {
+
 
         myScore = getKarmaPoints() - mapBooleanToInt(isShownRecently()) +
                   mapBooleanToInt(prefs.isLocationOn()) * getLocationPoints(location) +
                   mapBooleanToInt(prefs.isDateOn()) * getDatePoints() +
                   mapBooleanToInt(prefs.isTimeOn()) * getTimeTakenPoints();
+        return myScore;
     }
 
 

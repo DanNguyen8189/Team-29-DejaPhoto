@@ -57,6 +57,8 @@ public class PhotoService extends Service {
     /* Home screen background setter */
     private WallpaperManager background;
 
+    Location myLocation;
+
     /* Observers */
     private BroadcastReceiver receiver;
     private LocationListener locationListener;

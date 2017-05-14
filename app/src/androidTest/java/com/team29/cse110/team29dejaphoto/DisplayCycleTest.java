@@ -1,5 +1,8 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.location.Location;
+import android.util.Log;
+
 import java.util.Calendar;
 
 import org.junit.Before;
@@ -30,6 +33,11 @@ public class DisplayCycleTest {
     private DejaPhoto[] testGalleryThreeElements = new DejaPhoto[3];
     private DejaPhoto[] testGalleryManyElements;// larger than history size
 
+    Location location;
+    Preferences prefAllOn = new Preferences(true,true,true);
+
+    private String TAG = "DisplayCycleTest";
+
     /**
      * A helper function to instantiate the test objects before each case.
      */
@@ -37,9 +45,9 @@ public class DisplayCycleTest {
     public void setUp() {
         one = new DejaPhoto(null, 0, 0, calendar.getTimeInMillis());
         calendar.add(Calendar.HOUR,1);
-        two = new DejaPhoto(null, 0, 0, calendar.getTimeInMillis());
+        two = new DejaPhoto(null, 300,300, calendar.getTimeInMillis());
         calendar.add(Calendar.HOUR,3);
-        three = new DejaPhoto(null, 0, 0, calendar.getTimeInMillis());
+        three = new DejaPhoto(null, 300, 300, calendar.getTimeInMillis());
 
         // Create new DejaPhoto Galleries and populate them
         testGalleryOneElement[0] = one;
@@ -47,6 +55,10 @@ public class DisplayCycleTest {
         testGalleryThreeElements[1] = two;
         testGalleryThreeElements[2] = three;
         testGalleryManyElements = fillTestGallery();
+
+        location = new Location("");
+        location.setLatitude(0);
+        location.setLongitude(0);
     }
 
 
@@ -63,6 +75,7 @@ public class DisplayCycleTest {
         assertTrue(ds.addToCycle(testGalleryEmpty));
         // Test that non-empty display cycle is successfully filled
         assertTrue(ds.addToCycle(testGalleryOneElement));
+        Log.d(TAG,"Testing testFillDisplayCycle() method");
     }
 
 
@@ -81,6 +94,12 @@ public class DisplayCycleTest {
         // Test that photo is successfully added to a non-empty cycle
         ds.addToCycle(testGalleryOneElement);
         assertTrue(ds.addToCycle(new DejaPhoto(null, 0, 0, 0L)));
+
+        // Test that several photos can be added
+        for (DejaPhoto d: testGalleryManyElements)  {
+            assertTrue(ds.addToCycle(new DejaPhoto(null, 0, 0, 0L)));
+        }
+        Log.d(TAG,"Testing addToCycle() method");
     }
 
 
@@ -106,11 +125,12 @@ public class DisplayCycleTest {
         ds = new DisplayCycle();
         ds.addToCycle(testGalleryOneElement);
         assertTrue(ds.getNextPhoto().equals(one));
-        assertTrue(ds.getNextPhoto().equals(one)); // NOTE: Perhaps not ideal functionality
+        assertTrue(ds.getNextPhoto().equals(one));
 
         // Test get next on a three-element set
         ds = new DisplayCycle();
         ds.addToCycle(testGalleryThreeElements);
+        ds.updatePriorities(location,prefAllOn);
         assertTrue(ds.getNextPhoto().equals(one));
         assertTrue(ds.getNextPhoto().equals(two));
         assertTrue(ds.getNextPhoto().equals(three));
@@ -123,6 +143,7 @@ public class DisplayCycleTest {
         for(int i = testGalleryManyElements.length - 1; i >= 0 ; i-- ) {
             assertTrue(ds.getNextPhoto().equals(testGalleryManyElements[i]) );
         }
+        Log.d(TAG,"Testing getNextPhoto() method");
     }
 
 
@@ -151,6 +172,7 @@ public class DisplayCycleTest {
         // Test get prev on a three-element set
         ds = new DisplayCycle();
         ds.addToCycle(testGalleryThreeElements);
+        ds.updatePriorities(location,prefAllOn);
         ds.getNextPhoto();
         ds.getNextPhoto();
         ds.getNextPhoto();
@@ -171,6 +193,7 @@ public class DisplayCycleTest {
         }
         assertNull(ds.getPrevPhoto());// end of history
         assertTrue(ds.getNextPhoto().equals(testGalleryManyElements[8]));// due to insertion order
+        Log.d(TAG,"Testing getPrevPhoto() method");
     }
 
 
