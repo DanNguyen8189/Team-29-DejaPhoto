@@ -1,6 +1,8 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -36,6 +38,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -107,6 +110,7 @@ public class PhotoService extends Service {
                 case "KARMA_BUTTON":
                     Log.d(TAG, "Karma button intent received");
 
+                    givePhotoKarma();
                     break;
 
                 case "RELEASE_BUTTON":
@@ -120,6 +124,19 @@ public class PhotoService extends Service {
 
     @Override
     public void onCreate() {
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("My Awesome App")
+                .setContentText("Doing some work...")
+                .setContentIntent(pendingIntent).build();
+
+        startForeground(1, notification);
 
         /* Forward Permissions Check */
         // TODO Handle no permissions and/or GPS/Network disabled
@@ -363,12 +380,24 @@ public class PhotoService extends Service {
         return newBitmap;
     }
 
-
-
+    /*
+     * This method delegates the DisplayCycle to find the currently displayed photo, release it
+     * from displayCycle, and enter new record in the database.
+     */
     public void releasePhoto()
    {
         displayCycle.release(db);
         cycleForward();
+   }
+
+   /*
+    * This method delegates the DisplayCycle to find the currently displayed photo and enter a new
+    * record in the database.
+    */
+   public void givePhotoKarma() {
+
+       displayCycle.giveKarma(db);
+
    }
 
 }
