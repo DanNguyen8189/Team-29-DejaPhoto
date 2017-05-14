@@ -84,7 +84,6 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      */
     public int updateScore(Location location, Preferences prefs) {
 
-
         myScore = getKarmaPoints() - mapBooleanToInt(isShownRecently()) +
                   mapBooleanToInt(prefs.isLocationOn()) * getLocationPoints(location) +
                   mapBooleanToInt(prefs.isDateOn()) * getDatePoints() +
@@ -119,24 +118,20 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
         Calendar lCalendar = Calendar.getInstance();
         lCalendar.setTime(getTime().getTime());
-        lCalendar.add(Calendar.HOUR, -2);
         lCalendar.set(1, 1, 1);
+        lCalendar.add(Calendar.HOUR, -2);
 
         Calendar uCalendar = Calendar.getInstance();
         uCalendar.setTime(getTime().getTime());
-        uCalendar.add(Calendar.HOUR, 2);
         uCalendar.set(1, 1, 1);
+        uCalendar.add(Calendar.HOUR, 2);
 
         Calendar now = new GregorianCalendar();
         now.set(1, 1, 1);
         Date currTime = now.getTime();
 
-//        System.out.println("LOWER BOUND: " + lCalendar.getTime());
-//        System.out.println("TIME NOW: " + now.getTime());
-//        System.out.println("UPPER BOUND: " + uCalendar.getTime());
         boolean withinTimeFrame
                 = currTime.after(lCalendar.getTime()) && currTime.before(uCalendar.getTime());
-//        System.out.println("WITHIN TIME: " + withinTimeFrame);
 
         return withinTimeFrame ? SCORE_UNIT : 0;
     }
