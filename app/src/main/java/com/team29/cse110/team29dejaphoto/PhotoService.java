@@ -315,4 +315,11 @@ public class PhotoService extends Service {
         return newBitmap;
     }
 
+
+
+    public void releasePhoto()
+    {
+
+    }
+
 }

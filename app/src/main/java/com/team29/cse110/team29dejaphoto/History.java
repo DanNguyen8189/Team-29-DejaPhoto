@@ -136,6 +136,7 @@ public class History {
             PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(),
                     karma, release);
             iterator.remove();
+            nelems--;
         }
         //at beginning or middle of history
         else
@@ -151,6 +152,7 @@ public class History {
             PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(),
                     karma, release);
             iterator.remove();
+            nelems--;
         }
     }
 

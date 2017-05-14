@@ -1,5 +1,6 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 
 /**
@@ -108,6 +109,11 @@ public class DisplayCycle {
 
         history.updatePriorities(location, prefs);
         priorities.updatePriorities(location, prefs);
+    }
+
+    public void release(SQLiteDatabase db)
+    {
+        history.remove(db);
     }
 
 }
