@@ -252,7 +252,8 @@ public class PhotoService extends Service {
                     dejaPhoto.getLocation())
             );
 
-            Log.d(TAG, "Displaying Next Photo: " + dejaPhoto.getPhotoUri());
+            Log.d(TAG, "Displaying Next Photo: "
+                    + dejaPhoto.getPhotoUri() + " (" + dejaPhoto.getScore() + ")");
         }
 
         catch (NullPointerException e) {

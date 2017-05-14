@@ -4,6 +4,7 @@ import android.location.Location;
 import android.net.Uri;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -31,6 +32,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     private static final double METERS_TO_FEET = 3.28084;
     private static final int NEAR_RADIUS = 1000;
+    private static final int MILLIS_IN_SEC = 1000;
     private static final int SCORE_UNIT = 10;
 
 
@@ -42,7 +44,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
         this.photoUri = photoUri;
         this.time = new GregorianCalendar();
-        this.time.setTimeInMillis(time);
+        this.time.setTimeInMillis(time * MILLIS_IN_SEC);
         this.location = new Location("");
         this.location.setLatitude(latitude);
         this.location.setLongitude(longitude);
@@ -114,14 +116,21 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      */
     private int getTimeTakenPoints() {
 
-        Calendar now = new GregorianCalendar();
-        boolean notWithinTimeframe =
-                Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
-                        - now.get(Calendar.HOUR_OF_DAY)) > 2 &&
-                Math.abs(getTime().get(Calendar.HOUR_OF_DAY)
-                        - now.get(Calendar.HOUR_OF_DAY)) < 22;
+        Calendar lCalendar = Calendar.getInstance();
+        lCalendar.setTime(getTime().getTime());
+        lCalendar.add(Calendar.HOUR, -2);
 
-        return notWithinTimeframe ? 0 : SCORE_UNIT;
+        Calendar uCalendar = Calendar.getInstance();
+        uCalendar.setTime(getTime().getTime());
+        uCalendar.add(Calendar.HOUR, 2);
+
+        Calendar now = new GregorianCalendar();
+        Date currTime = now.getTime();
+
+        boolean withinTimeFrame
+                = currTime.after(lCalendar.getTime()) && currTime.before(uCalendar.getTime());
+
+        return withinTimeFrame ? SCORE_UNIT : 0;
     }
 
     /**
