@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -64,6 +65,13 @@ public class PhotoService extends Service {
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
     private static final long TWO_HOURS = 7200000; // Two hours in milliseconds
+
+
+    /* Database for storing released and karma information */
+    private PhotoDatabaseHelper DbHelper = new PhotoDatabaseHelper(this);
+    private SQLiteDatabase db = DbHelper.getWritableDatabase();
+
+
 
 
     /**
