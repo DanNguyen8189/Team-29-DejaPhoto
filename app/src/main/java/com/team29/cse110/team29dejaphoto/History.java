@@ -163,6 +163,11 @@ public class History {
 
     public void removeFromHistory() {
 
+        if ( nelems == 0 ) {
+            // Do nothing - trying to remove from empty history
+            return;
+        }
+
         if ( !checkValidPrev() ) {
             // We're at the end of history
             iterator.previous();
