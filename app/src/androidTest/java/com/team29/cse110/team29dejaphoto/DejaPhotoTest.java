@@ -1,12 +1,21 @@
 package com.team29.cse110.team29dejaphoto;
 
 
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.Uri;
+import android.support.annotation.Nullable;
+import android.test.AndroidTestCase;
+import android.util.Log;
+
+import junit.framework.JUnit4TestAdapterCache;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +27,18 @@ import static org.junit.Assert.*;
  */
 public class DejaPhotoTest {
 
+    private String TAG = "DejaPhoto test";
+
     Calendar calendar;
     DejaPhoto photo;// A photo object to be modified
     DejaPhoto emptyPhoto;// An empty photo
     DejaPhoto dejaVuTime;// A photo with deja vu in time only
     DejaPhoto dejaVuDate;// A photo with deja vu in date only
     DejaPhoto dejaVuAll; // A photo with deja vu in time and date
+    DejaPhoto dejaVuLocation;// a Photo with deja vu in only location
+    DejaPhoto noDejaVu;// A photo with no deja vu
+
+    Preferences prefAllOn = new Preferences(true, true, true);
 
 
     /**
@@ -53,6 +68,14 @@ public class DejaPhotoTest {
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_WEEK,2);
         dejaVuTime = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
+
+        // Adjust calender to different time, and add local location
+        calendar.add(Calendar.HOUR,3 );// calendar has no time or date deja vu
+        dejaVuLocation = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
+
+        // Adjust calendar to different day, add non-local location
+        calendar.add(Calendar.DAY_OF_WEEK, 3);
+        noDejaVu = new DejaPhoto(Uri.EMPTY, 300, 300, calendar.getTimeInMillis());
     }
 
 
@@ -62,23 +85,15 @@ public class DejaPhotoTest {
      * @throws Exception
      */
     @Test
-    public void getScore() throws Exception {
-        assertEquals("Score of dejaVuAll:", 20, dejaVuAll.getScore());
-        assertEquals("Score of dejaVuTime:", 10, dejaVuTime.getScore());
-        assertEquals("Score of dejaVuDate:", 10, dejaVuDate.getScore());
-    }
+    public void updateScore() throws Exception {
 
-    /**
-     * This tests that setting a score will properly modify the instance variable.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void setScore() throws Exception {
-
-        assertFalse(photo.getScore()==20);
-        photo.setScore(20);
-        assertEquals("Testing that photo score is set", 20, photo.getScore());
+        Location location = new Location("");
+        assertEquals("Score of dejaVuAll:", 30, dejaVuAll.updateScore(location, prefAllOn));
+        assertEquals("Score of dejaVuTime:", 20, dejaVuTime.updateScore(location, prefAllOn));
+        assertEquals("Score of dejaVuDate:", 20, dejaVuDate.updateScore(location, prefAllOn));
+        assertEquals("Score of dejaVuLocation:", 10, dejaVuLocation.updateScore(location,prefAllOn));
+        assertEquals("Score of noDejaVu", 0, noDejaVu.updateScore(location,prefAllOn));
+        Log.d(TAG, "Testing updateScore() method");
     }
 
 
@@ -92,32 +107,47 @@ public class DejaPhotoTest {
     public void getPhotoUri() throws Exception {
         assertNull(emptyPhoto.getPhotoUri());
         assertNotNull(photo.getPhotoUri());
+        Log.d(TAG, "Testing getPhotoUri() method");
     }
 
-    /**
+
+    /** This tests that the karma of a photo is properly returned
+     *
+     * @throws Exception
+     */
     @Test
     public void getKarma() throws Exception {
 
+        assertFalse(photo.getKarma());
+        Log.d(TAG, "Testing getKarma() method");
     }
 
+
+    /**
+     * This tests that the karma of a photo is properly set and can be returned
+     *
+     * @throws Exception
+     */
     @Test
     public void setKarma() throws Exception {
 
+        photo.setKarma();
+        assertTrue(photo.getKarma());
+        Log.d(TAG,"Testing setKarma() method");
     }
-     */
-
 
 
     /**
      * Tests that shown recently flag is correct for newly created photos.
+     * Default for newly created photos is always false
      *
      * @throws Exception
      */
     @Test
     public void isShownRecently() throws Exception {
         assertFalse(photo.isShownRecently());
+        Log.d(TAG,"Testing isShownRecently() method");
     }
-
 
 
     /**
@@ -129,6 +159,7 @@ public class DejaPhotoTest {
     public void setShowRecently() throws Exception {
         photo.setShowRecently();
         assertTrue(photo.isShownRecently());
+        Log.d(TAG,"Testing setShowRecently() method");
     }
 
 
@@ -143,6 +174,7 @@ public class DejaPhotoTest {
         assertEquals("Testing empty photo has 0 time", 0, emptyPhoto.getTime().getTimeInMillis());
         assertEquals("Testing dejaVu photo has some time", false,
                      dejaVuAll.getTime().getTimeInMillis() == 0);
+        Log.d(TAG,"Testing getTime() method");
     }
 
 
@@ -158,6 +190,7 @@ public class DejaPhotoTest {
         photo.setTime(Calendar.getInstance());
         assertEquals("Testing dejaVu photo has some time", false,
                       photo.getTime().getTimeInMillis() == 0);
+        Log.d(TAG,"Testing setTime() method");
     }
 
 
@@ -172,5 +205,6 @@ public class DejaPhotoTest {
         photo.setScore(20);
         assertEquals("Test comparing photo with emptyPhoto", photo.compareTo(emptyPhoto), 1);
         assertEquals("Test comparing emptyPhoto with photo", emptyPhoto.compareTo(photo), -1);
+        Log.d(TAG,"Testing compareTo() method");
     }
 }

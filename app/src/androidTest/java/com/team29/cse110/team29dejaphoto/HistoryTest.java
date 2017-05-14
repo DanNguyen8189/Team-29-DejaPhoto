@@ -1,7 +1,8 @@
 package com.team29.cse110.team29dejaphoto;
 
-;
 import android.net.Uri;
+import android.util.Log;
+
 import java.util.Calendar;
 
 import org.junit.Before;
@@ -20,6 +21,7 @@ public class HistoryTest {
                                                 new DejaPhoto(Uri.EMPTY,0,0,0L)};
     History history = new History();
 
+    private String TAG = "HistoryTest";
 
     /**
      * A helper method to set up test objects before each test
@@ -53,6 +55,7 @@ public class HistoryTest {
         for(DejaPhoto d: gallery) {
             assertTrue(history.addPhoto(d).equals(d));
         }
+        Log.d(TAG,"Testing addPhoto() method");
     }
 
 
@@ -73,6 +76,7 @@ public class HistoryTest {
         for(int i = 8; i >= 0; i-- ) {
             assertTrue(history.getPrev().equals(gallery[i]));
         }
+        Log.d(TAG,"Testing getPrev() method");
     }
 
 
@@ -99,6 +103,8 @@ public class HistoryTest {
 
         assertNull(history.getPrev());// prev from end of history should be null
         assertTrue(history.getNext().equals(gallery[1]));// next should be second element in history
+
+        Log.d(TAG,"Testing getNext() method");
     }
 
 
@@ -136,6 +142,8 @@ public class HistoryTest {
         assertTrue(history.cycle().equals(shortgallery[1]));
         assertTrue(history.cycle().equals(shortgallery[2]));
         assertTrue(history.cycle().equals(shortgallery[0]));
+
+        Log.d(TAG,"Testing cycle() method");
     }
 
 }

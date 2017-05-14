@@ -57,6 +57,8 @@ public class PhotoService extends Service {
     /* Home screen background setter */
     private WallpaperManager background;
 
+    Location myLocation;
+
     /* Observers */
     private BroadcastReceiver receiver;
     private LocationListener locationListener;
@@ -70,14 +72,17 @@ public class PhotoService extends Service {
     private static final float FIVE_HUNDRED_FT = 152;   // Number of meters in a 500 feet
     private static final long TWO_HOURS = 7200000;      // Two hours in milliseconds
     private static final int PAINT_SIZE_CONSTANT = 50;  // Constant to derive brush size
+    private static final int DEFAULT_INTERVAL = 60000;
 
     /* Database for storing released and karma information */
     private PhotoDatabaseHelper DbHelper;
     private SQLiteDatabase db;
 
     /* Handler to update home screen every user-customizable interval */
-    private Handler handler = new Handler();
+    private Handler handler;
+    private Runnable autoUpdateTask;
     private boolean serviceRunning;
+
 
     /**
      * Custom Widget Action Receiver inner class
@@ -197,15 +202,20 @@ public class PhotoService extends Service {
         Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
 
         /* Handles updating the home screen every configurable interval */
+
         serviceRunning = true;
-        handler.postDelayed(new Runnable() {
+
+        handler = new Handler();
+        autoUpdateTask = new Runnable() {
             @Override
             public void run() {
                 cycleForward();
 
-                if(serviceRunning) handler.postDelayed(this, sp.getInt("UpdateInterval", 60000));
+                if(serviceRunning)
+                    handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
             }
-        }, sp.getInt("UpdateInterval", 60000));
+        };
+        handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
 
         super.onCreate();
     }
@@ -233,6 +243,14 @@ public class PhotoService extends Service {
     }
 
     public void cycleBack() {
+
+        /* Restart handler's autoUpdate task */
+
+        handler.removeCallbacks(autoUpdateTask);
+        handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
+
+        /* Set previous photo */
+
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
 
         try {
@@ -261,6 +279,14 @@ public class PhotoService extends Service {
     }
 
     public void cycleForward() {
+
+        /* Restart handler's autoUpdate task */
+
+        handler.removeCallbacks(autoUpdateTask);
+        handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
+
+        /* Set next photo */
+
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
 
         try {

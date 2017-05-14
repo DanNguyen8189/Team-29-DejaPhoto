@@ -47,6 +47,7 @@ public class DejaPhotoLoader implements PhotoLoader {
 
 
     private final String[] PHOTOS_PROJECTIONS = { "DATE_ADDED", "KARMA", "RELEASED" };
+    private final int MILLIS_IN_SECOND = 1000;
 
 
     /* This is the Uri for the storage of all photos */
@@ -114,7 +115,7 @@ public class DejaPhotoLoader implements PhotoLoader {
                         DejaPhoto dejaPhoto = new DejaPhoto(uri,
                                 cursor.getDouble(LAT_INDEX),
                                 cursor.getDouble(LONG_INDEX),
-                                cursor.getLong(DATE_ADDED_INDEX));
+                                cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
                         dejaPhoto.setKarma();
                         // TODO Check that the photo is from the camera album
                         if(file.exists()) gallery[count] = dejaPhoto;
@@ -141,7 +142,7 @@ public class DejaPhotoLoader implements PhotoLoader {
             gallery[count] = new DejaPhoto(uri,
                     cursor.getDouble(LAT_INDEX),
                     cursor.getDouble(LONG_INDEX),
-                    cursor.getLong(DATE_ADDED_INDEX));
+                    cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
 
             count++;
         }

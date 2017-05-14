@@ -32,7 +32,6 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     private static final double METERS_TO_FEET = 3.28084;
     private static final int NEAR_RADIUS = 1000;
-    private static final int MILLIS_IN_SEC = 1000;
     private static final int SCORE_UNIT = 10;
 
 
@@ -44,7 +43,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
         this.photoUri = photoUri;
         this.time = new GregorianCalendar();
-        this.time.setTimeInMillis(time * MILLIS_IN_SEC);
+        this.time.setTimeInMillis(time);
         this.location = new Location("");
         this.location.setLatitude(latitude);
         this.location.setLongitude(longitude);
@@ -83,12 +82,14 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      * @param location - The current location of the user/device
      *        prefs    - The DejaVu Mode preferences current enabled by the user
      */
-    public void updateScore(Location location, Preferences prefs) {
+    public int updateScore(Location location, Preferences prefs) {
+
 
         myScore = getKarmaPoints() - mapBooleanToInt(isShownRecently()) +
                   mapBooleanToInt(prefs.isLocationOn()) * getLocationPoints(location) +
                   mapBooleanToInt(prefs.isDateOn()) * getDatePoints() +
                   mapBooleanToInt(prefs.isTimeOn()) * getTimeTakenPoints();
+        return myScore;
     }
 
 
