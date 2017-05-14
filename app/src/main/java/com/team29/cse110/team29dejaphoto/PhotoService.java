@@ -67,6 +67,7 @@ public class PhotoService extends Service {
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152; //number of meters in a 500 feet
     private static final long TWO_HOURS = 7200000; // Two hours in milliseconds
+    private static final int PAINT_SIZE_CONSTANT = 50;
 
 
     /**
@@ -286,13 +287,15 @@ public class PhotoService extends Service {
         Paint paint = new Paint();
         Rect rect = new Rect();
         paint.setColor(Color.RED);
-        paint.setTextSize(10);
+        paint.setTextSize(bitmap.getHeight() / PAINT_SIZE_CONSTANT);
 
         // get address for location
         try {
 
             locationTag = list.get(0).getAddressLine(0);
-        }// if no valid location
+        }
+
+        // if no valid location
         catch(Exception e) {
 
             locationTag = "No location info\navailable";
