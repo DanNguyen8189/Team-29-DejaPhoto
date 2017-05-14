@@ -115,7 +115,8 @@ public class DejaPhotoLoader implements PhotoLoader {
                                 cursor.getDouble(LONG_INDEX),
                                 cursor.getLong(DATE_ADDED_INDEX));
                         dejaPhoto.setKarma();
-                        gallery[count] = dejaPhoto;
+                        // TODO Check that the photo is from the camera album
+                        if(file.exists()) gallery[count] = dejaPhoto;
                         count++;
                         cursor.moveToNext();
 
@@ -133,6 +134,8 @@ public class DejaPhotoLoader implements PhotoLoader {
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
+            // TODO Check that the photo is from the camera album
+            if(file.exists())
             gallery[count] = new DejaPhoto(uri,
                     cursor.getDouble(LAT_INDEX),
                     cursor.getDouble(LONG_INDEX),
