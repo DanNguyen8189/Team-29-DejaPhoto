@@ -28,6 +28,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -66,17 +67,18 @@ public class PhotoService extends Service {
 
     /* Constants */
     private static final String TAG = "PhotoService";
-    private static final float FIVE_HUNDRED_FT = 152; //number of meters in 500 feet
-    private static final long TWO_HOURS = 7200000; // Two hours in milliseconds
-    private static final int PAINT_SIZE_CONSTANT = 50;
 
+    private static final float FIVE_HUNDRED_FT = 152;   // Number of meters in a 500 feet
+    private static final long TWO_HOURS = 7200000;      // Two hours in milliseconds
+    private static final int PAINT_SIZE_CONSTANT = 50;  // Constant to derive brush size
 
     /* Database for storing released and karma information */
     private PhotoDatabaseHelper DbHelper;
     private SQLiteDatabase db;
 
-
-
+    /* Handler to update home screen every user-customizable interval */
+    private Handler handler = new Handler();
+    private boolean serviceRunning;
 
     /**
      * Custom Widget Action Receiver inner class
@@ -128,7 +130,7 @@ public class PhotoService extends Service {
         /* Initialize SharedPreferences object */
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-
+        /* Database for karma/release */
         DbHelper = new PhotoDatabaseHelper(this);
         db = DbHelper.getWritableDatabase();
 
@@ -153,9 +155,9 @@ public class PhotoService extends Service {
 
                 displayCycle.updatePriorities(location,
                         new Preferences(
-                            sp.getBoolean("isLocationOn", true),
-                            sp.getBoolean("isDateOn", true),
-                            sp.getBoolean("isTimeOn", true)
+                            sp.getBoolean("IsLocationOn", true),
+                            sp.getBoolean("IsDateOn", true),
+                            sp.getBoolean("IsTimeOn", true)
                         )
                 );
             }
@@ -185,13 +187,25 @@ public class PhotoService extends Service {
         displayCycle.updatePriorities(
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
                 new Preferences(
-                        sp.getBoolean("isLocationOn", true),
-                        sp.getBoolean("isDateOn", true),
-                        sp.getBoolean("isTimeOn", true)
+                        sp.getBoolean("IsLocationOn", true),
+                        sp.getBoolean("IsDateOn", true),
+                        sp.getBoolean("IsTimeOn", true)
                 )
         );
 
+        /* Indicate to the user that photos have been loaded */
         Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
+
+        /* Handles updating the home screen every configurable interval */
+        serviceRunning = true;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                cycleForward();
+
+                if(serviceRunning) handler.postDelayed(this, sp.getInt("UpdateInterval", 60000));
+            }
+        }, sp.getInt("UpdateInterval", 60000));
 
         super.onCreate();
     }
@@ -207,7 +221,9 @@ public class PhotoService extends Service {
     public void onDestroy() {
         Log.d(TAG, "Service stopped");
 
+        serviceRunning = false;
         if(receiver != null) unregisterReceiver(receiver);
+
         super.onDestroy();
     }
 
