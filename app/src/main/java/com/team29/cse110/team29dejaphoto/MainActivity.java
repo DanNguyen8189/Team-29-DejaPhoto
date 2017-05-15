@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     dejavu.setChecked(true);
 
                     upDateInterval.setEnabled(true);
-                    upDateInterval.setProgress(4);
+                    //upDateInterval.setProgress(4);
                     starter();
                 }
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     toggleSetting(IsAppRunning, false);
                     dejavu.setChecked(false);
                     dejavu.setClickable(false);
-                    upDateInterval.setProgress(4);
+                    //upDateInterval.setProgress(4);
                     upDateInterval.setEnabled(false);
                     stopper();
                 }
