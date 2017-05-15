@@ -281,10 +281,16 @@ public class PhotoService extends Service {
     /* Called when the service is destroyed */
     @Override
     public void onDestroy() {
-        Log.d(TAG, "Service stopped");
 
         serviceRunning = false;
+
         if(receiver != null) unregisterReceiver(receiver);
+        if(locationManager != null && locationListener != null)
+            locationManager.removeUpdates(locationListener);
+        if(sp != null && spListener != null)
+            sp.unregisterOnSharedPreferenceChangeListener(spListener);
+
+        Log.d(TAG, "Service stopped");
 
         super.onDestroy();
     }
