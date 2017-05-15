@@ -83,15 +83,12 @@ public class DisplayCycle {
 
             if(newPhoto != null) {
                 DejaPhoto removed = history.addPhoto(newPhoto);
-                newPhoto.setShowRecently();
                 if(removed != null) priorities.add(removed);
 
             } else {
-                newPhoto = history.cycle();
-                if(newPhoto != null)
-                        newPhoto.setShowRecently();
-                return newPhoto;
+                return history.cycle();
             }
+
             return newPhoto;
         }
         return next;
@@ -120,8 +117,7 @@ public class DisplayCycle {
         priorities.updatePriorities(location, prefs);
     }
 
-
-    public void removeCurrPhotoFromHistory() {
+    public void removeCurrentPhoto() {
         history.removeFromHistory();
     }
 

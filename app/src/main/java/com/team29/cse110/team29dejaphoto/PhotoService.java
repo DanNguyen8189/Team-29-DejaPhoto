@@ -25,7 +25,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -49,8 +48,6 @@ public class PhotoService extends Service {
     /* Home screen background setter */
     private WallpaperManager background;
     private DejaPhoto currDisplayedPhoto;
-
-    Location myLocation;
 
     /* Observers */
     private BroadcastReceiver receiver;
@@ -185,27 +182,36 @@ public class PhotoService extends Service {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                                   String key) {
-                if(key.equals("UpdateInterval")) {
-                    restartAutoUpdateTask();
-                    return;
+
+                switch(key) {
+                    case "UpdateInterval":
+                        restartAutoUpdateTask();
+                        Log.d(TAG, "Update interval changed");
+
+                        return;
+
+                    case "IsLocationOn":
+                    case "IsDateOn":
+                    case "IsTimeOn":
+                        if(!(ActivityCompat.checkSelfPermission(
+                                context, Manifest.permission.ACCESS_FINE_LOCATION)
+                                == PackageManager.PERMISSION_GRANTED &&
+                                ActivityCompat.checkSelfPermission(
+                                        context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                                        == PackageManager.PERMISSION_GRANTED)) return;
+
+                        displayCycle.updatePriorities(
+                                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
+                                new Preferences(
+                                        sp.getBoolean("IsLocationOn", true),
+                                        sp.getBoolean("IsDateOn", true),
+                                        sp.getBoolean("IsTimeOn", true)
+                                )
+                        );
+                        Log.d(TAG, "Preferences changed, display cycle updated accordingly");
+
                 }
 
-                if(!(ActivityCompat.checkSelfPermission(
-                        context, Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(
-                                context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                                == PackageManager.PERMISSION_GRANTED)) return;
-
-                displayCycle.updatePriorities(
-                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
-                        new Preferences(
-                                sp.getBoolean("IsLocationOn", true),
-                                sp.getBoolean("IsDateOn", true),
-                                sp.getBoolean("IsTimeOn", true)
-                        )
-                );
-                Log.d(TAG, "Preferences changed, display cycle updated accordingly");
             }
 
         };
@@ -259,7 +265,7 @@ public class PhotoService extends Service {
             }
         };
         handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
-        Log.d(TAG, "INTERVAL IN MILLIS: " + sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
+        Log.d(TAG, "Initial Update Interval: " + sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
 
         super.onCreate();
     }
@@ -344,9 +350,6 @@ public class PhotoService extends Service {
         /* Set next photo */
 
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
-        displayCycle.updatePriorities(myLocation, new Preferences(sp.getBoolean("isLocationOn", true),
-                                                                  sp.getBoolean("isDateOn",true),
-                                                                   sp.getBoolean("isTimeOn",true)));
         if ( dejaPhoto != null ) {
             currDisplayedPhoto = dejaPhoto;
         }
@@ -453,11 +456,10 @@ public class PhotoService extends Service {
             editor.apply();
             Log.d(TAG, "Photoid is: " + photoid);
 
-            displayCycle.removeCurrPhotoFromHistory();
+            displayCycle.removeCurrentPhoto();
             cycleForward();
-
-
         }
+
         else {
             Log.d(TAG, "No reference to currently displayed photo - cannot release");
         }
@@ -494,8 +496,10 @@ public class PhotoService extends Service {
            //stores unique photo id
            editor.putString(photoid, "Karma Photo");
            editor.apply();
+
            Log.d(TAG, "Photoid is: " + photoid);
        }
+
        else {
            Log.d(TAG, "No reference to currently displayed photo - cannot set karma, or photo already has karma");
        }

@@ -51,14 +51,14 @@ public class Priorities {
         // create new temporary arraylist to hold dejaphoto objects for reshuffling
         ArrayList<DejaPhoto> temp = new ArrayList<>();
 
-        //update each photo's score
+        // update each photo's score
         for (DejaPhoto photo : pq) {
             photo.updateScore(location, prefs);
             temp.add(photo);
         }
 
-        //reset the original priorityqueue and re-add each photo from the temporary
-        //arraylist to it
+        // reset the original priorityqueue and re-add each photo from the temporary
+        // arraylist to it
         pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());
         for (DejaPhoto photo : temp) {
             pq.add(photo);

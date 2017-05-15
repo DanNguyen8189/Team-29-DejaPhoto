@@ -88,6 +88,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
                 mapBooleanToInt(prefs.isLocationOn()) * getLocationPoints(location) +
                 mapBooleanToInt(prefs.isDateOn()) * getDatePoints() +
                 mapBooleanToInt(prefs.isTimeOn()) * getTimeTakenPoints();
+
         return myScore;
     }
 
@@ -186,9 +187,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
     public boolean isShownRecently() { return showRecently; }
 
-    // set boolean to true, and reduce score by 1
     public void setShowRecently() {
-        myScore -=1;
         showRecently = true;
     }
 

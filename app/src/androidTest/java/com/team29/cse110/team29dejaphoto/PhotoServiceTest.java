@@ -74,7 +74,7 @@ public class PhotoServiceTest {
         //CHECK FULL DISPLAY CYCLE
         // Check that photo is released when at beginning of cycle
         DejaPhoto d = displayCycle.getNextPhoto();
-        displayCycle.removeCurrPhotoFromHistory();
+        displayCycle.removeCurrentPhoto();
         for(int i = 0; i < 15; i++) {
             DejaPhoto d2 = displayCycle.getNextPhoto();
             assertFalse(d.equals(d2));
@@ -82,7 +82,7 @@ public class PhotoServiceTest {
 
          // Check that a previous can be removed, when in start of history.
         d = displayCycle.getPrevPhoto();
-        displayCycle.removeCurrPhotoFromHistory();
+        displayCycle.removeCurrentPhoto();
         for(int i = 0; i < 15; i++) {
             DejaPhoto d2 = displayCycle.getNextPhoto();
             System.out.println("TESTTTTTTTTTT " + i);
@@ -92,7 +92,7 @@ public class PhotoServiceTest {
         // CHECK SMALL DISPLAY CYCLE
         // Check that photo is released when at beginning of cycle
         d = smallDisplayCycle.getNextPhoto();
-        smallDisplayCycle.removeCurrPhotoFromHistory();
+        smallDisplayCycle.removeCurrentPhoto();
         for(int i = 0; i < 4; i++ ) {
             DejaPhoto d2 = smallDisplayCycle.getNextPhoto();
             assertFalse(d.equals(d2));
@@ -100,7 +100,7 @@ public class PhotoServiceTest {
 
         // check that photo is realease when in history
         d = smallDisplayCycle.getPrevPhoto();
-        smallDisplayCycle.removeCurrPhotoFromHistory();
+        smallDisplayCycle.removeCurrentPhoto();
         for(int i = 0; i < 4; i++ ) {
             DejaPhoto d2 = smallDisplayCycle.getNextPhoto();
             assertFalse(d.equals(d2));

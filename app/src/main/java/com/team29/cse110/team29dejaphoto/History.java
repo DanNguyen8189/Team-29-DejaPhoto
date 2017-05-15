@@ -132,6 +132,23 @@ public class History {
         }
     }
 
+    public void removeFromHistory() {
+
+        if(nelems == 0) {
+            return;
+        }
+
+        if(forward) {
+            if(iterator.hasNext()) iterator.next();
+
+        } else {
+            if(iterator.hasPrevious()) iterator.previous();
+            forward = true;
+        }
+
+        iterator.remove();
+        nelems--;
+    }
 
     public void remove(SQLiteDatabase db) {
 
@@ -153,56 +170,22 @@ public class History {
             iterator.remove();
             nelems--;
         }
+
         //at beginning or middle of history
         else
         {
-                DejaPhoto released = iterator.next();
-                released.setReleased();
+            DejaPhoto released = iterator.next();
+            released.setReleased();
 
-                //maps to ints so can be stored in database
-                int karma = 0;
-                int release = 1;
+            //maps to ints so can be stored in database
+            int karma = 0;
+            int release = 1;
 
-                //adds photo on list of released photos
-                PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(), karma, release);
-                iterator.remove();
-                nelems--;
+            //adds photo on list of released photos
+            PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(), karma, release);
+            iterator.remove();
+            nelems--;
         }
-    }
-
-    public void removeFromHistory() {
-//
-//        if ( nelems == 0 ) {
-//            // Do nothing - trying to remove from empty history
-//            Log.d(TAG, "Cannot remove from history");
-//            return;
-//        }
-//
-//        if ( !checkValidPrev() ) {
-//            // We're at the end of history
-//            iterator.previous();
-//        }
-//        else {
-//            // We're at the beginning or in the middle of history
-//            iterator.next();
-//        }
-//        // Now remove from history
-//        iterator.remove();
-//        nelems--;
-
-        if(nelems == 0) {
-            return;
-        }
-        if(!forward) {
-            iterator.previous();
-            forward = true;
-        } else {
-            Log.d(TAG, "AHHHHHHHHHHHHHHHHHHH");
-            iterator.next();
-            forward = false;
-        }
-        iterator.remove();
-        nelems--;
     }
 
 }
