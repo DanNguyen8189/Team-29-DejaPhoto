@@ -195,6 +195,10 @@ public class PhotoService extends Service {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                                   String key) {
+                if(key == "UpdateInterval") {
+                    restartAutoUpdateTask();
+                    return;
+                }
 
                 if(!(ActivityCompat.checkSelfPermission(
                         context, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -296,8 +300,7 @@ public class PhotoService extends Service {
 
         /* Restart handler's autoUpdate task */
 
-        handler.removeCallbacks(autoUpdateTask);
-        handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
+        restartAutoUpdateTask();
 
         /* Set previous photo */
 
@@ -331,12 +334,16 @@ public class PhotoService extends Service {
         }
     }
 
+    private void restartAutoUpdateTask() {
+        handler.removeCallbacks(autoUpdateTask);
+        handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
+    }
+
     public void cycleForward() {
 
         /* Restart handler's autoUpdate task */
 
-        handler.removeCallbacks(autoUpdateTask);
-        handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
+        restartAutoUpdateTask();
 
         /* Set next photo */
 
