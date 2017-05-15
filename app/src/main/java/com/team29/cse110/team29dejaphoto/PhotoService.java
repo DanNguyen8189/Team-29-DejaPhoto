@@ -54,6 +54,9 @@ import java.util.Map;
 
 public class PhotoService extends Service {
 
+    /* Context */
+    Context context = this;
+
     /* Underlying Object that handles image cycling */
     private DisplayCycle displayCycle;
 
@@ -70,13 +73,14 @@ public class PhotoService extends Service {
 
     /* SharedPreferences */
     private SharedPreferences sp;
+    private SharedPreferences.OnSharedPreferenceChangeListener spListener;
 
     /* Constants */
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152;   // Number of meters in a 500 feet
     private static final long TWO_HOURS = 7200000;      // Two hours in milliseconds
     private static final int PAINT_SIZE_CONSTANT = 50;  // Constant to derive brush size
-    private static final int DEFAULT_INTERVAL = 60000;
+    private static final int DEFAULT_INTERVAL = 300000;
 
     /* Database for storing released and karma information */
     private PhotoDatabaseHelper DbHelper;
@@ -149,24 +153,6 @@ public class PhotoService extends Service {
         /* Initialize WallpaperManager object */
         background = WallpaperManager.getInstance(getApplicationContext());
 
-        /* Initialize SharedPreferences object */
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
-
-        /* Database for karma/release */
-        DbHelper = new PhotoDatabaseHelper(this);
-        db = DbHelper.getWritableDatabase();
-
-        /* Handles initializing receiver and binding filter to only receive widget intents */
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("NEXT_BUTTON");
-        filter.addAction("PREV_BUTTON");
-        filter.addAction("KARMA_BUTTON");
-        filter.addAction("RELEASE_BUTTON");
-
-        receiver = new MyReceiver();
-        registerReceiver(receiver, filter);
-
         /* Location Observer */
         locationListener = new LocationListener() {
             @Override
@@ -177,9 +163,9 @@ public class PhotoService extends Service {
 
                 displayCycle.updatePriorities(location,
                         new Preferences(
-                            sp.getBoolean("IsLocationOn", true),
-                            sp.getBoolean("IsDateOn", true),
-                            sp.getBoolean("IsTimeOn", true)
+                                sp.getBoolean("IsLocationOn", true),
+                                sp.getBoolean("IsDateOn", true),
+                                sp.getBoolean("IsTimeOn", true)
                         )
                 );
             }
@@ -199,6 +185,52 @@ public class PhotoService extends Service {
         // TODO Add time
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 0, FIVE_HUNDRED_FT, locationListener);
+
+        /* Initialize SharedPreferences object */
+        sp = getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
+
+        /* Listen to changes to SharedPreferences */
+        spListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                                  String key) {
+
+                if(!(ActivityCompat.checkSelfPermission(
+                        context, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                                context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                                == PackageManager.PERMISSION_GRANTED)) return;
+
+                displayCycle.updatePriorities(
+                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
+                        new Preferences(
+                                sp.getBoolean("IsLocationOn", true),
+                                sp.getBoolean("IsDateOn", true),
+                                sp.getBoolean("IsTimeOn", true)
+                        )
+                );
+                Log.d(TAG, "Preferences changed, display cycle updated accordingly");
+            }
+
+        };
+        sp.registerOnSharedPreferenceChangeListener(spListener);
+
+        /* Database for karma/release */
+        DbHelper = new PhotoDatabaseHelper(this);
+        db = DbHelper.getWritableDatabase();
+
+        /* Handles initializing receiver and binding filter to only receive widget intents */
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("NEXT_BUTTON");
+        filter.addAction("PREV_BUTTON");
+        filter.addAction("KARMA_BUTTON");
+        filter.addAction("RELEASE_BUTTON");
+
+        receiver = new MyReceiver();
+        registerReceiver(receiver, filter);
 
         /* Initializes DisplayCycle with photos from the system */
 
@@ -233,6 +265,7 @@ public class PhotoService extends Service {
             }
         };
         handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
+        Log.d(TAG, "INTERVAL IN MILLIS: " + sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
 
         super.onCreate();
     }
