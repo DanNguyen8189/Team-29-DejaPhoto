@@ -192,32 +192,13 @@ public class History {
         if(nelems == 0) {
             return;
         }
-<<<<<<< HEAD
         if(!forward) {
             iterator.previous();
         } else {
-=======
-
-        if ( !checkValidPrev() ) {
-            Log.d(TAG, "AHHHHHHHHHHHHHHHHHH");
-            // We're at the end of history
-            iterator.previous();
-            iterator.remove();
-            nelems--;
-        }
-        else {
-            Log.d(TAG, "AHHHHHHHHHHHHHHHHHHH");
-            // We're at the beginning or in the middle of history
->>>>>>> c2b594a428c47a32e63e165877b4be577cd17c95
             iterator.next();
-            iterator.remove();
-            nelems--;
         }
-<<<<<<< HEAD
         iterator.remove();
         nelems--;
-=======
->>>>>>> c2b594a428c47a32e63e165877b4be577cd17c95
     }
 
 }
