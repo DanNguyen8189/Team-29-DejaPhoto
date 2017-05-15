@@ -85,9 +85,9 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     public int updateScore(Location location, Preferences prefs) {
 
         myScore = getKarmaPoints() - mapBooleanToInt(isShownRecently()) +
-                  mapBooleanToInt(prefs.isLocationOn()) * getLocationPoints(location) +
-                  mapBooleanToInt(prefs.isDateOn()) * getDatePoints() +
-                  mapBooleanToInt(prefs.isTimeOn()) * getTimeTakenPoints();
+                mapBooleanToInt(prefs.isLocationOn()) * getLocationPoints(location) +
+                mapBooleanToInt(prefs.isDateOn()) * getDatePoints() +
+                mapBooleanToInt(prefs.isTimeOn()) * getTimeTakenPoints();
         return myScore;
     }
 
