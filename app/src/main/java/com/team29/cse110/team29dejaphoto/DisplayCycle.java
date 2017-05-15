@@ -129,7 +129,7 @@ public class DisplayCycle {
     }
 
     public void removeCurrPhotoFromHistory() {
-        history.removeFromHistory2();
+        history.removeFromHistory();
     }
 
 }

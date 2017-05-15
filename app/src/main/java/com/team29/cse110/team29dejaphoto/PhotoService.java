@@ -130,6 +130,10 @@ public class PhotoService extends Service {
     @Override
     public void onCreate() {
 
+        /* Create a notification in order to start the service in the foreground so that it
+         * continuously runs
+         */
+
         Intent notificationIntent = new Intent(this, MainActivity.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
@@ -138,10 +142,10 @@ public class PhotoService extends Service {
         Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("My Awesome App")
-                .setContentText("Doing some work...")
+                .setContentText("effortlessly reminiscing on past times")
                 .setContentIntent(pendingIntent).build();
 
-        startForeground(1, notification);
+        startForeground(1, notification); // Start Service
 
         /* Forward Permissions Check */
         // TODO Handle no permissions and/or GPS/Network disabled
@@ -195,7 +199,7 @@ public class PhotoService extends Service {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                                   String key) {
-                if(key == "UpdateInterval") {
+                if(key.equals("UpdateInterval")) {
                     restartAutoUpdateTask();
                     return;
                 }
@@ -274,6 +278,7 @@ public class PhotoService extends Service {
         super.onCreate();
     }
 
+    /* Called when the service is started */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Service started");
@@ -281,6 +286,7 @@ public class PhotoService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /* Called when the service is destroyed */
     @Override
     public void onDestroy() {
         Log.d(TAG, "Service stopped");
@@ -296,6 +302,7 @@ public class PhotoService extends Service {
         return null;
     }
 
+    /* Method to go backwards one photo */
     public void cycleBack() {
 
         /* Restart handler's autoUpdate task */
@@ -335,11 +342,13 @@ public class PhotoService extends Service {
         }
     }
 
+    /* Reset the user specified timer whenever they click the next or back button */
     private void restartAutoUpdateTask() {
         handler.removeCallbacks(autoUpdateTask);
         handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
     }
 
+    /* Method to go forwards one photo */
     public void cycleForward() {
 
         /* Restart handler's autoUpdate task */
@@ -439,11 +448,17 @@ public class PhotoService extends Service {
             Log.d(TAG, "Releasing currently displayed photo");
             currDisplayedPhoto.setReleased();
             PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 0, 1);
+
+            SharedPreferences.Editor editor = sp.edit();
+            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "0" + "1";
+            editor.putString(photoid, "Release Photo");
+            editor.apply();
+            Log.d(TAG, "Photoid is: " + photoid);
+
             displayCycle.removeCurrPhotoFromHistory();
             cycleForward();
 
-            //displayCycle.release(db);
-            //cycleForward();
+
         }
         else {
             Log.d(TAG, "No reference to currently displayed photo - cannot release");
@@ -472,6 +487,12 @@ public class PhotoService extends Service {
                            sp.getBoolean("IsDateOn", true),
                            sp.getBoolean("IsTimeOn", true)));
            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
+
+           SharedPreferences.Editor editor = sp.edit();
+           String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0";
+           editor.putString(photoid, "Karma Photo");
+           editor.apply();
+           Log.d(TAG, "Photoid is: " + photoid);
        }
        else {
            Log.d(TAG, "No reference to currently displayed photo - cannot set karma, or photo already has karma");

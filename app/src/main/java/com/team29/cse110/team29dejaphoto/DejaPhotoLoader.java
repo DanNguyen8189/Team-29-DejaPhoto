@@ -2,6 +2,7 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -80,7 +81,6 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         int numOfPhotos = cursor.getCount();
         int numInDB = readCursor.getCount();
-        Log.d(TAG, "Number of photos: " + numOfPhotos);
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
@@ -89,6 +89,7 @@ public class DejaPhotoLoader implements PhotoLoader {
         boolean skip = false;
         while ( cursor.moveToNext() ) {
 
+            /*
             dateAdded = cursor.getLong(DATE_ADDED_INDEX);
             while (readCursor.moveToNext()) {
 
@@ -132,22 +133,49 @@ public class DejaPhotoLoader implements PhotoLoader {
                 continue;
             }
 
+            */
+
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
+
+            SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
+            String photoIdKarma = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0";
+            String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1";
+
+            //photo is released so skip loading
+            if(sp.contains(photoIdRelease))
+            {
+                continue;
+            }
+
+            int numPhotos = 0;
+
             // TODO Check that the photo is from the camera album
-            if(file.exists())
-            gallery[count] = new DejaPhoto(uri,
-                    cursor.getDouble(LAT_INDEX),
-                    cursor.getDouble(LONG_INDEX),
-                    cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+            if(file.exists()) {
+                gallery[count] = new DejaPhoto(uri,
+                        cursor.getDouble(LAT_INDEX),
+                        cursor.getDouble(LONG_INDEX),
+                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+
+                Log.d(TAG, "Loading photo: " + uri);
+                numPhotos++;
+            }
+
+            //photo has karma so give karma
+            if(sp.contains(photoIdKarma)){
+                gallery[count].setKarma();
+            }
 
             count++;
         }
 
         cursor.close();
+
+        Log.d(TAG, "Finished Loading, total number of photos loaded: " + numOfPhotos);
+
         return gallery;
     }
 

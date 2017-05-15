@@ -169,7 +169,7 @@ public class History {
         }
     }
 
-    public void removeFromHistory2() {
+    public void removeFromHistory() {
 
         if ( nelems == 0 ) {
             // Do nothing - trying to remove from empty history
@@ -188,21 +188,6 @@ public class History {
         // Now remove from history
         iterator.remove();
         nelems--;
-    }
-
-    public void removeFromHistory() {
-
-        if ( nelems == 0 ) {
-            // Do nothing - trying to remove from empty history
-            Log.d(TAG, "Cannot remove from history");
-            return;
-        }
-        else {
-            getPrev();
-            iterator.remove();
-            nelems--;
-        }
-
     }
 
 }
