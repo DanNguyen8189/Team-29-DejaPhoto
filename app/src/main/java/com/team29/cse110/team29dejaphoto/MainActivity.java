@@ -394,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
     public void stopper() {
         Log.d(TAG, "Stopper button pushed");
         Intent intent = new Intent(MainActivity.this, PhotoService.class);
+        dejaPreferences.edit().remove(IsAppRunning).apply();
         stopService(intent);
     }
 
