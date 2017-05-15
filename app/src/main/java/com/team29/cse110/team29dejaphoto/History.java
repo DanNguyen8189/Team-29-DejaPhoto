@@ -194,9 +194,11 @@ public class History {
         }
         if(!forward) {
             iterator.previous();
+            forward = true;
         } else {
             Log.d(TAG, "AHHHHHHHHHHHHHHHHHHH");
             iterator.next();
+            forward = false;
         }
         iterator.remove();
         nelems--;

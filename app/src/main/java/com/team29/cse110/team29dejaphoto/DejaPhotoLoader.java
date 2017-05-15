@@ -84,11 +84,11 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
+        int numPhotos = 0;
+
         int count = 0;
         long dateAdded = 0;
         boolean skip = false;
-
-        int numPhotos = 0;
 
         while ( cursor.moveToNext() ) {
 
