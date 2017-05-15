@@ -83,6 +83,7 @@ public class DisplayCycle {
 
             if(newPhoto != null) {
                 DejaPhoto removed = history.addPhoto(newPhoto);
+                newPhoto.setShowRecently();
                 if(removed != null) priorities.add(removed);
 
             } else {
@@ -116,17 +117,6 @@ public class DisplayCycle {
         priorities.updatePriorities(location, prefs);
     }
 
-    public void release(SQLiteDatabase db) {
-
-        if ( history.isHistoryEmpty() ) {
-            Log.d(TAG, "No photos in history yet");
-            return;
-        }
-        else {
-            history.remove(db);
-        }
-
-    }
 
     public void removeCurrPhotoFromHistory() {
         history.removeFromHistory();

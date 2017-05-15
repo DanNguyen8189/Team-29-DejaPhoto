@@ -143,9 +143,14 @@ public class DejaPhotoLoader implements PhotoLoader {
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
-
+            //Shared Preference stores unique photoid that represents if photo was
+            //released or given karma
             SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
+
+            //Unique Id that would be stored if given karma
             String photoIdKarma = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0";
+
+            //Unique Id that would be stored if released
             String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1";
 
             //photo is released so skip loading
