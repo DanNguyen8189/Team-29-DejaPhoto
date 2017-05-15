@@ -178,16 +178,19 @@ public class History {
         }
 
         if ( !checkValidPrev() ) {
+            Log.d(TAG, "AHHHHHHHHHHHHHHHHHH");
             // We're at the end of history
             iterator.previous();
+            iterator.remove();
+            nelems--;
         }
         else {
+            Log.d(TAG, "AHHHHHHHHHHHHHHHHHHH");
             // We're at the beginning or in the middle of history
             iterator.next();
+            iterator.remove();
+            nelems--;
         }
-        // Now remove from history
-        iterator.remove();
-        nelems--;
     }
 
 }
