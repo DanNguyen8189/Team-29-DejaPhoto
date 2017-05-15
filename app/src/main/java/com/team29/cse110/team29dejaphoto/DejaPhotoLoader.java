@@ -74,8 +74,6 @@ public class DejaPhotoLoader implements PhotoLoader {
         Cursor readCursor = dbRead.query("PHOTOS", PHOTOS_PROJECTIONS, null, null, null, null, "DATE_ADDED ASC");
         Cursor writeCursor = dbWrite.query("PHOTOS", PHOTOS_PROJECTIONS, null, null, null, null, "DATE_ADDED ASC");
 
-        //printCurrentDatabaseRows(readCursor);
-
         if ( cursor == null || readCursor == null || writeCursor == null ) {
             return null;
         }
@@ -87,77 +85,7 @@ public class DejaPhotoLoader implements PhotoLoader {
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
         int count = 0;
-        int countDB = 0;
-        boolean skip = false;
-        long dateAddedDB;
-        long dateAdded;
         while ( cursor.moveToNext() ) {
-
-           // if ( countDB < numInDB ) {
-
-//                /* First, remove photos that were deleted from the users phone */
-//                dateAddedDB = readCursor.getLong(0);
-//                while ( dateAddedDB < cursor.getLong(DATE_ADDED_INDEX) ) {
-//                    dbWrite.delete("PHOTOS", "DATE_ADDED = " + dateAddedDB, null);
-//                    readCursor.moveToNext();
-//                    dateAddedDB = readCursor.getLong(0);
-//                    countDB++;
-//                }
-//
-//                /* Check identical photos for karma or released tag */
-//                while ( dateAddedDB == cursor.getLong(DATE_ADDED_INDEX) ) {
-//
-//                    if ( readCursor.getInt(1) == 1 ) {
-//                        DejaPhoto dejaPhoto = createNewDejaPhoto(cursor, true);
-//                    }
-//                    else {
-//                        skip = true;
-//                    }
-
- //               }
-   //         }
-            /* causes bugs for now
-            if ( readCursor.getCount() != 0 ) {
-                Log.d(TAG, "Our database has photos");
-                dateAddedDB = readCursor.getLong(0);
-                while(dateAddedDB < cursor.getLong(DATE_ADDED_INDEX))
-                {
-                    dbWrite.delete("PHOTOS", "DATE_ADDED = " + dateAddedDB, null);
-                    readCursor.moveToNext();
-                    dateAddedDB = readCursor.getLong(0);
-                }
-
-                if(dateAddedDB == cursor.getLong(DATE_ADDED_INDEX))
-                {
-                    if(readCursor.getInt(3) == 1) {
-                        cursor.moveToNext();
-                    }
-                    else {
-
-                        String filename = cursor.getString(TITLE_INDEX) + ".jpg";
-                        String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
-                        File file = new File(absolutePath);
-                        Uri uri = Uri.fromFile(file);
-
-                        DejaPhoto dejaPhoto = new DejaPhoto(uri,
-                                cursor.getDouble(LAT_INDEX),
-                                cursor.getDouble(LONG_INDEX),
-                                cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
-                        dejaPhoto.setKarma();
-                        // TODO Check that the photo is from the camera album
-                        if(file.exists()) gallery[count] = dejaPhoto;
-                        count++;
-                        cursor.moveToNext();
-
-                    }
-                }
-            }
-
-            if ( readCursor.getCount() != 0 && readCursor.getInt(3) == 1 ) {
-                Log.d(TAG, "Please skip to the next iteration - we don't want duplicate photos");
-                continue;
-            }
-            */
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
@@ -186,44 +114,6 @@ public class DejaPhotoLoader implements PhotoLoader {
     public DejaPhoto[] getNewPhotosAsArray(Context context) {
         // TODO
         return new DejaPhoto[]{};
-    }
-
-    public void printCurrentDatabaseRows(Cursor cursor) {
-
-        while ( cursor.moveToNext() ) {
-            Log.d(TAG, "Date added is: " + cursor.getInt(0));
-            Log.d(TAG, "Karma value: " + cursor.getInt(1));
-            Log.d(TAG, "Released is: " + cursor.getInt(2));
-        }
-    }
-
-    public DejaPhoto createNewDejaPhoto(Cursor cursor, boolean karma) {
-
-        String filename = cursor.getString(TITLE_INDEX) + ".jpg";
-        String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
-        File file = new File(absolutePath);
-        Uri uri = Uri.fromFile(file);
-
-        if ( file.exists() ) {
-            DejaPhoto dejaPhoto = new DejaPhoto(uri,
-                    cursor.getDouble(LAT_INDEX),
-                    cursor.getDouble(LONG_INDEX),
-                    cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
-
-            if (karma) {
-                dejaPhoto.setKarma();
-            }
-            return dejaPhoto;
-        }
-        return null;
-    }
-
-    public DejaPhoto[] getNewPhotosAsArray2(Context context) {
-
-        Log.d(TAG, "Entering new getNewPhotosAsArray method");
-
-
-        return null;
     }
 
 }
