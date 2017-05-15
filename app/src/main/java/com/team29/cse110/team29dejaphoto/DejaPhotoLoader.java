@@ -74,7 +74,7 @@ public class DejaPhotoLoader implements PhotoLoader {
         Cursor readCursor = dbRead.query("PHOTOS", PHOTOS_PROJECTIONS, null, null, null, null, "DATE_ADDED ASC");
         Cursor writeCursor = dbWrite.query("PHOTOS", PHOTOS_PROJECTIONS, null, null, null, null, "DATE_ADDED ASC");
 
-        printCurrentDatabaseRows(readCursor);
+        //printCurrentDatabaseRows(readCursor);
 
         if ( cursor == null || readCursor == null || writeCursor == null ) {
             return null;
@@ -93,29 +93,29 @@ public class DejaPhotoLoader implements PhotoLoader {
         long dateAdded;
         while ( cursor.moveToNext() ) {
 
-            if ( countDB < numInDB ) {
+           // if ( countDB < numInDB ) {
 
-                /* First, remove photos that were deleted from the users phone */
-                dateAddedDB = readCursor.getLong(0);
-                while ( dateAddedDB < cursor.getLong(DATE_ADDED_INDEX) ) {
-                    dbWrite.delete("PHOTOS", "DATE_ADDED = " + dateAddedDB, null);
-                    readCursor.moveToNext();
-                    dateAddedDB = readCursor.getLong(0);
-                    countDB++;
-                }
+//                /* First, remove photos that were deleted from the users phone */
+//                dateAddedDB = readCursor.getLong(0);
+//                while ( dateAddedDB < cursor.getLong(DATE_ADDED_INDEX) ) {
+//                    dbWrite.delete("PHOTOS", "DATE_ADDED = " + dateAddedDB, null);
+//                    readCursor.moveToNext();
+//                    dateAddedDB = readCursor.getLong(0);
+//                    countDB++;
+//                }
+//
+//                /* Check identical photos for karma or released tag */
+//                while ( dateAddedDB == cursor.getLong(DATE_ADDED_INDEX) ) {
+//
+//                    if ( readCursor.getInt(1) == 1 ) {
+//                        DejaPhoto dejaPhoto = createNewDejaPhoto(cursor, true);
+//                    }
+//                    else {
+//                        skip = true;
+//                    }
 
-                /* Check identical photos for karma or released tag */
-                while ( dateAddedDB == cursor.getLong(DATE_ADDED_INDEX) ) {
-
-                    if ( readCursor.getInt(1) == 1 ) {
-                        DejaPhoto dejaPhoto = createNewDejaPhoto(cursor, true);
-                    }
-                    else {
-                        skip = true;
-                    }
-
-                }
-            }
+ //               }
+   //         }
             /* causes bugs for now
             if ( readCursor.getCount() != 0 ) {
                 Log.d(TAG, "Our database has photos");
