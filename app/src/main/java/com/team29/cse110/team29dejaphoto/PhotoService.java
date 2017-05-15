@@ -344,6 +344,9 @@ public class PhotoService extends Service {
         /* Set next photo */
 
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
+        displayCycle.updatePriorities(myLocation, new Preferences(sp.getBoolean("isLocationOn", true),
+                                                                  sp.getBoolean("isDateOn",true),
+                                                                   sp.getBoolean("isTimeOn",true)));
         if ( dejaPhoto != null ) {
             currDisplayedPhoto = dejaPhoto;
         }

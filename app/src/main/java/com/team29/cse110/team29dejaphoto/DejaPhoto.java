@@ -184,11 +184,11 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
         released = true;
     }
 
-    public boolean isShownRecently() {
-        return showRecently;
-    }
+    public boolean isShownRecently() { return showRecently; }
 
+    // set boolean to true, and reduce score by 1
     public void setShowRecently() {
+        myScore -=1;
         showRecently = true;
     }
 

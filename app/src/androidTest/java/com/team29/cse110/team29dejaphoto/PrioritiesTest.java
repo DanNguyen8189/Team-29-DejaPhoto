@@ -31,6 +31,8 @@ public class PrioritiesTest {
 
     /**
      * A helper method for instantiating test objects before every test.
+     * ** NOTE ** to test this method between the hours of 12am-3am, add 3 hours to calendar instead
+     *            of subtracting 3 hours.
      */
     @Before
     public void setUp() {

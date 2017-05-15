@@ -115,6 +115,7 @@ public class History {
             DejaPhoto toCycle = historyList.removeLast();
             historyList.addFirst(toCycle);
             iterator = historyList.listIterator();
+
             return toCycle;
         }
         return null;

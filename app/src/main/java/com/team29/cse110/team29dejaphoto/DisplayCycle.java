@@ -87,7 +87,10 @@ public class DisplayCycle {
                 if(removed != null) priorities.add(removed);
 
             } else {
-                return history.cycle();
+                newPhoto = history.cycle();
+                if(newPhoto != null)
+                        newPhoto.setShowRecently();
+                return newPhoto;
             }
             return newPhoto;
         }
