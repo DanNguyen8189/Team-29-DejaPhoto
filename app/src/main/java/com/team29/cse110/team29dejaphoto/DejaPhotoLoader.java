@@ -84,6 +84,8 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
+        int numPhotos = 0;
+
         int count = 0;
         long dateAdded = 0;
         boolean skip = false;
@@ -156,8 +158,6 @@ public class DejaPhotoLoader implements PhotoLoader {
                 continue;
             }
 
-            int numPhotos = 0;
-
             // TODO Check that the photo is from the camera album
             if(file.exists()) {
                 gallery[count] = new DejaPhoto(uri,
@@ -179,7 +179,7 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         cursor.close();
 
-        Log.d(TAG, "Finished Loading, total number of photos loaded: " + numOfPhotos);
+        Log.d(TAG, "Finished Loading, total number of photos loaded: " + numPhotos);
 
         return gallery;
     }
