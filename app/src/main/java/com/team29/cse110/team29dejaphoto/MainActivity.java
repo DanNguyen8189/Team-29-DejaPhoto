@@ -187,9 +187,9 @@ public class MainActivity extends AppCompatActivity {
         timeInterValListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                SharedPreferences.Editor editor  = dejaPreferences.edit();
+                /*SharedPreferences.Editor editor  = dejaPreferences.edit();
                 editor.putInt(UpdateInterval, (progress + 1) * 60000);
-                editor.apply();
+                editor.apply();*/
                 updateIntervalNumber.setText((progress + 1)/60 + " hours " + (progress + 1)%60 + " minutes");
             }
 
@@ -200,7 +200,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                SharedPreferences.Editor editor  = dejaPreferences.edit();
+                editor.putInt(UpdateInterval, (seekBar.getProgress() + 1)*60000);
+                editor.apply();
             }
         };
 
