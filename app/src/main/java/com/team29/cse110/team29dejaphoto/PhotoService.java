@@ -13,18 +13,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -34,19 +27,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
-
-import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by David Duplantier, Dan, Wis and Brian on 5/9/17.
@@ -395,9 +381,8 @@ public class PhotoService extends Service {
         String locationTag;
 
         // Geocoder to get address from remote server
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> list = geocoder.getFromLocation(location.getLatitude(),
-                                                      location.getLongitude(),1);
+        Geocoder geocoder;
+        List<Address> list;
 
         // Generate new bitmap and paint objects for modification
         Bitmap newBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -410,7 +395,13 @@ public class PhotoService extends Service {
         // get address for location
         try {
 
+            // Geocoder to get address from remote server
+            geocoder = new Geocoder(this, Locale.getDefault());
+            list = geocoder.getFromLocation(location.getLatitude(),
+                    location.getLongitude(),1);
+
             locationTag = list.get(0).getAddressLine(0);
+
         }
 
         // if no valid location
@@ -421,7 +412,7 @@ public class PhotoService extends Service {
 
         // Write location info to bitmap and return
         paint.getTextBounds(locationTag, 0, locationTag.length(), rect);
-        canvas.drawText(locationTag, 0, newBitmap.getHeight() - 30, paint);
+        canvas.drawText(locationTag, 0, newBitmap.getHeight()-newBitmap.getHeight()/5, paint);
 
         Log.d(TAG, "Printed location on photo: " + locationTag);
 
