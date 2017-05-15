@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
                     toggleSetting(IsAppRunning, true);
                     dejavu.setClickable(true);
                     dejavu.setChecked(true);
+
+                    upDateInterval.setEnabled(true);
+                    upDateInterval.setProgress(4);
                     starter();
                 }
 
@@ -102,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                     toggleSetting(IsAppRunning, false);
                     dejavu.setChecked(false);
                     dejavu.setClickable(false);
+                    upDateInterval.setProgress(4);
+                    upDateInterval.setEnabled(false);
                     stopper();
                 }
             }
@@ -271,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             /*check what update interval the user has set*/
-            upDateInterval.setProgress(dejaPreferences.getInt(UpdateInterval, 5)/60000 - 1);
+            upDateInterval.setProgress(dejaPreferences.getInt(UpdateInterval, 300000)/60000 - 1);
         }
         else{
             Log.d(TAG, "disable app");
