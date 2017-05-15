@@ -170,22 +170,33 @@ public class History {
     }
 
     public void removeFromHistory() {
+//
+//        if ( nelems == 0 ) {
+//            // Do nothing - trying to remove from empty history
+//            Log.d(TAG, "Cannot remove from history");
+//            return;
+//        }
+//
+//        if ( !checkValidPrev() ) {
+//            // We're at the end of history
+//            iterator.previous();
+//        }
+//        else {
+//            // We're at the beginning or in the middle of history
+//            iterator.next();
+//        }
+//        // Now remove from history
+//        iterator.remove();
+//        nelems--;
 
-        if ( nelems == 0 ) {
-            // Do nothing - trying to remove from empty history
-            Log.d(TAG, "Cannot remove from history");
+        if(nelems == 0) {
             return;
         }
-
-        if ( !checkValidPrev() ) {
-            // We're at the end of history
+        if(!forward) {
             iterator.previous();
-        }
-        else {
-            // We're at the beginning or in the middle of history
+        } else {
             iterator.next();
         }
-        // Now remove from history
         iterator.remove();
         nelems--;
     }
