@@ -81,7 +81,6 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         int numOfPhotos = cursor.getCount();
         int numInDB = readCursor.getCount();
-        Log.d(TAG, "Number of photos: " + numOfPhotos);
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
@@ -141,9 +140,14 @@ public class DejaPhotoLoader implements PhotoLoader {
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
-
+            //Shared Preference stores unique photoid that represents if photo was
+            //released or given karma
             SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
+
+            //Unique Id that would be stored if given karma
             String photoIdKarma = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0";
+
+            //Unique Id that would be stored if released
             String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1";
 
             //photo is released so skip loading
@@ -152,14 +156,18 @@ public class DejaPhotoLoader implements PhotoLoader {
                 continue;
             }
 
-
+            int numPhotos = 0;
 
             // TODO Check that the photo is from the camera album
-            if(file.exists())
-            gallery[count] = new DejaPhoto(uri,
-                    cursor.getDouble(LAT_INDEX),
-                    cursor.getDouble(LONG_INDEX),
-                    cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+            if(file.exists()) {
+                gallery[count] = new DejaPhoto(uri,
+                        cursor.getDouble(LAT_INDEX),
+                        cursor.getDouble(LONG_INDEX),
+                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+
+                Log.d(TAG, "Loading photo: " + uri);
+                numPhotos++;
+            }
 
             //photo has karma so give karma
             if(sp.contains(photoIdKarma)){
@@ -170,6 +178,9 @@ public class DejaPhotoLoader implements PhotoLoader {
         }
 
         cursor.close();
+
+        Log.d(TAG, "Finished Loading, total number of photos loaded: " + numOfPhotos);
+
         return gallery;
     }
 
