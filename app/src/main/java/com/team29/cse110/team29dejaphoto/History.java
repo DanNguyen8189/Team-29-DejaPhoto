@@ -164,7 +164,7 @@ public class History {
         }
     }
 
-    public void removeFromHistory() {
+    public void removeFromHistory2() {
 
         if ( nelems == 0 ) {
             // Do nothing - trying to remove from empty history
@@ -183,6 +183,27 @@ public class History {
         // Now remove from history
         iterator.remove();
         nelems--;
+    }
+
+    public void removeFromHistory() {
+
+        if ( nelems == 0 ) {
+            // Do nothing - trying to remove from empty history
+            Log.d(TAG, "Cannot remove from history");
+            return;
+        }
+
+        Log.d(TAG, "Removing currently displayed photo from history");
+        if ( forward && checkValidNext() ) {
+            iterator.previous();
+            iterator.remove();
+            nelems--;
+        }
+        else if ( !forward && checkValidPrev() ) {
+            iterator.next();
+            iterator.remove();
+            nelems--;
+        }
     }
 
 }

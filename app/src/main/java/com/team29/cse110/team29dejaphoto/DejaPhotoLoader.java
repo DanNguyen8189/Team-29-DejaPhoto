@@ -85,7 +85,52 @@ public class DejaPhotoLoader implements PhotoLoader {
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
         int count = 0;
+        long dateAdded = 0;
+        boolean skip = false;
         while ( cursor.moveToNext() ) {
+
+            dateAdded = cursor.getLong(DATE_ADDED_INDEX);
+            while (readCursor.moveToNext()) {
+
+                if ( readCursor.getLong(0) == dateAdded ) {
+
+                    if ( readCursor.getInt(1) == 1 ) {
+                        // This photo has karma.
+                        String filename = cursor.getString(TITLE_INDEX) + ".jpg";
+                        String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
+                        File file = new File(absolutePath);
+                        Uri uri = Uri.fromFile(file);
+                        Log.d(TAG, "Record found!!!!!! Photo: " + uri);
+
+                        // TODO Check that the photo is from the camera album
+                        if(file.exists()) {
+                            DejaPhoto dejaPhoto = new DejaPhoto(uri,
+                                    cursor.getDouble(LAT_INDEX),
+                                    cursor.getDouble(LONG_INDEX),
+                                    cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+                            dejaPhoto.setKarma();
+                            gallery[count] = dejaPhoto;
+                            count++;
+                            skip = true;
+                        }
+                    }
+                    else {
+                        // This photo was released
+                        skip = true;
+                    }
+                }
+                else {
+                    skip = false;
+                    if ( readCursor.getLong(0) > dateAdded ) {
+                        break;
+                    }
+                }
+
+            }
+
+            if (skip) {
+                continue;
+            }
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
