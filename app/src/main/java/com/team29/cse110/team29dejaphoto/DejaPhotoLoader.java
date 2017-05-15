@@ -79,58 +79,13 @@ public class DejaPhotoLoader implements PhotoLoader {
         }
 
         int numOfPhotos = cursor.getCount();
+        int numInDB = readCursor.getCount();
         Log.d(TAG, "Number of photos: " + numOfPhotos);
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
         int count = 0;
-        boolean canMove = true;
-        long dateAddedDB;
-        long dateAdded;
         while ( cursor.moveToNext() ) {
-
-            /* causes bugs for now
-            if ( readCursor.getCount() != 0 ) {
-                Log.d(TAG, "Our database has photos");
-                dateAddedDB = readCursor.getLong(0);
-                while(dateAddedDB < cursor.getLong(DATE_ADDED_INDEX))
-                {
-                    dbWrite.delete("PHOTOS", "DATE_ADDED = " + dateAddedDB, null);
-                    readCursor.moveToNext();
-                    dateAddedDB = readCursor.getLong(0);
-                }
-
-                if(dateAddedDB == cursor.getLong(DATE_ADDED_INDEX))
-                {
-                    if(readCursor.getInt(3) == 1) {
-                        cursor.moveToNext();
-                    }
-                    else {
-
-                        String filename = cursor.getString(TITLE_INDEX) + ".jpg";
-                        String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
-                        File file = new File(absolutePath);
-                        Uri uri = Uri.fromFile(file);
-
-                        DejaPhoto dejaPhoto = new DejaPhoto(uri,
-                                cursor.getDouble(LAT_INDEX),
-                                cursor.getDouble(LONG_INDEX),
-                                cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
-                        dejaPhoto.setKarma();
-                        // TODO Check that the photo is from the camera album
-                        if(file.exists()) gallery[count] = dejaPhoto;
-                        count++;
-                        cursor.moveToNext();
-
-                    }
-                }
-            }
-
-            if ( readCursor.getCount() != 0 && readCursor.getInt(3) == 1 ) {
-                Log.d(TAG, "Please skip to the next iteration - we don't want duplicate photos");
-                continue;
-            }
-            */
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
