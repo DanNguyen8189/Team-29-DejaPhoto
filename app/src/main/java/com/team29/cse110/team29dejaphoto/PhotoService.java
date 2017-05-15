@@ -448,11 +448,17 @@ public class PhotoService extends Service {
             Log.d(TAG, "Releasing currently displayed photo");
             currDisplayedPhoto.setReleased();
             PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 0, 1);
+
+            SharedPreferences.Editor editor = sp.edit();
+            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "0" + "1";
+            editor.putString(photoid, "Release Photo");
+            editor.apply();
+            Log.d(TAG, "Photoid is: " + photoid);
+
             displayCycle.removeCurrPhotoFromHistory();
             cycleForward();
 
-            //displayCycle.release(db);
-            //cycleForward();
+
         }
         else {
             Log.d(TAG, "No reference to currently displayed photo - cannot release");
@@ -481,6 +487,12 @@ public class PhotoService extends Service {
                            sp.getBoolean("IsDateOn", true),
                            sp.getBoolean("IsTimeOn", true)));
            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
+
+           SharedPreferences.Editor editor = sp.edit();
+           String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0";
+           editor.putString(photoid, "Karma Photo");
+           editor.apply();
+           Log.d(TAG, "Photoid is: " + photoid);
        }
        else {
            Log.d(TAG, "No reference to currently displayed photo - cannot set karma, or photo already has karma");

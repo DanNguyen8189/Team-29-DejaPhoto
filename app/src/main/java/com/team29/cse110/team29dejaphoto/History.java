@@ -15,7 +15,7 @@ public class History {
     private static final String TAG = "History";
 
     private LinkedList<DejaPhoto> historyList; // Underlying List structure
-    private ListIterator<DejaPhoto> iterator;
+    private ListIterator<DejaPhoto> iterator;  // Iterator to move through the history
     private boolean forward;                   // Whether the iterator is currently moving forward
     private int nelems;                        // Number of elements
 
@@ -89,23 +89,28 @@ public class History {
     public DejaPhoto addPhoto(DejaPhoto photo) {
         DejaPhoto removed = null;
 
+        // if history is full, take the earliest photo out to make room for the new one
         if(nelems == 10) {
             removed = historyList.removeLast();
         } else {
             nelems ++;
         }
 
+        // add photo to the history
         historyList.addFirst(photo);
         iterator = historyList.listIterator();
 
+        //this photo will be added back to the priority queue
         return removed;
     }
 
     /**
      * Cycles the last photo in the history towards the front
      * @return DejaPhoto cycled back to the front of the list
+     * used in the event there are less than 10 photos total
      */
     public DejaPhoto cycle() {
+        // make sure we have photos. If we do, proceed
         if(nelems != 0) {
             DejaPhoto toCycle = historyList.removeLast();
             historyList.addFirst(toCycle);
@@ -164,7 +169,7 @@ public class History {
         }
     }
 
-    public void removeFromHistory2() {
+    public void removeFromHistory() {
 
         if ( nelems == 0 ) {
             // Do nothing - trying to remove from empty history
@@ -183,27 +188,6 @@ public class History {
         // Now remove from history
         iterator.remove();
         nelems--;
-    }
-
-    public void removeFromHistory() {
-
-        if ( nelems == 0 ) {
-            // Do nothing - trying to remove from empty history
-            Log.d(TAG, "Cannot remove from history");
-            return;
-        }
-
-        Log.d(TAG, "Removing currently displayed photo from history");
-        if ( forward && checkValidNext() ) {
-            iterator.previous();
-            iterator.remove();
-            nelems--;
-        }
-        else if ( !forward && checkValidPrev() ) {
-            iterator.next();
-            iterator.remove();
-            nelems--;
-        }
     }
 
 }
