@@ -81,7 +81,6 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         int numOfPhotos = cursor.getCount();
         int numInDB = readCursor.getCount();
-        Log.d(TAG, "Number of photos: " + numOfPhotos);
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
@@ -152,14 +151,18 @@ public class DejaPhotoLoader implements PhotoLoader {
                 continue;
             }
 
-
+            int numPhotos = 0;
 
             // TODO Check that the photo is from the camera album
-            if(file.exists())
-            gallery[count] = new DejaPhoto(uri,
-                    cursor.getDouble(LAT_INDEX),
-                    cursor.getDouble(LONG_INDEX),
-                    cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+            if(file.exists()) {
+                gallery[count] = new DejaPhoto(uri,
+                        cursor.getDouble(LAT_INDEX),
+                        cursor.getDouble(LONG_INDEX),
+                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+
+                Log.d(TAG, "Loading photo: " + uri);
+                numPhotos++;
+            }
 
             //photo has karma so give karma
             if(sp.contains(photoIdKarma)){
@@ -170,6 +173,9 @@ public class DejaPhotoLoader implements PhotoLoader {
         }
 
         cursor.close();
+
+        Log.d(TAG, "Finished Loading, total number of photos loaded: " + numOfPhotos);
+
         return gallery;
     }
 
