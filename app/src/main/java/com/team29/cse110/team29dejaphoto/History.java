@@ -2,6 +2,7 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -10,6 +11,8 @@ import java.util.ListIterator;
  * Manages history of previous photos
  */
 public class History {
+
+    private static final String TAG = "History";
 
     private LinkedList<DejaPhoto> historyList; // Underlying List structure
     private ListIterator<DejaPhoto> iterator;
@@ -165,6 +168,7 @@ public class History {
 
         if ( nelems == 0 ) {
             // Do nothing - trying to remove from empty history
+            Log.d(TAG, "Cannot remove from history");
             return;
         }
 

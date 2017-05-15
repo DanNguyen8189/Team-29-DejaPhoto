@@ -218,4 +218,12 @@ public class DejaPhotoLoader implements PhotoLoader {
         return null;
     }
 
+    public DejaPhoto[] getNewPhotosAsArray2(Context context) {
+
+        Log.d(TAG, "Entering new getNewPhotosAsArray method");
+
+
+        return null;
+    }
+
 }

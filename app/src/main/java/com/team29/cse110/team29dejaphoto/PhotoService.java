@@ -452,6 +452,17 @@ public class PhotoService extends Service {
        if ( currDisplayedPhoto != null && !currDisplayedPhoto.getKarma() ) {
            Log.d(TAG, "Setting karma on currently displayed photo");
            currDisplayedPhoto.setKarma();
+           if(!(ActivityCompat.checkSelfPermission(
+                   context, Manifest.permission.ACCESS_FINE_LOCATION)
+                   == PackageManager.PERMISSION_GRANTED &&
+                   ActivityCompat.checkSelfPermission(
+                           context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                           == PackageManager.PERMISSION_GRANTED)) return;
+           currDisplayedPhoto.updateScore(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
+                   new Preferences(
+                           sp.getBoolean("IsLocationOn", true),
+                           sp.getBoolean("IsDateOn", true),
+                           sp.getBoolean("IsTimeOn", true)));
            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
        }
        else {
