@@ -197,18 +197,12 @@ public class History {
             Log.d(TAG, "Cannot remove from history");
             return;
         }
+        else {
+            getPrev();
+            iterator.remove();
+            nelems--;
+        }
 
-        Log.d(TAG, "Removing currently displayed photo from history");
-        if ( forward && checkValidNext() ) {
-            iterator.previous();
-            iterator.remove();
-            nelems--;
-        }
-        else if ( !forward && checkValidPrev() ) {
-            iterator.next();
-            iterator.remove();
-            nelems--;
-        }
     }
 
 }
