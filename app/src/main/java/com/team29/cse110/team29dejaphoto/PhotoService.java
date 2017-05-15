@@ -449,8 +449,12 @@ public class PhotoService extends Service {
             currDisplayedPhoto.setReleased();
             PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 0, 1);
 
+            //Create editor for storing unique photoids
             SharedPreferences.Editor editor = sp.edit();
+            //Unique photoid given to a photo that has been released
             String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "0" + "1";
+
+            //stores unique photo id
             editor.putString(photoid, "Release Photo");
             editor.apply();
             Log.d(TAG, "Photoid is: " + photoid);
@@ -488,8 +492,12 @@ public class PhotoService extends Service {
                            sp.getBoolean("IsTimeOn", true)));
            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
 
+           //Creates editor for storing unique photo ids
            SharedPreferences.Editor editor = sp.edit();
+           //Unique Photo id given to a photo that has been given karma
            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0";
+
+           //stores unique photo id
            editor.putString(photoid, "Karma Photo");
            editor.apply();
            Log.d(TAG, "Photoid is: " + photoid);
