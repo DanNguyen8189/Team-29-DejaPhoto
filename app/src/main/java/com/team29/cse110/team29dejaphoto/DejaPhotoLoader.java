@@ -90,8 +90,6 @@ public class DejaPhotoLoader implements PhotoLoader {
         long dateAdded = 0;
         boolean skip = false;
 
-        int numPhotos = 0;
-
         while ( cursor.moveToNext() ) {
 
             /*

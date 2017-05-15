@@ -194,8 +194,10 @@ public class History {
         }
         if(!forward) {
             iterator.previous();
+            forward = true;
         } else {
             iterator.next();
+            forward = false;
         }
         iterator.remove();
         nelems--;
