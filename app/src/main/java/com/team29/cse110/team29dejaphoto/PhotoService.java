@@ -455,7 +455,8 @@ public class PhotoService extends Service {
             //Create editor for storing unique photoids
             SharedPreferences.Editor editor = sp.edit();
             //Unique photoid given to a photo that has been released
-            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "0" + "1";
+            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "0" + "1"
+                    + currDisplayedPhoto.getPhotoUri();
 
             //stores unique photo id
             editor.putString(photoid, "Release Photo");
@@ -497,7 +498,8 @@ public class PhotoService extends Service {
            //Creates editor for storing unique photo ids
            SharedPreferences.Editor editor = sp.edit();
            //Unique Photo id given to a photo that has been given karma
-           String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0";
+           String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0"
+                   + currDisplayedPhoto.getPhotoUri();
 
            //stores unique photo id
            editor.putString(photoid, "Karma Photo");

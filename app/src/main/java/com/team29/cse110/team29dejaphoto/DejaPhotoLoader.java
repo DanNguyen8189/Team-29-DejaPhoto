@@ -148,14 +148,15 @@ public class DejaPhotoLoader implements PhotoLoader {
             SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
 
             //Unique Id that would be stored if given karma
-            String photoIdKarma = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0";
+            String photoIdKarma = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0" + uri;
 
             //Unique Id that would be stored if released
-            String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1";
+            String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1" + uri;
 
             //photo is released so skip loading
             if(sp.contains(photoIdRelease))
             {
+                Log.d(TAG, "WE ARE SKIPPING: " + uri + " !!!!!!!!!!!!!");
                 continue;
             }
 
