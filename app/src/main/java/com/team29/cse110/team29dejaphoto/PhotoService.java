@@ -317,7 +317,8 @@ public class PhotoService extends Service {
                     dejaPhoto.getLocation())
             );
 
-            Log.d(TAG, "Displaying Previous Photo: " + dejaPhoto.getPhotoUri());
+            Log.d(TAG, "Displaying Previous Photo: " + dejaPhoto.getPhotoUri()
+                    + " (" + dejaPhoto.getScore() + ")");
         }
 
         catch (NullPointerException e) {
