@@ -208,4 +208,34 @@ public class DejaPhotoTest {
         assertEquals("Test comparing emptyPhoto with photo", emptyPhoto.compareTo(photo), -1);
         Log.d(TAG,"Testing compareTo() method");
     }
+
+
+    /**
+     * This tests that the location score of a photo object is properly updated.
+     * At 38 degrees latitude, 1 second ~ 80 ft, therefore 1000ft ~ .00347
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testLocation() throws Exception {
+
+        Location inBounds = new Location("");
+        inBounds.setLongitude(0.0034);
+        inBounds.setLatitude(38);
+
+        Location outBounds = new Location("");
+        outBounds.setLongitude(0.005);
+        outBounds.setLongitude(38);
+
+        Location reference = new Location("");
+        reference.setLongitude(0);
+        reference.setLatitude(38);
+
+        dejaVuLocation.setLocation(inBounds);
+        noDejaVu.setLocation(outBounds);
+
+        assertTrue(dejaVuLocation.updateScore(reference, prefAllOn)
+                     > noDejaVu.updateScore(reference, prefAllOn));
+    }
 }
+

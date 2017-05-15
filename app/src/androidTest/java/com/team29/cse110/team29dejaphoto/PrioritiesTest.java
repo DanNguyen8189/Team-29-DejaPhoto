@@ -40,10 +40,10 @@ public class PrioritiesTest {
 
         // Priority is element 2, 1, 0 when all options are on.
         gallery = new DejaPhoto[]{
-                new DejaPhoto(null, 0, 0, calendar.getTimeInMillis()), // #1
-                new DejaPhoto(null, 300, 300, calendar.getTimeInMillis()), //#3
-                new DejaPhoto(null, 300, 300, time), // #2
-                new DejaPhoto(null, 0, 0, time)}; // #0
+                new DejaPhoto(null, 0, 0, calendar.getTimeInMillis()), // #1 20 points
+                new DejaPhoto(null, 300, 300, calendar.getTimeInMillis()), //#3 10 points
+                new DejaPhoto(null, 300, 300, time), // #2 10 points
+                new DejaPhoto(null, 0, 0, time)}; // #0 20
         newPhoto = new DejaPhoto(null, 0, 0, 0L);
 
     }
@@ -80,20 +80,11 @@ public class PrioritiesTest {
         p.updatePriorities(location, prefAll);
 
 
-        for(int i = 0; i < 4; i++) {
-            DejaPhoto photo = p.getNewPhoto();
-            System.out.println("-----------------photo #" + i + "----------------------");
-            System.out.println("DATE POINTS: " + photo.getDatePoints());
-            System.out.println("LOCATION POINTS: " + photo.getLocationPoints(location));
-            System.out.println("TIME POINTS: " + photo.getTimeTakenPoints());
-        }
 
-
-//
-//        assertTrue(p.getNewPhoto().equals(gallery[3]));
-//        assertTrue(p.getNewPhoto().equals(gallery[2]));
-//        assertTrue(p.getNewPhoto().equals(gallery[1]));
-//        assertTrue(p.getNewPhoto().equals(gallery[0]));
+        assertTrue(p.getNewPhoto().equals(gallery[3]));
+        assertTrue(p.getNewPhoto().equals(gallery[0]));
+        assertTrue(p.getNewPhoto().equals(gallery[2]));
+        assertTrue(p.getNewPhoto().equals(gallery[1]));
 
 
         // When time is off, element 2 and 1 have same priority, 0 is lowest
@@ -101,8 +92,9 @@ public class PrioritiesTest {
             p.add(d);
             p.updatePriorities(location, prefNoTime);
         }
-        assertTrue(p.getNewPhoto().equals(gallery[2]));
+        assertTrue(p.getNewPhoto().equals(gallery[3]));
         assertTrue(p.getNewPhoto().equals(gallery[0]));
+        assertTrue(p.getNewPhoto().equals(gallery[2]));
         assertTrue(p.getNewPhoto().equals(gallery[1]));
 
 
@@ -112,9 +104,10 @@ public class PrioritiesTest {
         }
         p.updatePriorities(location, prefNone);
 
-        assertTrue(p.getNewPhoto().equals(gallery[2]));
         assertTrue(p.getNewPhoto().equals(gallery[0]));
         assertTrue(p.getNewPhoto().equals(gallery[1]));
+        assertTrue(p.getNewPhoto().equals(gallery[2]));
+        assertTrue(p.getNewPhoto().equals(gallery[3]));
 
         Log.d(TAG,"Test getNewPhoto() method");
     }

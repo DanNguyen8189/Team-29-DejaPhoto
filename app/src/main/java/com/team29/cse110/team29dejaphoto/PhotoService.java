@@ -13,18 +13,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -34,19 +27,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
-
-import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by David Duplantier, Dan, Wis and Brian on 5/9/17.
@@ -130,6 +116,10 @@ public class PhotoService extends Service {
     @Override
     public void onCreate() {
 
+        /* Create a notification in order to start the service in the foreground so that it
+         * continuously runs
+         */
+
         Intent notificationIntent = new Intent(this, MainActivity.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
@@ -138,10 +128,10 @@ public class PhotoService extends Service {
         Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("My Awesome App")
-                .setContentText("Doing some work...")
+                .setContentText("effortlessly reminiscing on past times")
                 .setContentIntent(pendingIntent).build();
 
-        startForeground(1, notification);
+        startForeground(1, notification); // Start Service
 
         /* Forward Permissions Check */
         // TODO Handle no permissions and/or GPS/Network disabled
@@ -195,7 +185,7 @@ public class PhotoService extends Service {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                                   String key) {
-                if(key == "UpdateInterval") {
+                if(key.equals("UpdateInterval")) {
                     restartAutoUpdateTask();
                     return;
                 }
@@ -274,6 +264,7 @@ public class PhotoService extends Service {
         super.onCreate();
     }
 
+    /* Called when the service is started */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Service started");
@@ -281,6 +272,7 @@ public class PhotoService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /* Called when the service is destroyed */
     @Override
     public void onDestroy() {
         Log.d(TAG, "Service stopped");
@@ -296,6 +288,7 @@ public class PhotoService extends Service {
         return null;
     }
 
+    /* Method to go backwards one photo */
     public void cycleBack() {
 
         /* Restart handler's autoUpdate task */
@@ -335,11 +328,13 @@ public class PhotoService extends Service {
         }
     }
 
+    /* Reset the user specified timer whenever they click the next or back button */
     private void restartAutoUpdateTask() {
         handler.removeCallbacks(autoUpdateTask);
         handler.postDelayed(autoUpdateTask, sp.getInt("UpdateInterval", DEFAULT_INTERVAL));
     }
 
+    /* Method to go forwards one photo */
     public void cycleForward() {
 
         /* Restart handler's autoUpdate task */
@@ -395,9 +390,8 @@ public class PhotoService extends Service {
         String locationTag;
 
         // Geocoder to get address from remote server
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> list = geocoder.getFromLocation(location.getLatitude(),
-                                                      location.getLongitude(),1);
+        Geocoder geocoder;
+        List<Address> list;
 
         // Generate new bitmap and paint objects for modification
         Bitmap newBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -410,7 +404,13 @@ public class PhotoService extends Service {
         // get address for location
         try {
 
+            // Geocoder to get address from remote server
+            geocoder = new Geocoder(this, Locale.getDefault());
+            list = geocoder.getFromLocation(location.getLatitude(),
+                    location.getLongitude(),1);
+
             locationTag = list.get(0).getAddressLine(0);
+
         }
 
         // if no valid location
@@ -421,7 +421,7 @@ public class PhotoService extends Service {
 
         // Write location info to bitmap and return
         paint.getTextBounds(locationTag, 0, locationTag.length(), rect);
-        canvas.drawText(locationTag, 0, newBitmap.getHeight() - 30, paint);
+        canvas.drawText(locationTag, 0, newBitmap.getHeight()-newBitmap.getHeight()/5, paint);
 
         Log.d(TAG, "Printed location on photo: " + locationTag);
 
@@ -440,8 +440,12 @@ public class PhotoService extends Service {
             currDisplayedPhoto.setReleased();
             PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 0, 1);
 
+            //Create editor for storing unique photoids
             SharedPreferences.Editor editor = sp.edit();
+            //Unique photoid given to a photo that has been released
             String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "0" + "1";
+
+            //stores unique photo id
             editor.putString(photoid, "Release Photo");
             editor.apply();
             Log.d(TAG, "Photoid is: " + photoid);
@@ -479,8 +483,12 @@ public class PhotoService extends Service {
                            sp.getBoolean("IsTimeOn", true)));
            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
 
+           //Creates editor for storing unique photo ids
            SharedPreferences.Editor editor = sp.edit();
+           //Unique Photo id given to a photo that has been given karma
            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0";
+
+           //stores unique photo id
            editor.putString(photoid, "Karma Photo");
            editor.apply();
            Log.d(TAG, "Photoid is: " + photoid);
