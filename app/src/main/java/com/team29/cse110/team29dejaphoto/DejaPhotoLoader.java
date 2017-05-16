@@ -37,7 +37,7 @@ public class DejaPhotoLoader implements PhotoLoader {
     private final String[] PROJECTIONS = { MediaStore.Images.Media.TITLE,
             MediaStore.Images.Media.LATITUDE,
             MediaStore.Images.Media.LONGITUDE,
-            MediaStore.Images.Media.DATE_ADDED };
+            MediaStore.Images.Media.DATE_TAKEN };
 
 
     /* Indices of columns from query (same as order defined in PROJECTIONS) */
