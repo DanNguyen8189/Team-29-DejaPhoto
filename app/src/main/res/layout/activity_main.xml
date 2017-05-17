@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
+    android:background="@drawable/ocean_art"
 
     tools:context="com.team29.cse110.team29dejaphoto.MainActivity">
 
@@ -36,10 +36,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/serviceButton"
-                    android:text="DejaPhoto is disabled"
+                    android:text="DejaPhoto is not running!"
+                    android:textColor="@color/defaultText"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="30dp"
-                    android:textSize="20dp"
+                    android:textSize="@dimen/text_size1"
                     />
 
             </LinearLayout>
@@ -149,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:text="Settings"
-                    android:textSize="20dp"/>
+                    android:textSize="@dimen/text_size1"/>
 
                 <Switch
                     android:id="@+id/dejavuMode"
@@ -169,7 +170,8 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:text="DejaVu Mode enabled"
-                    android:textSize="20dp"/>
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"/>
 
                 <Switch
                     android:id="@+id/location"
@@ -189,7 +191,8 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:text="Location enabled"
-                    android:textSize="20dp"/>
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"/>
 
                 <Switch
                     android:id="@+id/time"
@@ -209,7 +212,8 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:text="Time enabled"
-                    android:textSize="20dp"/>
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"/>
 
                 <Switch
                     android:id="@+id/date"
@@ -229,7 +233,8 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:text="Date enabled"
-                    android:textSize="20dp"/>
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"/>
 
                 <TextView
                     android:id="@+id/updateIntervalText"
@@ -237,9 +242,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dateText"
                     android:layout_marginTop="40dp"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginLeft="40dp"
                     android:text="Update Interval:"
-                    android:textSize="20dp"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
                     />
 
                 <TextView
@@ -249,9 +255,10 @@
                     android:layout_below="@+id/dateText"
                     android:layout_toRightOf="@+id/updateIntervalText"
                     android:layout_marginTop="40dp"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="25dp"
                     android:text="5 minutes"
-                    android:textSize="20dp"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
                     />
 
 

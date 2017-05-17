@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
     boolean useDefaultGallery = true; // By default use the user's custom default album
 
     /* Declaration of xml UI Design TextViews */
-    TextView appToggle;
-    TextView dejavuToggle;
-    TextView locationToggle;
-    TextView timeToggle;
-    TextView dateToggle;
+    TextView appOnOffText;
+    TextView dejavuText;
+    TextView locationText;
+    TextView timeText;
+    TextView dateText;
     TextView updateIntervalText;
     TextView updateIntervalNumber;
 
@@ -78,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
         /* Find the ID's for the UI TextViews to be displayed */
 
-        appToggle = (TextView) findViewById(R.id.appSwitch);
-        dejavuToggle = (TextView) findViewById(R.id.dejavuText);
-        locationToggle = (TextView) findViewById(R.id.locationText);
-        timeToggle = (TextView) findViewById(R.id.timeText);
-        dateToggle = (TextView) findViewById(R.id.dateText);
+        appOnOffText = (TextView) findViewById(R.id.appSwitch);
+        dejavuText = (TextView) findViewById(R.id.dejavuText);
+        locationText = (TextView) findViewById(R.id.locationText);
+        timeText = (TextView) findViewById(R.id.timeText);
+        dateText = (TextView) findViewById(R.id.dateText);
         updateIntervalText = (TextView) findViewById(R.id.updateIntervalText);
         updateIntervalNumber = (TextView) findViewById(R.id.updateIntervalNumber);
 
@@ -105,22 +105,27 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Log.d(TAG, "app is ON");
-                    appToggle.setText("DejaPhoto is enabled");
+                    appOnOffText.setText("DejaPhoto is running!");
                     toggleSetting(IsAppRunning, true);
-                    dejavu.setClickable(true);
-                    dejavu.setChecked(true);
-                    upDateInterval.setEnabled(true);
+                    /*dejavu.setClickable(true);
+                    location.setClickable(true);
+                    time.setClickable(true);
+                    date.setClickable(true);*/
+                    changeUIOpacities(1);
                     starter();
                 }
 
                 else {
                     Log.d(TAG, "app is OFF");
-                    appToggle.setText("DejaPhoto is disabled");
+                    appOnOffText.setText("DejaPhoto is not running!");
                     Log.d(TAG, "Dejaphoto disable called");
                     toggleSetting(IsAppRunning, false);
-                    dejavu.setChecked(false);
-                    dejavu.setClickable(false);
-                    upDateInterval.setEnabled(false);
+                    //dejavu.setChecked(false);
+                    /*dejavu.setClickable(false);
+                    location.setClickable(false);
+                    time.setClickable(false);
+                    date.setClickable(false); */
+                    changeUIOpacities(.7f);
                     stopper();
                 }
             }
@@ -130,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    dejavuToggle.setText("DejaVu enabled");
+                    dejavuText.setText("DejaVu mode enabled");
                     location.setChecked(true);
                     time.setChecked(true);
                     date.setChecked(true);
@@ -141,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 else {
-                    dejavuToggle.setText("DejaVu disabled");
+                    dejavuText.setText("DejaVu mode disabled");
                     location.setChecked(false);
                     time.setChecked(false);
                     date.setChecked(false);
@@ -157,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    locationToggle.setText("Location enabled");
+                    locationText.setText("Location enabled");
                     toggleSetting(IsLocationOn, true);
                 }
 
                 else {
-                    locationToggle.setText("Location disabled");
+                    locationText.setText("Location disabled");
                     toggleSetting(IsLocationOn, false);
                 }
             }
@@ -172,12 +177,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    timeToggle.setText("Time enabled");
+                    timeText.setText("Time enabled");
                     toggleSetting(IsTimeOn, true);
                 }
 
                 else {
-                    timeToggle.setText("Time disabled");
+                    timeText.setText("Time disabled");
                     toggleSetting(IsTimeOn, false);
                 }
             }
@@ -187,12 +192,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    dateToggle.setText("Date enabled");
+                    dateText.setText("Date enabled");
                     toggleSetting(IsDateOn, true);
                 }
 
                 else {
-                    dateToggle.setText("Date disabled");
+                    dateText.setText("Date disabled");
                     toggleSetting(IsDateOn, false);
                 }
             }
@@ -233,17 +238,18 @@ public class MainActivity extends AppCompatActivity {
         boolean appRunCheck = dejaPreferences.contains(IsAppRunning); // Has the app started yet
 
         /* Check if app is supposed to be running */
+        /*
         if(appRunCheck) {
                 appOnOff.setChecked(true);
-                appToggle.setText("DejaPhoto is enabled");
+                appOnOffText.setText("DejaPhoto is enabled");
 
-            /* Check if the user has Dejavu Mode enabled */
+
             if(dejaPreferences.getBoolean(IsDejaVuModeOn, true)) {
                 dejavu.setOnCheckedChangeListener(null);
                 dejavu.setChecked(true);
                 dejavu.setOnCheckedChangeListener(dejavuSwitchListener);
 
-                /* Check if user has location enabled */
+
                 if(dejaPreferences.getBoolean(IsLocationOn, true)) {
                     location.setOnCheckedChangeListener(null);
                     location.setChecked(true);
@@ -255,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                     location.setChecked(false);
                 }
 
-                /* Check if user has location on */
+
                 if(dejaPreferences.getBoolean(IsTimeOn, true)) {
                     time.setOnCheckedChangeListener(null);
                     time.setChecked(true);
@@ -267,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
                     time.setChecked(false);
                 }
 
-                /* Check if user has date on */
+
                 if(dejaPreferences.getBoolean(IsDateOn, true)) {
                     date.setOnCheckedChangeListener(null);
                     date.setChecked(true);
@@ -285,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                 dejavu.setChecked(false);
             }
 
-            /* Check what update interval the user has set */
+
             upDateInterval.setProgress(dejaPreferences.getInt(UpdateInterval, 300000)/60000 - 1);
         }
 
@@ -296,7 +302,72 @@ public class MainActivity extends AppCompatActivity {
             dejavu.setChecked(true);
             dejavu.setChecked(false);
         }
+        */
+
+
+        /***************************************************************************************/
+
+        if(appRunCheck) {
+            appOnOff.setChecked(true);
+            appOnOffText.setText("DejaPhoto is running!");
+        }
+        else{
+            Log.d(TAG, "app is disabled on startup");
+            appOnOff.setChecked(false);
+        }
+
+        if(dejaPreferences.getBoolean(IsDejaVuModeOn, true)) {
+            dejavu.setOnCheckedChangeListener(null);
+            dejavu.setChecked(true);
+            dejavu.setOnCheckedChangeListener(dejavuSwitchListener);
+
+                /* Check if user has location enabled */
+            if(dejaPreferences.getBoolean(IsLocationOn, true)) {
+                location.setOnCheckedChangeListener(null);
+                location.setChecked(true);
+                location.setOnCheckedChangeListener(locationSwitchListener);
+            }
+
+            else {
+                location.setChecked(true);
+                location.setChecked(false);
+            }
+
+                /* Check if user has location on */
+            if(dejaPreferences.getBoolean(IsTimeOn, true)) {
+                time.setOnCheckedChangeListener(null);
+                time.setChecked(true);
+                time.setOnCheckedChangeListener(timeSwitchListener);
+            }
+
+            else {
+                time.setChecked(true);
+                time.setChecked(false);
+            }
+
+                /* Check if user has date on */
+            if(dejaPreferences.getBoolean(IsDateOn, true)) {
+                date.setOnCheckedChangeListener(null);
+                date.setChecked(true);
+                date.setOnCheckedChangeListener(dateSwitchListener);
+            }
+
+            else {
+                date.setChecked(true);
+                date.setChecked(false);
+            }
+        }
+
+        else {
+            dejavu.setChecked(true);
+            dejavu.setChecked(false);
+        }
+
+        /* Check what update interval the user has set */
+        upDateInterval.setProgress(dejaPreferences.getInt(UpdateInterval, 300000)/60000 - 1);
     }
+
+
 
     /* Permissions Handling */
 
@@ -440,13 +511,26 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean(settingName, onOff);
 
         if ( editor.commit() ) {
-            Log.d(TAG, "Successfully edited preferences");
+            Log.d(TAG, "Successfully changed " + settingName + " setting in sharedPreferences");
         }
         else {
-            Log.d(TAG, "Could not edit preferences");
+            Log.d(TAG, "Could not change " + settingName + " setting in sharedPreferences");
         }
     }
 
+    private void changeUIOpacities(float num){
+        dejavu.setAlpha(num);
+        location.setAlpha(num);
+        time.setAlpha(num);
+        date.setAlpha(num);
+        upDateInterval.setAlpha(num);
+        dejavuText.setAlpha(num);
+        locationText.setAlpha(num);
+        timeText.setAlpha(num);
+        dateText.setAlpha(num);
+        updateIntervalText.setAlpha(num);
+        updateIntervalNumber.setAlpha(num);
+    }
     /* To be done next milestone */
     public void onCreateCustomAlbum(View view) {
 
