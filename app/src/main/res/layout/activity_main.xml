@@ -135,29 +135,98 @@
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="303dp">
+                android:layout_marginTop="300dp"
+                >
+
+                <TextView
+                    android:id="@+id/settings1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="-----Whose Photos?-----"
+                    android:textSize="@dimen/text_size2"/>
+
+                <CheckBox
+                    android:id="@+id/your_photos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/settings1"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="40dp"
+                    android:text="View Your Photos"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
+                    />
+
+                <CheckBox
+                    android:id="@+id/friend_photos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/your_photos"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
+                    android:text="View Friends' Photos"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
+                    />
+
+                <CheckBox
+                    android:id="@+id/share_photos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/friend_photos"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
+                    android:text="Share your photos!"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/share_photos"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
+                    android:padding="10dp"
+                    android:text="Manage Friends"
+                    android:textAllCaps="false"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
+                android:layout_below="@+id/relativeLayout2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="50dp">
 
 
                 <TextView
-                    android:id="@+id/settings"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/settings2"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="Settings"
-                    android:textSize="@dimen/text_size1"/>
+                    android:gravity="center"
+                    android:text="-----DejaVu Settings-----"
+                    android:textSize="@dimen/text_size2"/>
 
                 <Switch
                     android:id="@+id/dejavuMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/settings"
-                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/settings2"
+                    android:layout_marginTop="40dp"
                     android:layout_marginLeft="40dp"
                     android:checked="true" />
 
@@ -166,9 +235,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/dejavuMode"
-                    android:layout_below="@+id/settings"
+                    android:layout_below="@+id/settings2"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="40dp"
                     android:text="DejaVu Mode enabled"
                     android:textColor="@color/defaultText"
                     android:textSize="@dimen/text_size1"/>
@@ -179,7 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dejavuMode"
                     android:layout_marginTop="20dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="60dp"
                     android:checked="true" />
 
                 <TextView
@@ -200,7 +269,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/location"
                     android:layout_marginTop="20dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="60dp"
                     android:checked="true" />
 
                 <TextView
@@ -221,7 +290,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/time"
                     android:layout_marginTop="20dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="60dp"
                     android:checked="true" />
 
                 <TextView
