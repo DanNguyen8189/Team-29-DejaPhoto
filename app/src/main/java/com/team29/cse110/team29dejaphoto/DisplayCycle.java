@@ -121,4 +121,8 @@ public class DisplayCycle {
         history.removeFromHistory();
     }
 
+    public DejaPhoto getCurrentPhoto() {
+        return history.getCurrentPhoto();
+    }
+
 }

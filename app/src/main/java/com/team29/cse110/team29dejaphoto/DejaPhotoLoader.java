@@ -26,13 +26,12 @@ public class DejaPhotoLoader implements PhotoLoader {
 
     private final String TAG = "DejaPhotoLoader";
 
-
     /*
      * PROJECTIONS enumerates the pieces of data we want to retrieve for each photo.
      * TITLE: String for the name of a photo (e.g. "IMG_123456789").
      * LATITUDE: double value of latitude.
      * LONGITUDE: double value of the longitude.
-     * DATE_ADDED: Time photo was taken, in units of milliseconds since January 1, 1970.
+     * DATE_TAKEN: Time photo was taken, in units of milliseconds since January 1, 1970.
      */
     private final String[] PROJECTIONS = { MediaStore.Images.Media.TITLE,
             MediaStore.Images.Media.LATITUDE,
@@ -46,8 +45,6 @@ public class DejaPhotoLoader implements PhotoLoader {
     private final int LONG_INDEX       = 2;
     private final int DATE_ADDED_INDEX = 3;
 
-
-    private final String[] PHOTOS_PROJECTIONS = { "DATE_ADDED", "KARMA", "RELEASED" };
     private final int MILLIS_IN_SECOND = 1000;
 
 
@@ -58,7 +55,7 @@ public class DejaPhotoLoader implements PhotoLoader {
     /*
      * This method searches all photos retrieved from the phone's storage and returns them as an
      * array of DejaPhoto objects. This method is intended to be used only once during the app's
-     * lifecycle - when the app first begins and need to load all photos into the DisplayCycle
+     * lifecycle - when the app first begins and needs to load all photos into the DisplayCycle
      * object.
      */
     @Override
@@ -72,71 +69,16 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         ContentResolver contentResolver = context.getContentResolver();
         Cursor cursor = contentResolver.query(MEDIA_URI, PROJECTIONS, null, null, null);
-        Cursor readCursor = dbRead.query("PHOTOS", PHOTOS_PROJECTIONS, null, null, null, null, "DATE_ADDED ASC");
-        Cursor writeCursor = dbWrite.query("PHOTOS", PHOTOS_PROJECTIONS, null, null, null, null, "DATE_ADDED ASC");
-
-        if ( cursor == null || readCursor == null || writeCursor == null ) {
-            return null;
-        }
 
         int numOfPhotos = cursor.getCount();
-        int numInDB = readCursor.getCount();
 
         DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
         int numPhotos = 0;
 
         int count = 0;
-        long dateAdded = 0;
-        boolean skip = false;
 
         while ( cursor.moveToNext() ) {
-
-            /*
-            dateAdded = cursor.getLong(DATE_ADDED_INDEX);
-            while (readCursor.moveToNext()) {
-
-                if ( readCursor.getLong(0) == dateAdded ) {
-
-                    if ( readCursor.getInt(1) == 1 ) {
-                        // This photo has karma.
-                        String filename = cursor.getString(TITLE_INDEX) + ".jpg";
-                        String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
-                        File file = new File(absolutePath);
-                        Uri uri = Uri.fromFile(file);
-                        Log.d(TAG, "Record found!!!!!! Photo: " + uri);
-
-                        // TODO Check that the photo is from the camera album
-                        if(file.exists()) {
-                            DejaPhoto dejaPhoto = new DejaPhoto(uri,
-                                    cursor.getDouble(LAT_INDEX),
-                                    cursor.getDouble(LONG_INDEX),
-                                    cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
-                            dejaPhoto.setKarma();
-                            gallery[count] = dejaPhoto;
-                            count++;
-                            skip = true;
-                        }
-                    }
-                    else {
-                        // This photo was released
-                        skip = true;
-                    }
-                }
-                else {
-                    skip = false;
-                    if ( readCursor.getLong(0) > dateAdded ) {
-                        break;
-                    }
-                }
-
-            }
-
-            if (skip) {
-                continue;
-            }
-
-            */
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;

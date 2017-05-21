@@ -448,9 +448,8 @@ public class PhotoService extends Service {
     public void releasePhoto() {
 
         if ( currDisplayedPhoto != null ) {
-            Log.d(TAG, "Releasing currently displayed photo");
+
             currDisplayedPhoto.setReleased();
-            PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 0, 1);
 
             //Create editor for storing unique photoids
             SharedPreferences.Editor editor = sp.edit();
@@ -493,7 +492,6 @@ public class PhotoService extends Service {
                            sp.getBoolean("IsLocationOn", true),
                            sp.getBoolean("IsDateOn", true),
                            sp.getBoolean("IsTimeOn", true)));
-           PhotoDatabaseHelper.insertPhoto(db, currDisplayedPhoto.getTime().getTimeInMillis(), 1, 0);
 
            //Creates editor for storing unique photo ids
            SharedPreferences.Editor editor = sp.edit();
