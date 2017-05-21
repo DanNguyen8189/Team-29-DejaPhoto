@@ -33,7 +33,10 @@ public class ReleaseController {
         this.sp = sp;
     }
 
-    public void releasePhoto() {
+    /*
+     * Return 1 if photo is successfully released, and 0 if not.
+     */
+    public int releasePhoto() {
 
         /* Get currently displayed photo */
         DejaPhoto currPhoto = displayCycle.getCurrentPhoto();
@@ -43,14 +46,15 @@ public class ReleaseController {
             currPhoto.setReleased();
             recordIsReleasedInPrefs(currPhoto);
             displayCycle.removeCurrentPhoto();
+            return 1;
         }
 
+        return 0;
     }
 
 
     /* This method handles all recording a photo is released in SharedPreferences */
     private void recordIsReleasedInPrefs(DejaPhoto currPhoto) {
-
 
         /* Create editor for storing unique photoids */
         SharedPreferences.Editor editor = sp.edit();

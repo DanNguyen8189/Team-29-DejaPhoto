@@ -74,6 +74,8 @@ public class PhotoService extends Service {
     private Runnable autoUpdateTask;
     private boolean serviceRunning;
 
+    /* Controller for release functionality */
+    private ReleaseController releaseController;
 
     /**
      * Custom Widget Action Receiver inner class
@@ -246,6 +248,9 @@ public class PhotoService extends Service {
                         sp.getBoolean("IsTimeOn", true)
                 )
         );
+
+        /* Instantiate controller for release functionality */
+        releaseController = new ReleaseController(displayCycle, sp);
 
         /* Indicate to the user that photos have been loaded */
         Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
@@ -441,36 +446,19 @@ public class PhotoService extends Service {
     }
 
     /*
-     * This method delegates the DisplayCycle to find the currently displayed photo, release it
-     * from displayCycle, and enter new record in the database. Afterwards, the method cycles to
-     * the next photo.
+     * This method delegates release functionality to the ReleaseController, passing along the
+     * DisplayCycle and SharedPreferences.
      */
     public void releasePhoto() {
 
-        if ( currDisplayedPhoto != null ) {
-
-            currDisplayedPhoto.setReleased();
-
-            //Create editor for storing unique photoids
-            SharedPreferences.Editor editor = sp.edit();
-            //Unique photoid given to a photo that has been released
-            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "0" + "1"
-                    + currDisplayedPhoto.getPhotoUri();
-
-            //stores unique photo id
-            editor.putString(photoid, "Release Photo");
-            editor.apply();
-            Log.d(TAG, "Photoid is: " + photoid);
-
-            displayCycle.removeCurrentPhoto();
+        /* If photo was successfully released, cycle forward */
+        if ( releaseController.releasePhoto() == 1 ) {
             cycleForward();
         }
 
-        else {
-            Log.d(TAG, "No reference to currently displayed photo - cannot release");
-        }
+    }
 
-   }
+
 
    /*
     * This method gives karma to the currently displayed photo, then enters a new record in the
