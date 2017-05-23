@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@+id/nav_friends"
+        android:title="Friends"
+        android:icon="@drawable/ic_people_black_24dp"></item>
+
     <item android:id="@+id/nav_gallery"
-        android:title="DejaPhoto Album"
+        android:title="DejaPhoto Albums"
         android:icon="@drawable/ic_menu_gallery"></item>
 
     <item android:id="@+id/nav_settings"
         android:title="Settings"
-        android:icon="@drawable/ic_menu_manage"></item>
-
-    <item android:id="@+id/nav_friends"
-        android:title="Friends"></item>
+        android:icon="@drawable/ic_settings_black_24dp"></item>
 
 
 </menu>
