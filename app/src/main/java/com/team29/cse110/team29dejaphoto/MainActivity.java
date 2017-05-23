@@ -4,11 +4,18 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
@@ -42,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     TextView dateText;
     TextView updateIntervalText;
     TextView updateIntervalNumber;
+    DrawerLayout dejaDrawer;
+    ActionBarDrawerToggle dejaDrawerToggle;
 
     /* Declaration of xml UI Design Switches */
     Switch appOnOff;
@@ -75,9 +84,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
-        bar.setTitle("DejaPhoto");
-        setSupportActionBar(bar);
+        dejaDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        dejaDrawerToggle = new ActionBarDrawerToggle(this,dejaDrawer,
+                R.string.drawer_opened,R.string.drawer_closed);
+
+
+        dejaDrawer.addDrawerListener(dejaDrawerToggle);
+        dejaDrawerToggle.syncState();
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        getSupportActionBar().setTitle("DejaPhoto");
+
+
+
+
 
         dejaPreferences = getSharedPreferences(DEJA_PREFS, 0); // Instantiate the shared preferences file
 
@@ -542,4 +565,27 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), CustomAlbumActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        dejaDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        dejaDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(dejaDrawerToggle.onOptionsItemSelected( item ))
+            return true;
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }
