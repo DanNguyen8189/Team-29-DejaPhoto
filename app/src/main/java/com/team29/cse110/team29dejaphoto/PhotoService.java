@@ -75,7 +75,7 @@ public class PhotoService extends Service {
     private boolean serviceRunning;
 
     /* Controller for release functionality */
-    private ReleaseController releaseController;
+    private ReleaseStrategy releaseController;
 
     /**
      * Custom Widget Action Receiver inner class
@@ -250,7 +250,7 @@ public class PhotoService extends Service {
         );
 
         /* Instantiate controller for release functionality */
-        releaseController = new ReleaseController(displayCycle, sp);
+        releaseController = new ReleaseSingleUser(displayCycle, sp);
 
         /* Indicate to the user that photos have been loaded */
         Toast.makeText(this, "Done Loading Photos", Toast.LENGTH_SHORT).show();
@@ -446,7 +446,7 @@ public class PhotoService extends Service {
     }
 
     /*
-     * This method delegates release functionality to the ReleaseController, passing along the
+     * This method delegates release functionality to the ReleaseSingleUser, passing along the
      * DisplayCycle and SharedPreferences.
      */
     public void releasePhoto() {
