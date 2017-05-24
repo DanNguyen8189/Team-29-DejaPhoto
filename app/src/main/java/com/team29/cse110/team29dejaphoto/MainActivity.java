@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     TextView updateIntervalNumber;
     DrawerLayout dejaDrawer;
     ActionBarDrawerToggle dejaDrawerToggle;
+    NavigationView navigationView;
 
     /* Declaration of xml UI Design Switches */
     Switch appOnOff;
@@ -97,6 +99,20 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         getSupportActionBar().setTitle("DejaPhoto");
+
+        navigationView = (NavigationView) findViewById(R.id.navi_view);
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener()
+                {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        dejaDrawer.closeDrawers();
+                        Log.d("drawer", item.getTitle() + " selected");
+                        return true;
+                    }
+                }
+        );
 
 
 
