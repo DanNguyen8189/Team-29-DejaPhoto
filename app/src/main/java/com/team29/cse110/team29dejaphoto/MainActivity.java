@@ -86,22 +86,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         dejaDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         dejaDrawerToggle = new ActionBarDrawerToggle(this,dejaDrawer,
                 R.string.drawer_opened,R.string.drawer_closed);
 
-
         dejaDrawer.addDrawerListener(dejaDrawerToggle);
         dejaDrawerToggle.syncState();
 
-
+        //creates drawer actionbar button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        //sets title of actionbar
         getSupportActionBar().setTitle("DejaPhoto");
 
         navigationView = (NavigationView) findViewById(R.id.navi_view);
 
+        //navigation drawer menu Listener
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener()
                 {
@@ -109,8 +112,10 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         dejaDrawer.closeDrawers();
                         Log.d("drawer", item.getTitle() + " selected");
+                        //Settings button was selected
                         if(item.getTitle().toString().equalsIgnoreCase("Settings"))
                         {
+                            //launch SettingsActivity
                             Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivity(intentSettings);
                         }
