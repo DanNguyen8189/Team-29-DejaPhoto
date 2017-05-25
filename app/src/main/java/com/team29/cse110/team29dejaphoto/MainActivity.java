@@ -109,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         dejaDrawer.closeDrawers();
                         Log.d("drawer", item.getTitle() + " selected");
+                        if(item.getTitle().toString().equalsIgnoreCase("Settings"))
+                        {
+                            Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
+                            startActivity(intentSettings);
+                        }
                         return true;
                     }
                 }
