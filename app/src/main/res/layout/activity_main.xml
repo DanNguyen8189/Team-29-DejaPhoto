@@ -9,16 +9,15 @@
     tools:context="com.team29.cse110.team29dejaphoto.MainActivity">
 
 
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-<ScrollView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/scroll_view"
-    >
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="368dp"
@@ -30,22 +29,20 @@
                     android:id="@+id/serviceButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
-                    />
+                    android:layout_marginTop="20dp"
+                    android:checked="true" />
 
                 <TextView
                     android:id="@+id/appSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toRightOf="@+id/serviceButton"
                     android:text="DejaPhoto is not running!"
                     android:textColor="@color/defaultText"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="30dp"
-                    android:textSize="@dimen/text_size1"
-                    />
+                    android:textSize="@dimen/text_size1" />
 
             </LinearLayout>
 
@@ -115,8 +112,8 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_marginBottom="26dp"
-                        android:onClick="onClickRadioButton"
                         android:enabled="false"
+                        android:onClick="onClickRadioButton"
                         android:text="Custom Deja Photo Album (Coming soon!)" />
 
 
@@ -125,13 +122,13 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:layout_below="@+id/RadioGroup"
                     android:layout_alignEnd="@+id/selectAlbum"
-                    android:onClick="onCreateCustomAlbum"
                     android:layout_alignRight="@+id/selectAlbum"
+                    android:layout_below="@+id/RadioGroup"
                     android:layout_marginBottom="15dp"
-                    android:text="Create a Custom Deja Photo Album"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:onClick="onCreateCustomAlbum"
+                    android:text="Create a Custom Deja Photo Album" />
 
 
             </RelativeLayout>
@@ -140,13 +137,12 @@
                 android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-                android:layout_alignTop="@+id/relativeLayout"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/relativeLayout"
                 android:layout_marginTop="300dp"
-                >
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
                 <TextView
                     android:id="@+id/whose_photos_text"
@@ -154,54 +150,50 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="-----Whose Photos?-----"
-                    android:textSize="@dimen/text_size2"/>
+                    android:textSize="@dimen/text_size2" />
 
                 <CheckBox
                     android:id="@+id/your_photos_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/whose_photos_text"
-                    android:layout_marginTop="30dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="30dp"
                     android:text="View Your Photos"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"
-                    />
+                    android:textSize="@dimen/text_size1" />
 
                 <CheckBox
                     android:id="@+id/friend_photos_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/your_photos_box"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp"
                     android:text="View Friends' Photos"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"
-                    />
+                    android:textSize="@dimen/text_size1" />
 
                 <CheckBox
                     android:id="@+id/share_photos_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/friend_photos_box"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp"
                     android:text="Share your photos!"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"
-                    />
+                    android:textSize="@dimen/text_size1" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/share_photos_box"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp"
                     android:padding="10dp"
                     android:text="Manage Friends"
-                    android:textAllCaps="false"
-                    />
+                    android:textAllCaps="false" />
 
             </RelativeLayout>
 
@@ -209,12 +201,12 @@
                 android:id="@+id/relativeLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
-                android:layout_below="@+id/relativeLayout2"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="50dp">
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/relativeLayout2"
+                android:layout_marginTop="50dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout2">
 
 
                 <TextView
@@ -223,116 +215,114 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="-----DejaVu Settings-----"
-                    android:textSize="@dimen/text_size2"/>
+                    android:textSize="@dimen/text_size2" />
 
                 <Switch
                     android:id="@+id/dejavu_mode_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dejavu_settings_text"
-                    android:layout_marginTop="40dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="40dp"
                     android:checked="true" />
 
                 <TextView
                     android:id="@+id/dejavu_mode_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/dejavu_mode_switch"
                     android:layout_below="@+id/dejavu_settings_text"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="40dp"
+                    android:layout_toRightOf="@+id/dejavu_mode_switch"
                     android:text="DejaVu Mode enabled"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"/>
+                    android:textSize="@dimen/text_size1" />
 
                 <Switch
                     android:id="@+id/location_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dejavu_mode_switch"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="60dp"
+                    android:layout_marginTop="20dp"
                     android:checked="true" />
 
                 <TextView
                     android:id="@+id/location_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/location_switch"
                     android:layout_below="@+id/dejavu_mode_switch"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@+id/location_switch"
                     android:text="Location enabled"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"/>
+                    android:textSize="@dimen/text_size1" />
 
                 <Switch
                     android:id="@+id/time_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/location_switch"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="60dp"
+                    android:layout_marginTop="20dp"
                     android:checked="true" />
 
                 <TextView
                     android:id="@+id/time_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/time_switch"
                     android:layout_below="@+id/location_switch"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@+id/time_switch"
                     android:text="Time enabled"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"/>
+                    android:textSize="@dimen/text_size1" />
 
                 <Switch
                     android:id="@+id/date_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/time_switch"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="60dp"
+                    android:layout_marginTop="20dp"
                     android:checked="true" />
 
                 <TextView
                     android:id="@+id/date_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/date_switch"
                     android:layout_below="@+id/time_switch"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@+id/date_switch"
                     android:text="Date enabled"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"/>
+                    android:textSize="@dimen/text_size1" />
 
                 <TextView
                     android:id="@+id/update_interval_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/date_text"
-                    android:layout_marginTop="40dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="40dp"
                     android:text="Update Interval:"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"
-                    />
+                    android:textSize="@dimen/text_size1" />
 
                 <TextView
                     android:id="@+id/update_interval_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/date_text"
-                    android:layout_toRightOf="@+id/update_interval_text"
-                    android:layout_marginTop="40dp"
                     android:layout_marginLeft="25dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_toRightOf="@+id/update_interval_text"
                     android:text="5 minutes"
                     android:textColor="@color/defaultText"
-                    android:textSize="@dimen/text_size1"
-                    />
+                    android:textSize="@dimen/text_size1" />
 
 
                 <SeekBar
@@ -340,18 +330,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/update_interval_text"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="30dp"
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="20dp"
                     android:max="359"
-                    android:progress="5"
-                    />
+                    android:progress="5" />
 
             </RelativeLayout>
 
 
-</RelativeLayout>
+        </RelativeLayout>
     </ScrollView>
 
 

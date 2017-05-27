@@ -11,7 +11,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DejaPhoto"
+        android:text="Welcome!"
+        android:textSize="@dimen/text_size1"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
         />
 

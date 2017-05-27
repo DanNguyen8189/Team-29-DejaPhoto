@@ -40,7 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
     TextView updateIntervalText;
     TextView updateIntervalNumber;
 
-    //TODO
+    //TODO; what are these for?
     DrawerLayout dejaDrawer;
     NavigationView navigationView;
 

@@ -17,21 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/settings_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing"
-                android:layout_marginLeft="@dimen/spacing"
-                android:text="Settings"
-                android:textSize="@dimen/text_size2"
-                />
-
             <RelativeLayout
                 android:id="@+id/checkboxes"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/settings_text"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 

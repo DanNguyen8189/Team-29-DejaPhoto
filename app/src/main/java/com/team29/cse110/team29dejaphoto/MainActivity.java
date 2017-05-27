@@ -117,6 +117,17 @@ public class MainActivity extends AppCompatActivity {
                             Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivity(intentSettings);
                         }
+
+                        if(item.getTitle().toString().equalsIgnoreCase("Log in"))
+                        {
+                            item.setTitle("Log out");
+                            //TODO need to connect to google account. Also literally everything except setTitle works
+                        }
+                        if(item.getTitle().toString().equalsIgnoreCase("Log out"))
+                        {
+                            item.setTitle("Log in");
+                            //TODO need to disconnect from google account. Also literally everything except setTitle works
+                        }
                         return true;
                     }
                 }
