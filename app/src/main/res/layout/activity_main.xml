@@ -14,8 +14,8 @@
 <ScrollView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/scrollView"
-    app:layout_constraintTop_toBottomOf="@+id/toolbar">
+    android:id="@+id/scroll_view"
+    >
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -149,7 +149,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/settings1"
+                    android:id="@+id/whose_photos_text"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -157,10 +157,10 @@
                     android:textSize="@dimen/text_size2"/>
 
                 <CheckBox
-                    android:id="@+id/your_photos"
+                    android:id="@+id/your_photos_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/settings1"
+                    android:layout_below="@+id/whose_photos_text"
                     android:layout_marginTop="30dp"
                     android:layout_marginLeft="40dp"
                     android:text="View Your Photos"
@@ -169,10 +169,10 @@
                     />
 
                 <CheckBox
-                    android:id="@+id/friend_photos"
+                    android:id="@+id/friend_photos_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/your_photos"
+                    android:layout_below="@+id/your_photos_box"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
                     android:text="View Friends' Photos"
@@ -181,10 +181,10 @@
                     />
 
                 <CheckBox
-                    android:id="@+id/share_photos"
+                    android:id="@+id/share_photos_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/friend_photos"
+                    android:layout_below="@+id/friend_photos_box"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
                     android:text="Share your photos!"
@@ -195,7 +195,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/share_photos"
+                    android:layout_below="@+id/share_photos_box"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="40dp"
                     android:padding="10dp"
@@ -218,7 +218,7 @@
 
 
                 <TextView
-                    android:id="@+id/settings2"
+                    android:id="@+id/dejavu_settings_text"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -226,20 +226,20 @@
                     android:textSize="@dimen/text_size2"/>
 
                 <Switch
-                    android:id="@+id/dejavuMode"
+                    android:id="@+id/dejavu_mode_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/settings2"
+                    android:layout_below="@+id/dejavu_settings_text"
                     android:layout_marginTop="40dp"
                     android:layout_marginLeft="40dp"
                     android:checked="true" />
 
                 <TextView
-                    android:id="@+id/dejavuText"
+                    android:id="@+id/dejavu_mode_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/dejavuMode"
-                    android:layout_below="@+id/settings2"
+                    android:layout_toRightOf="@+id/dejavu_mode_switch"
+                    android:layout_below="@+id/dejavu_settings_text"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="40dp"
                     android:text="DejaVu Mode enabled"
@@ -247,20 +247,20 @@
                     android:textSize="@dimen/text_size1"/>
 
                 <Switch
-                    android:id="@+id/location"
+                    android:id="@+id/location_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dejavuMode"
+                    android:layout_below="@+id/dejavu_mode_switch"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="60dp"
                     android:checked="true" />
 
                 <TextView
-                    android:id="@+id/locationText"
+                    android:id="@+id/location_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/location"
-                    android:layout_below="@+id/dejavuMode"
+                    android:layout_toRightOf="@+id/location_switch"
+                    android:layout_below="@+id/dejavu_mode_switch"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:text="Location enabled"
@@ -268,20 +268,20 @@
                     android:textSize="@dimen/text_size1"/>
 
                 <Switch
-                    android:id="@+id/time"
+                    android:id="@+id/time_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/location"
+                    android:layout_below="@+id/location_switch"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="60dp"
                     android:checked="true" />
 
                 <TextView
-                    android:id="@+id/timeText"
+                    android:id="@+id/time_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/time"
-                    android:layout_below="@+id/location"
+                    android:layout_toRightOf="@+id/time_switch"
+                    android:layout_below="@+id/location_switch"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:text="Time enabled"
@@ -289,20 +289,20 @@
                     android:textSize="@dimen/text_size1"/>
 
                 <Switch
-                    android:id="@+id/date"
+                    android:id="@+id/date_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/time"
+                    android:layout_below="@+id/time_switch"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="60dp"
                     android:checked="true" />
 
                 <TextView
-                    android:id="@+id/dateText"
+                    android:id="@+id/date_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/date"
-                    android:layout_below="@+id/time"
+                    android:layout_toRightOf="@+id/date_switch"
+                    android:layout_below="@+id/time_switch"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:text="Date enabled"
@@ -310,10 +310,10 @@
                     android:textSize="@dimen/text_size1"/>
 
                 <TextView
-                    android:id="@+id/updateIntervalText"
+                    android:id="@+id/update_interval_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dateText"
+                    android:layout_below="@+id/date_text"
                     android:layout_marginTop="40dp"
                     android:layout_marginLeft="40dp"
                     android:text="Update Interval:"
@@ -322,11 +322,11 @@
                     />
 
                 <TextView
-                    android:id="@+id/updateIntervalNumber"
+                    android:id="@+id/update_interval_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dateText"
-                    android:layout_toRightOf="@+id/updateIntervalText"
+                    android:layout_below="@+id/date_text"
+                    android:layout_toRightOf="@+id/update_interval_text"
                     android:layout_marginTop="40dp"
                     android:layout_marginLeft="25dp"
                     android:text="5 minutes"
@@ -336,10 +336,10 @@
 
 
                 <SeekBar
-                    android:id="@+id/updateIntervalBar"
+                    android:id="@+id/update_interval_bar"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/updateIntervalText"
+                    android:layout_below="@+id/update_interval_text"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"

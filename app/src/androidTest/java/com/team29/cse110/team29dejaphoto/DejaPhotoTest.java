@@ -32,10 +32,10 @@ public class DejaPhotoTest {
     Calendar calendar;
     DejaPhoto photo;// A photo object to be modified
     DejaPhoto emptyPhoto;// An empty photo
-    DejaPhoto dejaVuTime;// A photo with deja vu in time only
-    DejaPhoto dejaVuDate;// A photo with deja vu in date only
-    DejaPhoto dejaVuAll; // A photo with deja vu in time and date
-    DejaPhoto dejaVuLocation;// a Photo with deja vu in only location
+    DejaPhoto dejaVuTime;// A photo with deja vu in timeSwitch only
+    DejaPhoto dejaVuDate;// A photo with deja vu in dateSwitch only
+    DejaPhoto dejaVuAll; // A photo with deja vu in timeSwitch and dateSwitch
+    DejaPhoto dejaVuLocation;// a Photo with deja vu in only locationSwitch
     DejaPhoto noDejaVu;// A photo with no deja vu
 
     Preferences prefAllOn = new Preferences(true,true,true);
@@ -55,26 +55,26 @@ public class DejaPhotoTest {
         // Empty photo with null parameters
         emptyPhoto = new DejaPhoto(null, 0, 0, 0L);
 
-        // Photo from this instant in time, deja vu for time and date
+        // Photo from this instant in timeSwitch, deja vu for timeSwitch and dateSwitch
         dejaVuAll = new DejaPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
 
-        // Adjust calendar to same day last week, but 3 hours earlier.  Only deja vu in date
+        // Adjust calendar to same day last week, but 3 hours earlier.  Only deja vu in dateSwitch
         calendar = Calendar.getInstance();
        // calendar.set(2017, 05, 13, 12, 47);
         calendar.add(Calendar.DAY_OF_WEEK, -7);// 1 week ago
         calendar.add(Calendar.HOUR, 3);// 3 hours later
         dejaVuDate = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
-        // Adjust calendar to different day of week, but within current 2 hrs. Only deja vu in time
+        // Adjust calendar to different day of week, but within current 2 hrs. Only deja vu in timeSwitch
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_WEEK,-2);
         dejaVuTime = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
-        // Adjust calender to different time, and add local location
-        calendar.add(Calendar.HOUR,3 );// calendar has no time or date deja vu
+        // Adjust calender to different timeSwitch, and add local locationSwitch
+        calendar.add(Calendar.HOUR,3 );// calendar has no timeSwitch or dateSwitch deja vu
         dejaVuLocation = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
-        // Adjust calendar to different day, add non-local location
+        // Adjust calendar to different day, add non-local locationSwitch
         calendar.add(Calendar.DAY_OF_WEEK, 3);
         noDejaVu = new DejaPhoto(Uri.EMPTY, 300, 300, calendar.getTimeInMillis());
     }
@@ -165,31 +165,31 @@ public class DejaPhotoTest {
 
 
     /**
-     * Tests that the time of zero-initialized photos is 0, also that photos with a valid time are
+     * Tests that the timeSwitch of zero-initialized photos is 0, also that photos with a valid timeSwitch are
      * non-zero.
      *
      * @throws Exception
      */
     @Test
     public void getTime() throws Exception {
-        assertEquals("Testing empty photo has 0 time", 0, emptyPhoto.getTime().getTimeInMillis());
-        assertEquals("Testing dejaVu photo has some time", false,
+        assertEquals("Testing empty photo has 0 timeSwitch", 0, emptyPhoto.getTime().getTimeInMillis());
+        assertEquals("Testing dejaVu photo has some timeSwitch", false,
                      dejaVuAll.getTime().getTimeInMillis() == 0);
         Log.d(TAG,"Testing getTime() method");
     }
 
 
     /**
-     * Tests that the time instance variable is properly updated.
+     * Tests that the timeSwitch instance variable is properly updated.
      *
      * @throws Exception
      */
     @Test
     public void setTime() throws Exception {
 
-        assertEquals("Testing photo has 0 time", 0, photo.getTime().getTimeInMillis());
+        assertEquals("Testing photo has 0 timeSwitch", 0, photo.getTime().getTimeInMillis());
         photo.setTime(Calendar.getInstance());
-        assertEquals("Testing dejaVu photo has some time", false,
+        assertEquals("Testing dejaVu photo has some timeSwitch", false,
                       photo.getTime().getTimeInMillis() == 0);
         Log.d(TAG,"Testing setTime() method");
     }
@@ -211,7 +211,7 @@ public class DejaPhotoTest {
 
 
     /**
-     * This tests that the location score of a photo object is properly updated.
+     * This tests that the locationSwitch score of a photo object is properly updated.
      * At 38 degrees latitude, 1 second ~ 80 ft, therefore 1000ft ~ .00347
      *
      * @throws Exception

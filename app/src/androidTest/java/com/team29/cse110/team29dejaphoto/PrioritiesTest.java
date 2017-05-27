@@ -37,8 +37,8 @@ public class PrioritiesTest {
     @Before
     public void setUp() {
         p = new Priorities();
-        time = calendar.getTimeInMillis();// The current time, maximum deja vu.
-        calendar.add(Calendar.HOUR, -3);// Subtract 3 hours from the time
+        time = calendar.getTimeInMillis();// The current timeSwitch, maximum deja vu.
+        calendar.add(Calendar.HOUR, -3);// Subtract 3 hours from the timeSwitch
 
         // Priority is element 2, 1, 0 when all options are on.
         gallery = new DejaPhoto[]{
@@ -89,7 +89,7 @@ public class PrioritiesTest {
         assertTrue(p.getNewPhoto().equals(gallery[1]));
 
 
-        // When time is off, element 2 and 1 have same priority, 0 is lowest
+        // When timeSwitch is off, element 2 and 1 have same priority, 0 is lowest
         for (DejaPhoto d : gallery) {
             p.add(d);
             p.updatePriorities(location, prefNoTime);

@@ -31,7 +31,7 @@ public class PhotoDatabaseHelper extends SQLiteOpenHelper {
         /* Database columns:
          *
          * _ID:          Primary key                 INTEGER
-         * DATE_ADDED:   time photos was created     INTEGER
+         * DATE_ADDED:   timeSwitch photos was created     INTEGER
          * KARMA:        1 if has karma, else 0      INTEGER
          * RELEASED:     1 if released, else 0       INTEGER
          *

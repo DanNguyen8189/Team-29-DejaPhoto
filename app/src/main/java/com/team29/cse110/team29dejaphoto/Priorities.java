@@ -44,7 +44,7 @@ public class Priorities {
     /**
      * Updates the priorities of each DejaPhoto object in the structure
      *
-     * @param location - The new current location to update score with respects to
+     * @param location - The new current locationSwitch to update score with respects to
      */
     public void updatePriorities(Location location, Preferences prefs) {
         // Naive implementation

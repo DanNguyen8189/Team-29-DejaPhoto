@@ -171,7 +171,7 @@ public class PhotoService extends Service {
 
         /* Initializes and configures the LocationListener */
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        // TODO Add time
+        // TODO Add timeSwitch
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 0, FIVE_HUNDRED_FT, locationListener);
 
@@ -391,14 +391,14 @@ public class PhotoService extends Service {
     }
 
     /**
-     * This method takes a bitmap image and location information, and returns a modified bitmap
-     * with location info in the bottom left corner. If no information is available (i.e. location
+     * This method takes a bitmap image and locationSwitch information, and returns a modified bitmap
+     * with locationSwitch info in the bottom left corner. If no information is available (i.e. locationSwitch
      * is empty), appropriate text is printed.
      *
      * @param bitmap the background image to be modified
-     * @param location location info of the image
-     * @return returns image with location info as bitmap
-     * @throws Exception ArrayIndexOutOfBounds when no location info
+     * @param location locationSwitch info of the image
+     * @return returns image with locationSwitch info as bitmap
+     * @throws Exception ArrayIndexOutOfBounds when no locationSwitch info
      */
     public Bitmap backgroundImage(Bitmap bitmap, Location location) throws Exception {
 
@@ -418,7 +418,7 @@ public class PhotoService extends Service {
         paint.setColor(Color.RED);
         paint.setTextSize(bitmap.getHeight() / PAINT_SIZE_CONSTANT);
 
-        // get address for location
+        // get address for locationSwitch
         try {
 
             // Geocoder to get address from remote server
@@ -430,17 +430,17 @@ public class PhotoService extends Service {
 
         }
 
-        // if no valid location
+        // if no valid locationSwitch
         catch(Exception e) {
 
-            locationTag = "No location info\navailable";
+            locationTag = "No locationSwitch info\navailable";
         }
 
-        // Write location info to bitmap and return
+        // Write locationSwitch info to bitmap and return
         paint.getTextBounds(locationTag, 0, locationTag.length(), rect);
         canvas.drawText(locationTag, 0, newBitmap.getHeight()-newBitmap.getHeight()/5, paint);
 
-        Log.d(TAG, "Printed location on photo: " + locationTag);
+        Log.d(TAG, "Printed locationSwitch on photo: " + locationTag);
 
         return newBitmap;
     }

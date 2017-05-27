@@ -11,5 +11,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="text_margin">16dp</dimen>
     <dimen name="text_size1">22dp</dimen>
     <dimen name="text_size2">28dp</dimen>
+    <dimen name="spacing">20dp</dimen>
 
 </resources>

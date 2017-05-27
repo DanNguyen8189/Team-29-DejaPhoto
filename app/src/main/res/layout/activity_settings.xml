@@ -4,16 +4,225 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ocean_art"
     tools:context="com.team29.cse110.team29dejaphoto.SettingsActivity">
 
-    <TextView
-        android:id="@+id/textView2"
+    <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="105dp"
-        android:layout_marginTop="94dp"
-        android:text="Settings Page"
-        android:textSize="@dimen/text_size2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/big_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/settings_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing"
+                android:layout_marginLeft="@dimen/spacing"
+                android:text="Settings"
+                android:textSize="@dimen/text_size2"
+                />
+
+            <RelativeLayout
+                android:id="@+id/checkboxes"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/settings_text"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp">
+
+                <TextView
+                    android:id="@+id/whose_photos_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:gravity="center"
+                    android:text="-----Whose Photos?-----"
+                    android:textSize="@dimen/text_size2" />
+
+                <CheckBox
+                    android:id="@+id/your_photos_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/whose_photos_text"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:text="View Your Photos"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <CheckBox
+                    android:id="@+id/friend_photos_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/your_photos_box"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:text="View Friends' Photos"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <CheckBox
+                    android:id="@+id/share_photos_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/friend_photos_box"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:text="Share your photos!"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/dejavu_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
+                android:layout_marginLeft="40dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkboxes"
+                android:layout_below="@+id/checkboxes"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="50dp">
+
+
+                <TextView
+                    android:id="@+id/dejavu_settings_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="-----DejaVu Settings-----"
+                    android:textSize="@dimen/text_size2"/>
+
+                <Switch
+                    android:id="@+id/dejavu_mode_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dejavu_settings_text"
+                    android:layout_marginTop="40dp"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/dejavu_mode_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/dejavu_mode_switch"
+                    android:layout_below="@+id/dejavu_settings_text"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="40dp"
+                    android:text="DejaVu Mode enabled"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"/>
+
+                <Switch
+                    android:id="@+id/location_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dejavu_mode_switch"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:layout_marginLeft="@dimen/spacing"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/location_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/location_switch"
+                    android:layout_below="@+id/dejavu_mode_switch"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:text="Location enabled"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"/>
+
+                <Switch
+                    android:id="@+id/time_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/location_switch"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:layout_marginLeft="@dimen/spacing"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/time_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/time_switch"
+                    android:layout_below="@+id/location_switch"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:text="Time enabled"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"/>
+
+                <Switch
+                    android:id="@+id/date_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/time_switch"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:layout_marginLeft="@dimen/spacing"
+                    android:checked="true" />
+
+                <TextView
+                    android:id="@+id/date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/date_switch"
+                    android:layout_below="@+id/time_switch"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:text="Date enabled"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"/>
+
+                <TextView
+                    android:id="@+id/update_interval_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/date_text"
+                    android:layout_marginTop="40dp"
+                    android:text="Update Interval:"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
+                    />
+
+                <TextView
+                    android:id="@+id/update_interval_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/date_text"
+                    android:layout_toRightOf="@+id/update_interval_text"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginLeft="@dimen/spacing"
+                    android:text="5 minutes"
+                    android:textColor="@color/defaultText"
+                    android:textSize="@dimen/text_size1"
+                    />
+
+
+                <SeekBar
+                    android:id="@+id/update_interval_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/update_interval_text"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:layout_marginBottom="30dp"
+                    android:max="359"
+                    android:progress="5"
+                    />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>
