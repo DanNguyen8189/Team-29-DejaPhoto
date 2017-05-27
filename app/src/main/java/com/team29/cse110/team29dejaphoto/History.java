@@ -124,7 +124,7 @@ public class History {
     /**
      * Update the priorites of all DejaPhoto Objects held by this History structure
      *
-     * @param location The new current locationSwitch to update score with respects to
+     * @param location The new current location to update score with respects to
      */
     public void updatePriorities(Location location, Preferences prefs) {
         for(DejaPhoto photo : historyList) {

@@ -16,7 +16,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     /* Photo Metadata */
 
     private Uri photoUri;         // Uri for this photo
-    private Calendar time;        // This Calendar object will hold the timeSwitch this photo was taken
+    private Calendar time;        // This Calendar object will hold the time this photo was taken
     private Location location;    // Location object composing lat and long
                                   // coordinates where this photo was taken
 
@@ -36,8 +36,8 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
 
     /**
-     * DejaPhoto constructor. The photo's data including Uri, latitude, longitude, timeSwitch taken,
-     * and dateSwitch taken, are passed as parameters to the constructor.
+     * DejaPhoto constructor. The photo's data including Uri, latitude, longitude, time taken,
+     * and date taken, are passed as parameters to the constructor.
      */
     public DejaPhoto(Uri photoUri, double latitude, double longitude, Long time) {
 
@@ -77,9 +77,9 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
 
 
     /**
-     * Updates the score for this DejaPhoto object, given settings for locationSwitch, dateSwitch, and timeSwitch.
+     * Updates the score for this DejaPhoto object, given settings for location, date, and time.
      *
-     * @param location - The current locationSwitch of the user/device
+     * @param location - The current location of the user/device
      *        prefs    - The DejaVu Mode preferences current enabled by the user
      */
     public int updateScore(Location location, Preferences prefs) {
@@ -101,9 +101,9 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     }
 
     /**
-     * Calculates the score of this DejaPhoto based on locationSwitch
+     * Calculates the score of this DejaPhoto based on location
      *
-     * @returns SCORE_UNIT - If the locationSwitch of the photo is close to the current locationSwitch
+     * @returns SCORE_UNIT - If the location of the photo is close to the current location
      */
     public int getLocationPoints(Location location) {
         return (location.distanceTo(this.location) * METERS_TO_FEET) <= NEAR_RADIUS
@@ -111,9 +111,9 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
     }
 
     /**
-     * Calculates the score of this DejaPhoto based on timeSwitch
+     * Calculates the score of this DejaPhoto based on time
      *
-     * @returns SCORE_UNIT - If the timeSwitch when the photo was taken is close to the current timeSwitch
+     * @returns SCORE_UNIT - If the time when the photo was taken is close to the current time
      */
     public int getTimeTakenPoints() {
 

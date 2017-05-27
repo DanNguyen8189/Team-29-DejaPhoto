@@ -49,7 +49,7 @@ public class DisplayCycle {
     /**
      * Overloaded to add an array of DejaPhoto objects to the display cycle. This method
      * is intended to allow instantiating a DisplayCycle object before an array of DejaPhoto
-     * objects becomes available, and fill the DisplayCycle at a later timeSwitch. This is
+     * objects becomes available, and fill the DisplayCycle at a later time. This is
      * useful so the app does not crash if the user presses the forwards/backwards button
      * before images are loaded.
      *
@@ -108,7 +108,7 @@ public class DisplayCycle {
     /**
      * Updates the priorities of each DejaPhoto in the DisplayCycle.
      *
-     * @param location - The locationSwitch for which scores are to be calculated with respects to
+     * @param location - The location for which scores are to be calculated with respects to
      */
     public void updatePriorities(Location location, Preferences prefs) {
         if(location == null) return;
