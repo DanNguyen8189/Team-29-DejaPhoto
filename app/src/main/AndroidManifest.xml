@@ -50,7 +50,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AlbumSelection" />
         <activity android:name=".InAppPhotoGallery" />
-        <activity android:name=".MyPhotosGallery" />
+        <activity android:name=".CopiedPhotosGallery" />
         <activity android:name=".FriendsPhotosGallery"></activity>
     </application>
 
