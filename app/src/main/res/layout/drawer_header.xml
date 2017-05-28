@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Welcome!"
         android:textSize="@dimen/text_size1"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/white"
         />
 
 </LinearLayout>
