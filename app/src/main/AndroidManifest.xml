@@ -47,7 +47,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.team29.cse110.team29dejaphoto.MainActivity" />
         </activity>
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".AlbumSelection" />
+        <activity android:name=".InAppPhotoGallery" />
+        <activity android:name=".MyPhotosGallery" />
+        <activity android:name=".FriendsPhotosGallery"></activity>
     </application>
 
 </manifest>
