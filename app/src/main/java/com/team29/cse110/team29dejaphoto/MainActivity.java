@@ -42,33 +42,15 @@ public class MainActivity extends AppCompatActivity {
 
     /* Declaration of xml UI Design TextViews */
     TextView appOnOffText;
-    TextView dejavuText;
-    TextView locationText;
-    TextView timeText;
-    TextView dateText;
-    TextView updateIntervalText;
-    TextView updateIntervalNumber;
     DrawerLayout dejaDrawer;
     ActionBarDrawerToggle dejaDrawerToggle;
     NavigationView navigationView;
 
     /* Declaration of xml UI Design Switches */
     Switch appOnOff;
-    Switch dejavu;
-    Switch location;
-    Switch time;
-    Switch date;
-
-    /* Declaration of xml UI Design SeekBar */
-    SeekBar upDateInterval;
 
     /* Declaration of the listeners */
     CompoundButton.OnCheckedChangeListener appOnOffSwitchListener;
-    CompoundButton.OnCheckedChangeListener dejavuSwitchListener;
-    CompoundButton.OnCheckedChangeListener locationSwitchListener;
-    CompoundButton.OnCheckedChangeListener timeSwitchListener;
-    CompoundButton.OnCheckedChangeListener dateSwitchListener;
-    SeekBar.OnSeekBarChangeListener timeInterValListener;
 
     /* Declaration of xml UI Design Radio */
     RadioGroup radio;
@@ -85,10 +67,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         dejaDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        dejaDrawerToggle = new ActionBarDrawerToggle(this,dejaDrawer,
-                R.string.drawer_opened,R.string.drawer_closed);
+        dejaDrawerToggle = new ActionBarDrawerToggle(this, dejaDrawer,
+                R.string.drawer_opened, R.string.drawer_closed);
 
         dejaDrawer.addDrawerListener(dejaDrawerToggle);
         dejaDrawerToggle.syncState();
@@ -104,27 +85,23 @@ public class MainActivity extends AppCompatActivity {
 
         //navigation drawer menu Listener
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener()
-                {
+                new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         dejaDrawer.closeDrawers();
                         Log.d("drawer", item.getTitle() + " selected");
                         //Settings button was selected
-                        if(item.getTitle().toString().equalsIgnoreCase("Settings"))
-                        {
+                        if (item.getTitle().toString().equalsIgnoreCase("Settings")) {
                             //launch SettingsActivity
                             Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivity(intentSettings);
                         }
 
-                        if(item.getTitle().toString().equalsIgnoreCase("Log in"))
-                        {
+                        if (item.getTitle().toString().equalsIgnoreCase("Log in")) {
                             item.setTitle("Log out");
                             //TODO need to connect to google account. Also literally everything except setTitle works
                         }
-                        if(item.getTitle().toString().equalsIgnoreCase("Log out"))
-                        {
+                        if (item.getTitle().toString().equalsIgnoreCase("Log out")) {
                             item.setTitle("Log in");
                             //TODO need to disconnect from google account. Also literally everything except setTitle works
                         }
@@ -134,29 +111,15 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
-
-
-
         dejaPreferences = getSharedPreferences(DEJA_PREFS, 0); // Instantiate the shared preferences file
 
         /* Find the ID's for the UI TextViews to be displayed */
 
         appOnOffText = (TextView) findViewById(R.id.appSwitch);
-        dejavuText = (TextView) findViewById(R.id.dejavu_mode_text);
-        locationText = (TextView) findViewById(R.id.location_text);
-        timeText = (TextView) findViewById(R.id.time_text);
-        dateText = (TextView) findViewById(R.id.date_text);
-        updateIntervalText = (TextView) findViewById(R.id.update_interval_text);
-        updateIntervalNumber = (TextView) findViewById(R.id.update_interval_number);
 
         /* Find the ID's for the UI Designs to be used and linked to onClicks, listeners, etc */
         appOnOff = (Switch) findViewById(R.id.serviceButton);
-        dejavu = (Switch) findViewById(R.id.dejavu_mode_switch);
-        location = (Switch) findViewById(R.id.location_switch);
-        time = (Switch) findViewById(R.id.time_switch);
-        date = (Switch) findViewById(R.id.date_switch);
         radio = (RadioGroup) findViewById(R.id.RadioGroup);
-        upDateInterval = (SeekBar) findViewById(R.id.update_interval_bar);
 
         /* Linker initialization for the switches, toggling if they can be clicked, if they are
          * checked, and updating shared preferences so that the user's preferences are saved
@@ -170,267 +133,30 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "app is ON");
                     appOnOffText.setText("DejaPhoto is running!");
                     toggleSetting(IsAppRunning, true);
-                    /*dejavuSwitch.setClickable(true);
-                    locationSwitch.setClickable(true);
-                    timeSwitch.setClickable(true);
-                    dateSwitch.setClickable(true);*/
-                    changeUIOpacities(1);
                     starter();
-                }
-
-                else {
+                } else {
                     Log.d(TAG, "app is OFF");
                     appOnOffText.setText("DejaPhoto is not running!");
                     Log.d(TAG, "Dejaphoto disable called");
                     toggleSetting(IsAppRunning, false);
-                    //dejavuSwitch.setChecked(false);
-                    /*dejavuSwitch.setClickable(false);
-                    locationSwitch.setClickable(false);
-                    timeSwitch.setClickable(false);
-                    dateSwitch.setClickable(false); */
-                    changeUIOpacities(.7f);
                     stopper();
                 }
             }
         };
 
-        dejavuSwitchListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    dejavuText.setText("DejaVu mode enabled");
-                    location.setChecked(true);
-                    time.setChecked(true);
-                    date.setChecked(true);
-                    location.setClickable(true);
-                    time.setClickable(true);
-                    date.setClickable(true);
-                    toggleSetting(IsDejaVuModeOn, true);
-                }
-
-                else {
-                    dejavuText.setText("DejaVu mode disabled");
-                    location.setChecked(false);
-                    time.setChecked(false);
-                    date.setChecked(false);
-                    location.setClickable(false);
-                    time.setClickable(false);
-                    date.setClickable(false);
-                    toggleSetting(IsDejaVuModeOn, false);
-                }
-            }
-        };
-
-        locationSwitchListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    locationText.setText("Location enabled");
-                    toggleSetting(IsLocationOn, true);
-                }
-
-                else {
-                    locationText.setText("Location disabled");
-                    toggleSetting(IsLocationOn, false);
-                }
-            }
-        };
-
-        timeSwitchListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    timeText.setText("Time enabled");
-                    toggleSetting(IsTimeOn, true);
-                }
-
-                else {
-                    timeText.setText("Time disabled");
-                    toggleSetting(IsTimeOn, false);
-                }
-            }
-        };
-
-        dateSwitchListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    dateText.setText("Date enabled");
-                    toggleSetting(IsDateOn, true);
-                }
-
-                else {
-                    dateText.setText("Date disabled");
-                    toggleSetting(IsDateOn, false);
-                }
-            }
-        };
-
-        /* Listener for the seek bar to allow user to set their own interval */
-        timeInterValListener = new SeekBar.OnSeekBarChangeListener() {
-
-            /* Change the text as the slider changes */
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                updateIntervalNumber.setText((progress + 1)/60 + " hours " + (progress + 1)%60 + " minutes");
-            }
-
-            /* Method needs to be overridden */
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            /* Update shared preferences file once the user is done sliding */
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                SharedPreferences.Editor editor  = dejaPreferences.edit();
-                editor.putInt(UpdateInterval, (seekBar.getProgress() + 1)*60000);
-                editor.apply();
-            }
-        };
-
         /* Linking listeners to switches */
         appOnOff.setOnCheckedChangeListener(appOnOffSwitchListener);
-        dejavu.setOnCheckedChangeListener(dejavuSwitchListener);
-        location.setOnCheckedChangeListener(locationSwitchListener);
-        time.setOnCheckedChangeListener(timeSwitchListener);
-        date.setOnCheckedChangeListener(dateSwitchListener);
-        upDateInterval.setOnSeekBarChangeListener(timeInterValListener);
 
         boolean appRunCheck = dejaPreferences.contains(IsAppRunning); // Has the app started yet
 
-        /* Check if app is supposed to be running */
-        /*
-        if(appRunCheck) {
-                appOnOff.setChecked(true);
-                appOnOffText.setText("DejaPhoto is enabled");
-
-
-            if(dejaPreferences.getBoolean(IsDejaVuModeOn, true)) {
-                dejavuSwitch.setOnCheckedChangeListener(null);
-                dejavuSwitch.setChecked(true);
-                dejavuSwitch.setOnCheckedChangeListener(dejavuSwitchListener);
-
-
-                if(dejaPreferences.getBoolean(IsLocationOn, true)) {
-                    locationSwitch.setOnCheckedChangeListener(null);
-                    locationSwitch.setChecked(true);
-                    locationSwitch.setOnCheckedChangeListener(locationSwitchListener);
-                }
-
-                else {
-                    locationSwitch.setChecked(true);
-                    locationSwitch.setChecked(false);
-                }
-
-
-                if(dejaPreferences.getBoolean(IsTimeOn, true)) {
-                    timeSwitch.setOnCheckedChangeListener(null);
-                    timeSwitch.setChecked(true);
-                    timeSwitch.setOnCheckedChangeListener(timeSwitchListener);
-                }
-
-                else {
-                    timeSwitch.setChecked(true);
-                    timeSwitch.setChecked(false);
-                }
-
-
-                if(dejaPreferences.getBoolean(IsDateOn, true)) {
-                    dateSwitch.setOnCheckedChangeListener(null);
-                    dateSwitch.setChecked(true);
-                    dateSwitch.setOnCheckedChangeListener(dateSwitchListener);
-                }
-
-                else {
-                    dateSwitch.setChecked(true);
-                    dateSwitch.setChecked(false);
-                }
-            }
-
-            else {
-                dejavuSwitch.setChecked(true);
-                dejavuSwitch.setChecked(false);
-            }
-
-
-            updateIntervalBar.setProgress(dejaPreferences.getInt(UpdateInterval, 300000)/60000 - 1);
-        }
-
-        else {
-            Log.d(TAG, "disable app");
-            appOnOff.setChecked(true);
-            appOnOff.setChecked(false);
-            dejavuSwitch.setChecked(true);
-            dejavuSwitch.setChecked(false);
-        }
-        */
-
-
-        /***************************************************************************************/
-
-        if(appRunCheck) {
+        if (appRunCheck) {
             appOnOff.setChecked(true);
             appOnOffText.setText("DejaPhoto is running!");
-        }
-        else{
+        } else {
             Log.d(TAG, "app is disabled on startup");
             appOnOff.setChecked(false);
         }
-
-        if(dejaPreferences.getBoolean(IsDejaVuModeOn, true)) {
-            dejavu.setOnCheckedChangeListener(null);
-            dejavu.setChecked(true);
-            dejavu.setOnCheckedChangeListener(dejavuSwitchListener);
-
-                /* Check if user has locationSwitch enabled */
-            if(dejaPreferences.getBoolean(IsLocationOn, true)) {
-                location.setOnCheckedChangeListener(null);
-                location.setChecked(true);
-                location.setOnCheckedChangeListener(locationSwitchListener);
-            }
-
-            else {
-                location.setChecked(true);
-                location.setChecked(false);
-            }
-
-                /* Check if user has locationSwitch on */
-            if(dejaPreferences.getBoolean(IsTimeOn, true)) {
-                time.setOnCheckedChangeListener(null);
-                time.setChecked(true);
-                time.setOnCheckedChangeListener(timeSwitchListener);
-            }
-
-            else {
-                time.setChecked(true);
-                time.setChecked(false);
-            }
-
-                /* Check if user has dateSwitch on */
-            if(dejaPreferences.getBoolean(IsDateOn, true)) {
-                date.setOnCheckedChangeListener(null);
-                date.setChecked(true);
-                date.setOnCheckedChangeListener(dateSwitchListener);
-            }
-
-            else {
-                date.setChecked(true);
-                date.setChecked(false);
-            }
-        }
-
-        else {
-            dejavu.setChecked(true);
-            dejavu.setChecked(false);
-        }
-
-        /* Check what update interval the user has set */
-        upDateInterval.setProgress(dejaPreferences.getInt(UpdateInterval, 300000)/60000 - 1);
     }
-
-
 
     /* Permissions Handling */
 
@@ -581,19 +307,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void changeUIOpacities(float num){
-        dejavu.setAlpha(num);
-        location.setAlpha(num);
-        time.setAlpha(num);
-        date.setAlpha(num);
-        upDateInterval.setAlpha(num);
-        dejavuText.setAlpha(num);
-        locationText.setAlpha(num);
-        timeText.setAlpha(num);
-        dateText.setAlpha(num);
-        updateIntervalText.setAlpha(num);
-        updateIntervalNumber.setAlpha(num);
-    }
     /* To be done next milestone */
     public void onCreateCustomAlbum(View view) {
 
