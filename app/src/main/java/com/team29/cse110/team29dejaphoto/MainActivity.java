@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -18,11 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout dejaDrawer;
     ActionBarDrawerToggle dejaDrawerToggle;
     NavigationView navigationView;
+    ImageView imageView;
 
     /* Declaration of xml UI Design Switches */
     Switch appOnOff;
@@ -120,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
         appOnOff = (Switch) findViewById(R.id.serviceButton);
 
         photoPickerButton = (Button) findViewById(R.id.photo_picker_button);
+
+        imageView = (ImageView) findViewById(R.id.imageView);
 
         /* Linker initialization for the switches, toggling if they can be clicked, if they are
          * checked, and updating shared preferences so that the user's preferences are saved
@@ -289,13 +298,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void photoPicker (View view){
-        Intent intent = new Intent(getApplicationContext(), PhotoPickerActivity.class);
+        Intent intent = new Intent();
         // Show only images, no videos or anything else
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         // Always show the chooser (if there are multiple options available)
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri uri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                // Log.d(TAG, String.valueOf(bitmap));
+
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
