@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -37,11 +38,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String IsDateOn = "IsDateOn"; // Date key
     public static final String UpdateInterval = "UpdateInterval"; // Update interval key
 
-
-    boolean useDefaultGallery = true; // By default use the user's custom default album
-
     /* Declaration of xml UI Design TextViews */
     TextView appOnOffText;
+    Button photoPickerButton;
     DrawerLayout dejaDrawer;
     ActionBarDrawerToggle dejaDrawerToggle;
     NavigationView navigationView;
@@ -119,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
         /* Find the ID's for the UI Designs to be used and linked to onClicks, listeners, etc */
         appOnOff = (Switch) findViewById(R.id.serviceButton);
-        radio = (RadioGroup) findViewById(R.id.RadioGroup);
+
+        photoPickerButton = (Button) findViewById(R.id.photo_picker_button);
 
         /* Linker initialization for the switches, toggling if they can be clicked, if they are
          * checked, and updating shared preferences so that the user's preferences are saved
@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     /* Permissions Handling */
 
     public boolean checkPermissions() {
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[] {
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_FINE_LOCATION
+                        Manifest.permission.ACCESS_FINE_LOCATION,
                 },
                 PERMISSIONS_REQUEST_ALL);
     }
@@ -259,33 +260,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /* Method to display the onClick for which gallery to use, only one for now */
-    public void onClickRadioButton(View view) {
-
-        switch(view.getId()) {
-
-            case R.id.DefaultAlbum:
-                if (useDefaultGallery) {
-                    break;
-                }
-
-                else {
-                    useDefaultGallery = !useDefaultGallery;
-                    break;
-                }
-
-            case R.id.DejaAlbum:
-                if (useDefaultGallery) {
-                    useDefaultGallery = !useDefaultGallery;
-                    break;
-                }
-
-                else {
-                    break;
-                }
-        }
-    }
-
     /*
      * Method to toggle boolean values stored in SharedPreferences. The settingName parameter is the
      * key value for the boolean you want to change.
@@ -312,6 +286,16 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), CustomAlbumActivity.class);
         startActivity(intent);
+    }
+
+    public void photoPicker (View view){
+        Intent intent = new Intent(getApplicationContext(), PhotoPickerActivity.class);
+        // Show only images, no videos or anything else
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        // Always show the chooser (if there are multiple options available)
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+
     }
 
     @Override

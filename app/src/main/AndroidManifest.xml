@@ -51,7 +51,11 @@
         <activity android:name=".AlbumSelection" />
         <activity android:name=".InAppPhotoGallery" />
         <activity android:name=".CopiedPhotosGallery" />
-        <activity android:name=".FriendsPhotosGallery"></activity>
+        <activity android:name=".FriendsPhotosGallery" />
+        <activity
+            android:name=".PhotoPickerActivity"
+            android:label="@string/title_activity_photo_picker"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
