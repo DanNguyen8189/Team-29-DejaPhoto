@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "971592821853",
+    "firebase_url": "https://team29dejaphoto.firebaseio.com",
+    "project_id": "team29dejaphoto",
+    "storage_bucket": "team29dejaphoto.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971592821853:android:a3e7cd663ddf4367",
+        "android_client_info": {
+          "package_name": "com.team29.cse110.team29dejaphoto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971592821853-ni0dpobot6i8iq2rtlbndg9n20jru5t1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team29.cse110.team29dejaphoto",
+            "certificate_hash": "0a86397af5779d2241f7f001688571d86f87379a"
+          }
+        },
+        {
+          "client_id": "971592821853-5ulp0dg2tp2okgpek54kj3appda1tvb2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPNS_fNx-TPuHDzxn-oBq7hu5L_LhwTa0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971592821853-5ulp0dg2tp2okgpek54kj3appda1tvb2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
