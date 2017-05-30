@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "971592821853-3n558o1t7u8m2vsu64k949tp7a4fsvrn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team29.cse110.team29dejaphoto",
+            "certificate_hash": "cd994eed065eb57f612e600a8b9b93b7951b3fb2"
+          }
+        },
+        {
           "client_id": "971592821853-ni0dpobot6i8iq2rtlbndg9n20jru5t1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
