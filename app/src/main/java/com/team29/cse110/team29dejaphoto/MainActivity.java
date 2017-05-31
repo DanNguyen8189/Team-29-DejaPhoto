@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -25,25 +24,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -54,11 +38,6 @@ public class MainActivity extends AppCompatActivity {
     public static SharedPreferences dejaPreferences; // Holds the reference to the SharedPreferences file
     public static final String DEJA_PREFS = "Deja_Preferences"; // SharedPreference file key
     public static final String IsAppRunning = "IsAppRunning"; // App running key
-    public static final String IsDejaVuModeOn = "IsDejaVuModeOn"; // DejaVu mode key
-    public static final String IsLocationOn = "IsLocationOn"; // Location key
-    public static final String IsTimeOn = "IsTimeOn"; // Time key
-    public static final String IsDateOn = "IsDateOn"; // Date key
-    public static final String UpdateInterval = "UpdateInterval"; // Update interval key
 
     /* Declaration of xml UI Design TextViews */
     TextView appOnOffText;
@@ -80,13 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private final int PERMISSIONS_REQUEST_MEDIA = 1; // int value for permission to access MEDIA
     private final int PERMISSIONS_LOCATION = 2;      // int value for permission to access locationSwitch
     private final int PERMISSIONS_REQUEST_ALL = 3;   // int value for both permissions combined
-
-    /* Google sign-on */
-    private GoogleApiClient mGoogleApiClient;
-    private static final int RC_SIGN_IN = 9001;
-
-    /* Firebase Authentication */
-    private FirebaseAuth mAuth;
 
     /* Called when the APP is first created */
     @Override
@@ -110,28 +82,7 @@ public class MainActivity extends AppCompatActivity {
         //sets title of actionbar
         getSupportActionBar().setTitle("DejaPhoto");
 
-        /* Google Sign-in */
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso
-                =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build();
-
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                // .enableAutoManage(this, this);
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
         navigationView = (NavigationView) findViewById(R.id.navi_view);
-
-        /* Firebase Authentication */
-
-        mAuth = FirebaseAuth.getInstance();
 
         //navigation drawer menu Listener
         navigationView.setNavigationItemSelectedListener(
@@ -150,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
                         if (item.getTitle().toString().equalsIgnoreCase("Log in")) {
                             item.setTitle("Log out");
 
-                            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                            startActivityForResult(signInIntent, RC_SIGN_IN);
+                            Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intentLogin);
                         }
 
                         if (item.getTitle().toString().equalsIgnoreCase("Log out")) {
@@ -162,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-
 
         dejaPreferences = getSharedPreferences(DEJA_PREFS, 0); // Instantiate the shared preferences file
 
@@ -177,11 +127,11 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.imageView);
 
-        /* Linker initialization for the switches, toggling if they can be clicked, if they are
+        /*
+         * Linker initialization for the switches, toggling if they can be clicked, if they are
          * checked, and updating shared preferences so that the user's preferences are saved
          * when the close and open the app
          */
-
         appOnOffSwitchListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -212,48 +162,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "app is disabled on startup");
             appOnOff.setChecked(false);
         }
-    }
-
-    /* Google sign-in */
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            firebaseAuthWithGoogle(acct);
-            // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-            // updateUI(true);
-        } else {
-            Log.d(TAG, "Google login failed");
-            // Signed out, show unauthenticated UI.
-            // updateUI(false);
-        }
-    }
-
-    /* Firebase Authentication */
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            // updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            // updateUI(null);
-                        }
-                    }
-                });
     }
 
     /* Permissions Handling */
@@ -377,13 +285,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* To be done next milestone */
-    public void onCreateCustomAlbum(View view) {
-
-        Intent intent = new Intent(getApplicationContext(), CustomAlbumActivity.class);
-        startActivity(intent);
-    }
-
     public void photoPicker (View view){
         Intent intent = new Intent();
         // Show only images, no videos or anything else
@@ -461,9 +362,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("TAG", "Selected Images" + mArrayUri.size());
             }
 
-        } else if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
         }
     }
 
@@ -487,14 +385,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        // updateUI(currentUser);
     }
 
 }
