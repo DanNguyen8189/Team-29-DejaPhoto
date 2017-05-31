@@ -113,8 +113,7 @@ public class MainActivity extends AppCompatActivity {
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso
                 =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    //.requestIdToken(getString(R.string.default_web_client_id))
-                    .requestIdToken("114350188805-6o0fhqnfvh0gmqfpdkj08cut6j16knoq.apps.googleusercontent.com")
+                    .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()
                     .build();
 
@@ -354,7 +353,6 @@ public class MainActivity extends AppCompatActivity {
         stopService(intent);
     }
 
-
     /*
      * Method to toggle boolean values stored in SharedPreferences. The settingName parameter is the
      * key value for the boolean you want to change.
@@ -413,7 +411,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            // handleSignInResult(result);
+            handleSignInResult(result);
         }
     }
 
