@@ -56,7 +56,11 @@
         <activity
             android:name=".PhotoPickerActivity"
             android:label="@string/title_activity_photo_picker"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".SharingService"
+            android:exported="false"></service>
     </application>
 
 </manifest>
