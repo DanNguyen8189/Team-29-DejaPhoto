@@ -39,17 +39,49 @@ public class FriendActivity extends AppCompatActivity {
     }
 
     public void addFriend(View view) {
-        final String uid = user.getUid();
+        final String myID = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
-        Query queryRef
-                = myFirebaseRef.child(uid)
-                    .child(((EditText) findViewById(R.id.emailText)).getText().toString());
+        String email = ((EditText) findViewById(R.id.emailText)).getText().toString();
+        if(email.indexOf('@') == -1) return;
+        final String toAddID = email.substring(0, email.indexOf('@'));
 
-        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query queryUserToAdd = myFirebaseRef.child(toAddID);
+
+        queryUserToAdd.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if(snapshot == null || snapshot.getValue() == null) {
-                    Log.d(TAG, "No friend request from user being added");
+                    Log.d(TAG, "Attemping to add non-existent user");
+
+                } else {
+                    Query queryRequest = myFirebaseRef.child(myID).child("requests").child(toAddID);
+
+                    queryRequest.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+
+                            if(snapshot == null || snapshot.getValue() == null) {
+                                Log.d(TAG, "No friend request from user being added");
+
+                                myFirebaseRef.child(toAddID).child("requests").child(myID).setValue(true);
+
+                            } else {
+                                Log.d(TAG, "Already have friend request from user being added");
+
+                                myFirebaseRef.child(myID).child("requests").child(toAddID).removeValue();
+
+                                myFirebaseRef.child(myID).child("friends").child(toAddID).setValue(true);
+                                myFirebaseRef.child(toAddID).child("friends").child(myID).setValue(true);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -58,5 +90,6 @@ public class FriendActivity extends AppCompatActivity {
 
             }
         });
+
     }
 }

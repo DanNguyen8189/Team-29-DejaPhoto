@@ -148,8 +148,10 @@ public class LoginActivity extends AppCompatActivity {
         Query queryRef = myFirebaseRef.child(uid);
 
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+
                 if(snapshot == null || snapshot.getValue() == null) {
                     Log.d(TAG, "New user added to Database");
 
