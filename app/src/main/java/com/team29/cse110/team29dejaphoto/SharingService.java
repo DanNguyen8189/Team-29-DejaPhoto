@@ -3,6 +3,7 @@ package com.team29.cse110.team29dejaphoto;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -16,6 +17,8 @@ import com.google.firebase.storage.StorageReference;
  * TODO: Customize class - update intent actions and extra parameters.
  */
 public class SharingService extends IntentService {
+
+    private static final String TAG = "SharingService";
 
     //Firebase reference for accessing stored media
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -33,13 +36,13 @@ public class SharingService extends IntentService {
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        Toast.makeText(SharingService.this,"Share service started.",Toast.LENGTH_SHORT);
+        Log.d(TAG,"Share onStartCommand.");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        Toast.makeText(SharingService.this,"Share service stopped.",Toast.LENGTH_SHORT);
+        Log.d(TAG,"Share service onDestroy.");
         super.onDestroy();
     }
 }

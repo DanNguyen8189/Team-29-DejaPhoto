@@ -1,5 +1,6 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -125,6 +126,15 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
                 toggleSetting(IsSharingPhotos, isChecked);
+                if(isChecked)
+                {
+                    Log.d(TAG,"Sharing turned on");
+                    shareStarter();
+                }
+                else
+                {
+                    Log.d(TAG,"Sharing turned off");
+                }
             }
         };
 
@@ -300,4 +310,12 @@ public class SettingsActivity extends AppCompatActivity {
             return settingText + " disabled";
         }
     }
+
+    public void shareStarter()
+    {
+        Log.d(TAG, "shareStarter called");
+        Intent shareIntent = new Intent(SettingsActivity.this,SharingService.class);
+        startService(shareIntent);
+    }
+
 }
