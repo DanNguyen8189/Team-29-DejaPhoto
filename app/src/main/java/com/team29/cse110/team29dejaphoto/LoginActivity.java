@@ -19,6 +19,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by Wis on 5/31/2017.
@@ -35,9 +41,17 @@ public class LoginActivity extends AppCompatActivity {
     /* Firebase Authentication */
     private FirebaseAuth mAuth;
 
+    FirebaseDatabase database;
+    DatabaseReference myFirebaseRef;
+    FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        database = FirebaseDatabase.getInstance();
+        myFirebaseRef = database.getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         /* Google Sign-in */
 
@@ -62,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        initializeUser();
     }
 
     @Override
@@ -124,4 +140,32 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void initializeUser() {
+        final String uid = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+        final String name = user.getDisplayName();
+
+        Query queryRef = myFirebaseRef.child(uid);
+
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if(snapshot == null || snapshot.getValue() == null) {
+                    Log.d(TAG, "New user added to Database");
+
+                    myFirebaseRef.child(uid).setValue(uid);
+                    myFirebaseRef.child(uid).child("name").setValue(name);
+
+//                    myFirebaseRef.child(uid).child("requests").child("Tyler").setValue(true);
+//                    myFirebaseRef.child(uid).child("requests").child("David").setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }
