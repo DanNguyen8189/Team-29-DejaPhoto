@@ -134,7 +134,6 @@ public class SettingsActivity extends AppCompatActivity {
                 else
                 {
                     Log.d(TAG,"Sharing turned off");
-                    shareStopper();
                 }
             }
         };
@@ -318,10 +317,5 @@ public class SettingsActivity extends AppCompatActivity {
         Intent shareIntent = new Intent(SettingsActivity.this,SharingService.class);
         startService(shareIntent);
     }
-    public void shareStopper()
-    {
-        Log.d(TAG, "shareStopper called");
-        Intent shareIntent = new Intent(SettingsActivity.this,SharingService.class);
-        stopService(shareIntent);
-    }
+
 }
