@@ -48,6 +48,7 @@
                 android:value="com.team29.cse110.team29dejaphoto.MainActivity" />
         </activity>
         <activity android:name=".LoginActivity" />
+        <activity android:name=".FriendActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AlbumSelection" />
         <activity android:name=".InAppPhotoGallery" />

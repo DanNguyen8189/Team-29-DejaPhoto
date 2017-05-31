@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intentSettings);
                         }
 
+                        if (item.getTitle().toString().equalsIgnoreCase("Friends")) {
+                            Intent intentFriend = new Intent(MainActivity.this, FriendActivity.class);
+                            startActivity(intentFriend);
+                        }
+
                         if (item.getTitle().toString().equalsIgnoreCase("Log in")) {
                             item.setTitle("Log out");
 
