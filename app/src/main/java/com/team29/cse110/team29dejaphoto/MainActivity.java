@@ -1,10 +1,12 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -42,6 +44,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -396,7 +399,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        SharedPreferences.Editor editor = dejaPreferences.edit();
+        //ArrayList imagesEncodedList;
+        String imageEncoded;
+
+        Log.d("TAG", "Running onActivityResult");
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null /*&& data.getData() != null*/) {
 
             /*Uri uri = data.getData();
 
@@ -408,8 +416,52 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
-        }
-        else if(requestCode == RC_SIGN_IN) {
+
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            //imagesEncodedList = new ArrayList<String>();
+            if (data.getData() != null) {
+
+                Uri mImageUri = data.getData();
+
+                // Get the cursor
+                Cursor cursor = getContentResolver().query(mImageUri,
+                        filePathColumn, null, null, null);
+                // Move to first row
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imageEncoded = cursor.getString(columnIndex);
+                editor.putString(mImageUri.toString(), imageEncoded);
+                Log.d("TAG", "successfully wrote" + mImageUri.toString() + " to sharedpref");
+
+                cursor.close();
+
+            } else if (data.getClipData() != null) {
+                ClipData mClipData = data.getClipData();
+                ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                Log.d("TAG", "Entered clipdata");
+                for (int i = 0; i < mClipData.getItemCount(); i++) {
+
+                    ClipData.Item item = mClipData.getItemAt(i);
+                    Uri uri = item.getUri();
+                    mArrayUri.add(uri);
+                    // Get the cursor
+                    Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                    // Move to first row
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imageEncoded = cursor.getString(columnIndex) + uri;
+                    editor.putString(uri.toString(), imageEncoded);
+                    Log.d("TAG", "successfully wrote" + uri.toString() + " to sharedpref");
+                    //imagesEncodedList.add(imageEncoded);
+                    cursor.close();
+
+                }
+                Log.d("TAG", "Selected Images" + mArrayUri.size());
+            }
+
+        } else if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
