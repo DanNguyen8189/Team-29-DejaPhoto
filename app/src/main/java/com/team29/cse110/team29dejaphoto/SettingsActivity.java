@@ -126,7 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
                 toggleSetting(IsSharingPhotos, isChecked);
-                if(isChecked)
+                /*if(isChecked)
                 {
                     Log.d(TAG,"Sharing turned on");
                     shareStarter();
@@ -135,7 +135,10 @@ public class SettingsActivity extends AppCompatActivity {
                 {
                     Log.d(TAG,"Sharing turned off");
                     shareStopper();
-                }
+                }*/
+
+                //we only need this because service automatically destroys itself after finishing
+                shareStarter( isChecked );
             }
         };
 
@@ -312,10 +315,11 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    public void shareStarter()
+    public void shareStarter( boolean isChecked )
     {
         Log.d(TAG, "shareStarter called");
         Intent shareIntent = new Intent(SettingsActivity.this,SharingService.class);
+        shareIntent.putExtra( "loadOrRemove", isChecked );
         startService(shareIntent);
     }
     public void shareStopper()
