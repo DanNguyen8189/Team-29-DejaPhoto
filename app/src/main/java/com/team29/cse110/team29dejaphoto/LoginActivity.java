@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("Login");
 
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
@@ -76,8 +77,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-
-        initializeUser();
     }
 
     @Override
@@ -128,8 +127,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            user = mAuth.getCurrentUser();
+
+                            initializeUser();
                             // updateUI(user);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -153,13 +155,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
 
                 if(snapshot == null || snapshot.getValue() == null) {
-                    Log.d(TAG, "New user added to Database");
+                    Log.d(TAG, "Current user newly added to Database");
 
                     myFirebaseRef.child(uid).setValue(uid);
                     myFirebaseRef.child(uid).child("name").setValue(name);
-
-//                    myFirebaseRef.child(uid).child("requests").child("Tyler").setValue(true);
-//                    myFirebaseRef.child(uid).child("requests").child("David").setValue(true);
                 }
             }
 

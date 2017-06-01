@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,19 +32,33 @@ public class FriendActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
-        getSupportActionBar().setTitle("Friend");
+        getSupportActionBar().setTitle("Add Friends");
 
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user == null) {
+            Toast.makeText(FriendActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     public void addFriend(View view) {
-        final String myID = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+        String inputEmail = ((EditText) findViewById(R.id.emailText)).getText().toString();
 
-        String email = ((EditText) findViewById(R.id.emailText)).getText().toString();
-        if(email.indexOf('@') == -1) return;
-        final String toAddID = email.substring(0, email.indexOf('@'));
+        final String toAddID = parseEmailToUsername(inputEmail);
+        final String myID    = parseEmailToUsername(user.getEmail());
+
+        if(toAddID.length() == 0) {
+            Toast.makeText(FriendActivity.this,
+                    "Invalid input: Not a valid email address", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (toAddID.equals(myID)) {
+            Toast.makeText(FriendActivity.this,
+                    "Invalid input: Cannot add yourself as a friend", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Query queryUserToAdd = myFirebaseRef.child(toAddID);
 
@@ -54,26 +69,57 @@ public class FriendActivity extends AppCompatActivity {
                 if(snapshot == null || snapshot.getValue() == null) {
                     Log.d(TAG, "Attemping to add non-existent user");
 
-                } else {
-                    Query queryRequest = myFirebaseRef.child(myID).child("requests").child(toAddID);
+                    Toast.makeText(FriendActivity.this,
+                            "Invalid input: This user does not exist", Toast.LENGTH_SHORT).show();
 
-                    queryRequest.addListenerForSingleValueEvent(new ValueEventListener() {
+                } else {
+                    Query queryFriend = myFirebaseRef.child(myID).child("friends").child(toAddID);
+
+                    queryFriend.addListenerForSingleValueEvent(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
 
                             if(snapshot == null || snapshot.getValue() == null) {
-                                Log.d(TAG, "No friend request from user being added");
+                                Query queryRequest = myFirebaseRef.child(myID).child("requests").child(toAddID);
 
-                                myFirebaseRef.child(toAddID).child("requests").child(myID).setValue(true);
+                                queryRequest.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+
+                                        if(snapshot == null || snapshot.getValue() == null) {
+                                            Log.d(TAG, "No friend request from user being added");
+
+                                            myFirebaseRef.child(toAddID).child("requests").child(myID).setValue(true);
+
+                                            Toast.makeText(FriendActivity.this,
+                                                    "Successfully sent friend request to " + toAddID, Toast.LENGTH_SHORT).show();
+
+                                        } else {
+                                            Log.d(TAG, "Already have friend request from user being added");
+
+                                            myFirebaseRef.child(myID).child("requests").child(toAddID).removeValue();
+
+                                            myFirebaseRef.child(myID).child("friends").child(toAddID).setValue(true);
+                                            myFirebaseRef.child(toAddID).child("friends").child(myID).setValue(true);
+
+                                            Toast.makeText(FriendActivity.this,
+                                                    "You are now friends with " + toAddID, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
 
                             } else {
-                                Log.d(TAG, "Already have friend request from user being added");
+                                Log.d(TAG, "Attemping to add a user who is already your friend");
 
-                                myFirebaseRef.child(myID).child("requests").child(toAddID).removeValue();
-
-                                myFirebaseRef.child(myID).child("friends").child(toAddID).setValue(true);
-                                myFirebaseRef.child(toAddID).child("friends").child(myID).setValue(true);
+                                Toast.makeText(FriendActivity.this,
+                                        "Invalid input: Cannot add this friend again", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -91,5 +137,10 @@ public class FriendActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private String parseEmailToUsername(String email) {
+        return email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+(.[a-zA-Z]{2,})$")
+                ? email.substring(0, email.indexOf('@')) : "";
     }
 }

@@ -98,22 +98,16 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intentSettings);
                         }
 
-                        if (item.getTitle().toString().equalsIgnoreCase("Friends")) {
+                        if (item.getTitle().toString().equalsIgnoreCase("Add Friends")) {
                             Intent intentFriend = new Intent(MainActivity.this, FriendActivity.class);
                             startActivity(intentFriend);
                         }
 
                         if (item.getTitle().toString().equalsIgnoreCase("Log in")) {
-                            item.setTitle("Log out");
-
                             Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(intentLogin);
                         }
 
-                        if (item.getTitle().toString().equalsIgnoreCase("Log out")) {
-                            item.setTitle("Log in");
-                            //TODO need to disconnect from google account. Also literally everything except setTitle works
-                        }
                         return true;
                     }
                 }
