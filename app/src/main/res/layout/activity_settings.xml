@@ -68,6 +68,15 @@
                     android:textSize="@dimen/text_size1"
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="0dp" />
+
+                <Button
+                    android:text="Apply"
+                    android:onClick="applySettings"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/share_photos_box"
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
             <RelativeLayout

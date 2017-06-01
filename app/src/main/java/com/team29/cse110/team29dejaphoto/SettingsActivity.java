@@ -8,13 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class SettingsActivity extends AppCompatActivity {
+public class
+SettingsActivity extends AppCompatActivity {
 
     private final String TAG = "SettingsActivity";
 
@@ -314,6 +316,10 @@ public class SettingsActivity extends AppCompatActivity {
         else {
             return settingText + " disabled";
         }
+    }
+
+    public void applySettings(View view) {
+
     }
 
     public void shareStarter( boolean isChecked )
