@@ -49,17 +49,20 @@ public class FirebasePhotosHelper {
 
 
         //Sets reference to current user
-        StorageReference userRef = storageRef.child(user.getEmail());
+        StorageReference userRef = storageRef.child(
+                user.getEmail().substring(0, user.getEmail().indexOf('@')));
 
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg").build();
 
+        //iterates through all photos in storage and uploads them to Firebase
+        for(int i = 0; i < photos.length; i++) {
+            DejaPhoto testPhoto = photos[i];
 
-        DejaPhoto testPhoto = photos[0];
-
-        //Creates new child reference of current user for photo to be uploaded into
-        StorageReference photoRef = userRef.child(testPhoto.getPhotoUri().getLastPathSegment());
-        uploadTask = photoRef.putFile(testPhoto.getPhotoUri(),metadata);
+            //Creates new child reference of current user for photo to be uploaded into
+            StorageReference photoRef = userRef.child(testPhoto.getPhotoUri().getLastPathSegment());
+            uploadTask = photoRef.putFile(testPhoto.getPhotoUri(), metadata);
+        }
 
 
     }
