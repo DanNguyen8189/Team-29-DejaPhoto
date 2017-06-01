@@ -21,12 +21,11 @@ public class SharingService extends IntentService {
 
     private static final String TAG = "SharingService";
 
-    //Firebase reference for accessing stored media
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReference();
 
     //used to get the extra data added to the intent
     Bundle extras;
+
+    FirebasePhotosHelper database = new FirebasePhotosHelper();
 
     public SharingService() {
         super("SharingService");
@@ -50,6 +49,7 @@ public class SharingService extends IntentService {
 
         if(loadOrRemove){
             //TODO load photos onto database
+            database.upload(this);
         }else{
             //TODO remove photos from database
         }
