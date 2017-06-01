@@ -18,9 +18,9 @@ import java.io.File;
  */
 
 /*
- * This class implements the PhotoLoader interface; it provides methods to load photos from a phones
- * storage, and return them as an array of DejaPhoto objects.
- */
+* This class implements the PhotoLoader interface; it provides methods to load photos from a phones
+* storage, and return them as an array of DejaPhoto objects.
+*/
 public class DejaPhotoLoader implements PhotoLoader {
 
 
@@ -90,20 +90,22 @@ public class DejaPhotoLoader implements PhotoLoader {
             SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
 
             //Unique Id that would be stored if given karma
-            String photoIdKarma = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0" + uri;
+            //String photoId = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0" + uri;
+
+            String photoId = uri.toString();
 
             //Unique Id that would be stored if released
-            String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1" + uri;
+            //String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1" + uri;
 
             //photo is released so skip loading
-            if(sp.contains(photoIdRelease))
-            {
-                Log.d(TAG, "WE ARE SKIPPING: " + uri + " !!!!!!!!!!!!!");
-                continue;
-            }
+           /*if(sp.contains(photoIdRelease))
+           {
+               Log.d(TAG, "WE ARE SKIPPING: " + uri + " !!!!!!!!!!!!!");
+               continue;
+           }*/
 
             // TODO Check that the photo is from the camera album
-            if(file.exists()) {
+            if(file.exists() && sp.contains(photoId)) {
                 gallery[count] = new DejaPhoto(uri,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
@@ -114,9 +116,9 @@ public class DejaPhotoLoader implements PhotoLoader {
             }
 
             //photo has karma so give karma
-            if(sp.contains(photoIdKarma)){
-                gallery[count].setKarma();
-            }
+           /*if(sp.contains(photoIdKarma)){
+               gallery[count].setKarma();
+           }*/
 
             count++;
         }
@@ -137,5 +139,5 @@ public class DejaPhotoLoader implements PhotoLoader {
         // TODO
         return new DejaPhoto[]{};
     }
-
 }
+
