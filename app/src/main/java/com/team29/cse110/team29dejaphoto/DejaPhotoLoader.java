@@ -81,7 +81,7 @@ public class DejaPhotoLoader implements PhotoLoader {
         while ( cursor.moveToNext() ) {
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
-            String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/CAMERA/" + filename;
+            String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/Camera/" + filename;
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
@@ -93,6 +93,7 @@ public class DejaPhotoLoader implements PhotoLoader {
             //String photoId = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0" + uri;
 
             String photoId = uri.toString();
+            Log.d(TAG, "photoId we want to load is " + photoId);
 
             //Unique Id that would be stored if released
             //String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1" + uri;

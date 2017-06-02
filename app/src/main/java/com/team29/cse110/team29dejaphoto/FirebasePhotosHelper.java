@@ -33,13 +33,8 @@ public class FirebasePhotosHelper {
     private UploadTask uploadTask;
 
 
-    public void upload(Context context)
+    public void upload(DejaPhoto photo)
     {
-        //Loads photos into an array to be uploaded
-        DejaPhoto[] photos = photoLoader.getPhotosAsArray(context);
-
-        Log.d("Loader", "Array size: "+ photos.length);
-
         //Gets current User
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
@@ -56,16 +51,11 @@ public class FirebasePhotosHelper {
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
                 .setCustomMetadata("Karma", "0").build();
 
-        //iterates through all photos in storage and uploads them to Firebase
-        for(int i = 0; i < photos.length; i++) {
-            DejaPhoto testPhoto = photos[i];
 
-            //Creates new child reference of current user for photo to be uploaded into
-            StorageReference photoRef = userRef.child(testPhoto.getPhotoUri().getLastPathSegment());
+        //Creates new child reference of current user for photo and uploads photo
+            StorageReference photoRef = userRef.child(photo.getPhotoUri().getLastPathSegment());
             photoRef.updateMetadata(metadata);
-            uploadTask = photoRef.putFile(testPhoto.getPhotoUri(), metadata);
-        }
-
+            uploadTask = photoRef.putFile(photo.getPhotoUri(), metadata);
 
     }
 }
