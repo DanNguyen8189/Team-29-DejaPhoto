@@ -39,6 +39,9 @@ public class FirebasePhotosHelper {
 
     public void upload(DejaPhoto photo)
     {
+        //safety check
+        if(photo == null) return;
+
         //Gets current User
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
