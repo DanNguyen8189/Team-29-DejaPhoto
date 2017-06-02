@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
  * Created by David Duplantier and Noah Lovato on 5/1/17.
  */
 
-public class DejaPhoto implements Comparable<DejaPhoto> {
+public class DejaPhoto implements Photo {
 
     /* Photo Metadata */
 
@@ -57,7 +57,7 @@ public class DejaPhoto implements Comparable<DejaPhoto> {
      *         0   if x's score is equal to y's
      *         -1  if x's score is less than y's
      */
-    public int compareTo(DejaPhoto photo) {
+    public int compareTo(Photo photo) {
 
         int theirScore = photo.getScore();
 
