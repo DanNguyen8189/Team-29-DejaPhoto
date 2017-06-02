@@ -21,6 +21,7 @@ public class SharingService extends IntentService {
 
     private static final String TAG = "SharingService";
 
+    private PhotoLoader photoLoader = new DejaPhotoLoader();
 
     //used to get the extra data added to the intent
     Bundle extras;
@@ -49,7 +50,15 @@ public class SharingService extends IntentService {
 
         if(loadOrRemove){
             //TODO load photos onto database
-            database.upload(this);
+
+            //Loads photos into an array to be uploaded
+            DejaPhoto[] photos = photoLoader.getPhotosAsArray(this);
+
+            for(int i = 0; i < photos.length; i++)
+            {
+                database.upload(photos[i]);
+            }
+
         }else{
             //TODO remove photos from database
         }
