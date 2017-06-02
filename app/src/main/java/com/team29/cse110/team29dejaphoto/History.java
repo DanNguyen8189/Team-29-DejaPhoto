@@ -1,8 +1,7 @@
 package com.team29.cse110.team29dejaphoto;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
-import android.util.Log;
+
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -166,44 +165,6 @@ public class History {
         }
 
         return null;
-    }
-
-    public void remove(SQLiteDatabase db) {
-
-        //DejaPhoto currPhoto = getCurrentlyDisplayedPhoto();
-
-        //at end of history
-        if(!checkValidPrev())
-        {
-            DejaPhoto released = iterator.previous();
-            released.setReleased();
-
-            //maps to ints so can be stored in database
-            int karma = released.mapBooleanToInt(released.getKarma());
-            int release = released.mapBooleanToInt(released.isReleased());
-
-            //adds photo on list of released photos
-            PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(),
-                    karma, release);
-            iterator.remove();
-            nelems--;
-        }
-
-        //at beginning or middle of history
-        else
-        {
-            DejaPhoto released = iterator.next();
-            released.setReleased();
-
-            //maps to ints so can be stored in database
-            int karma = 0;
-            int release = 1;
-
-            //adds photo on list of released photos
-            PhotoDatabaseHelper.insertPhoto(db, released.getTime().getTimeInMillis(), karma, release);
-            iterator.remove();
-            nelems--;
-        }
     }
 
 }

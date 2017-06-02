@@ -54,9 +54,6 @@
         <activity android:name=".FriendActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AlbumSelection" />
-        <activity android:name=".InAppPhotoGallery" />
-        <activity android:name=".CopiedPhotosGallery" />
-        <activity android:name=".FriendsPhotosGallery" />
         <activity
             android:name=".PhotoPickerActivity"
             android:label="@string/title_activity_photo_picker"

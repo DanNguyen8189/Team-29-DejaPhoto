@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -65,9 +64,6 @@ public class PhotoService extends Service {
     private static final int PAINT_SIZE_CONSTANT = 50;  // Constant to derive brush size
     private static final int DEFAULT_INTERVAL = 300000;
 
-    /* Database for storing released and karma information */
-    private PhotoDatabaseHelper DbHelper;
-    private SQLiteDatabase db;
 
     /* Handler to update home screen every user-customizable interval */
     private Handler handler;
@@ -219,9 +215,6 @@ public class PhotoService extends Service {
         };
         sp.registerOnSharedPreferenceChangeListener(spListener);
 
-        /* Database for karma/release */
-        DbHelper = new PhotoDatabaseHelper(this);
-        db = DbHelper.getWritableDatabase();
 
         /* Handles initializing receiver and binding filter to only receive widget intents */
 

@@ -4,8 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -62,10 +60,6 @@ public class DejaPhotoLoader implements PhotoLoader {
     public DejaPhoto[] getPhotosAsArray(Context context) {
 
         Log.d(TAG, "Entering getPhotosAsArray method");
-
-        SQLiteOpenHelper photoDatabaseHelper = new PhotoDatabaseHelper(context);
-        SQLiteDatabase dbRead = photoDatabaseHelper.getReadableDatabase();
-        SQLiteDatabase dbWrite = photoDatabaseHelper.getWritableDatabase();
 
         ContentResolver contentResolver = context.getContentResolver();
         Cursor cursor = contentResolver.query(MEDIA_URI, PROJECTIONS, null, null, null);
