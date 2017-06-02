@@ -2,12 +2,14 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.Manifest;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -318,12 +320,13 @@ public class MainActivity extends AppCompatActivity {
             }*/
 
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            String trueUri;
             //imagesEncodedList = new ArrayList<String>();
             if (data.getData() != null) {
 
                 Uri mImageUri = data.getData();
 
-                // Get the cursor
+                /*// Get the cursor
                 Cursor cursor = getContentResolver().query(mImageUri,
                         filePathColumn, null, null, null);
                 // Move to first row
@@ -334,11 +337,15 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString(mImageUri.toString(), imageEncoded);
                 Log.d("TAG", "successfully wrote" + mImageUri.toString() + " to sharedpref");
 
-                cursor.close();
+                cursor.close();*/
+
+                trueUri = getFileNameByUri(this, mImageUri);
+                Log.d(TAG, "Found real uri of image: " + trueUri);
+                editor.putBoolean(trueUri, false);
 
             } else if (data.getClipData() != null) {
                 ClipData mClipData = data.getClipData();
-                ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                ArrayList<Uri> mArrayUri = new ArrayList<>();
                 Log.d("TAG", "Entered clipdata");
                 for (int i = 0; i < mClipData.getItemCount(); i++) {
 
@@ -346,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
                     Uri uri = item.getUri();
                     mArrayUri.add(uri);
                     // Get the cursor
-                    Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                    /*Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
                     // Move to first row
                     cursor.moveToFirst();
 
@@ -355,13 +362,16 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString(uri.toString(), imageEncoded);
                     Log.d("TAG", "successfully wrote" + uri.toString() + " to sharedpref");
                     //imagesEncodedList.add(imageEncoded);
-                    cursor.close();
+                    cursor.close();*/
 
+                    trueUri = getFileNameByUri(this, uri);
+                    Log.d(TAG, "Found real uri of image: " + trueUri);
+                    editor.putBoolean(trueUri, false);
                 }
                 Log.d("TAG", "Selected Images" + mArrayUri.size());
             }
-
         }
+        editor.commit();
     }
 
     @Override
@@ -386,4 +396,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*Method to get the correct uri data from a photo*/
+    public String getFileNameByUri(Context context, Uri uri) {
+
+        // Will return "image:x*"
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = getContentResolver().
+                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        column, sel, new String[]{ id }, null);
+
+        String filePath = "";
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = "file://" + cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
 }
