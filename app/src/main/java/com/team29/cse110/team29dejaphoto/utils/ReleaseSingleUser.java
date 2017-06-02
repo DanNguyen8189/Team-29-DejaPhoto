@@ -1,6 +1,10 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.utils;
 
 import android.content.SharedPreferences;
+
+import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 
 
 /**

@@ -1,21 +1,14 @@
 package com.team29.cse110.team29dejaphoto;
 
 
-import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.test.AndroidTestCase;
 import android.util.Log;
 
-import junit.framework.JUnit4TestAdapterCache;
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.Preferences;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Map;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;

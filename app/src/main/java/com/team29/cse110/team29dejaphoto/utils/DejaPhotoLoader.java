@@ -1,4 +1,4 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,6 +8,9 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+
+import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
 
 import java.io.File;
 

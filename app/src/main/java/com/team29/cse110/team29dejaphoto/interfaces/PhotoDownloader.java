@@ -1,6 +1,7 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.interfaces;
 
-import java.util.ArrayList;
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+
 import java.util.List;
 
 /**

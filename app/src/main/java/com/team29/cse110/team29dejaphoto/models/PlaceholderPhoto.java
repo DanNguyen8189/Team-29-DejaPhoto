@@ -1,4 +1,6 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.models;
+
+import com.team29.cse110.team29dejaphoto.interfaces.Photo;
 
 /**
  * Created by David Duplantier on 6/2/17.

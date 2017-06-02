@@ -1,18 +1,13 @@
 package layout;
 
 import android.app.PendingIntent;
-import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
-import com.team29.cse110.team29dejaphoto.DejaPhoto;
-import com.team29.cse110.team29dejaphoto.PhotoService;
 import com.team29.cse110.team29dejaphoto.R;
 
 /**

@@ -21,7 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,28 +39,28 @@
                 android:resource="@xml/widget__deja_photo_info" />
         </receiver>
 
-        <service android:name=".PhotoService" />
+        <service android:name=".services.PhotoService" />
 
         <activity
-            android:name=".CustomAlbumActivity"
+            android:name=".activities.CustomAlbumActivity"
             android:label="@string/title_activity_custom_album"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.team29.cse110.team29dejaphoto.MainActivity" />
+                android:value="com.team29.cse110.team29dejaphoto.activities.MainActivity" />
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".FriendActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.FriendActivity" />
+        <activity android:name=".activities.SettingsActivity" />
         <activity android:name=".AlbumSelection" />
         <activity
-            android:name=".PhotoPickerActivity"
+            android:name=".activities.PhotoPickerActivity"
             android:label="@string/title_activity_photo_picker"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".SharingService"
+            android:name=".services.SharingService"
             android:exported="false"></service>
     </application>
 

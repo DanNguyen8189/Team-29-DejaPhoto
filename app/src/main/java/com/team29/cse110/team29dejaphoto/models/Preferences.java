@@ -1,4 +1,4 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.models;
 
 /**
  * Created by Wis on 5/13/2017.

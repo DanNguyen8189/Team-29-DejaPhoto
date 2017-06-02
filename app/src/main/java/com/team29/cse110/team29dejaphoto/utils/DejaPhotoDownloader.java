@@ -1,10 +1,13 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.utils;
 
 import android.content.Context;
 
+import com.team29.cse110.team29dejaphoto.interfaces.PhotoDownloader;
+import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Created by David Duplantier on 6/2/17.

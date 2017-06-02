@@ -4,6 +4,9 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
+
 import org.junit.Before;
 import org.junit.Test;
 

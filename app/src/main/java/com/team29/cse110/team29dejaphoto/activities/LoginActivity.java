@@ -1,4 +1,4 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.team29.cse110.team29dejaphoto.R;
 
 /**
  * Created by Wis on 5/31/2017.

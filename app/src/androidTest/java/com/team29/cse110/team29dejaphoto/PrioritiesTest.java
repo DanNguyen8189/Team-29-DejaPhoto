@@ -1,14 +1,16 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.location.Location;
-import android.net.Uri;
 import android.util.Log;
+
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.Preferences;
+import com.team29.cse110.team29dejaphoto.models.Priorities;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import static org.junit.Assert.*;
 

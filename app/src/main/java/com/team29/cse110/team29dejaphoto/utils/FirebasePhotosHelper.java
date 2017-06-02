@@ -1,6 +1,5 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.utils;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -11,12 +10,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 
 /**
  * Created by Noah on 5/31/2017.
  */
 
 public class FirebasePhotosHelper {
+
+    private final String TAG = "FirebasePhotosHelper";
 
     private PhotoLoader photoLoader = new DejaPhotoLoader();
 

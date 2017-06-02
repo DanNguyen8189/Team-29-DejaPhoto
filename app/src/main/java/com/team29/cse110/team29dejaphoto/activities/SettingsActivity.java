@@ -1,4 +1,4 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +14,9 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.team29.cse110.team29dejaphoto.R;
+import com.team29.cse110.team29dejaphoto.services.SharingService;
 
 public class
 SettingsActivity extends AppCompatActivity {

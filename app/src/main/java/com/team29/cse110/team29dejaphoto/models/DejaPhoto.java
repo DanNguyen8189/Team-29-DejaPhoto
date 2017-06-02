@@ -1,7 +1,10 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.models;
 
 import android.location.Location;
 import android.net.Uri;
+
+import com.team29.cse110.team29dejaphoto.interfaces.Photo;
+import com.team29.cse110.team29dejaphoto.models.Preferences;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ocean_art"
-    tools:context="com.team29.cse110.team29dejaphoto.SettingsActivity">
+    tools:context="com.team29.cse110.team29dejaphoto.activities.SettingsActivity">
 
     <ScrollView
         android:id="@+id/scroll_view"

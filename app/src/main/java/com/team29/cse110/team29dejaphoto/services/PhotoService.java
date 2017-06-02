@@ -1,4 +1,4 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.services;
 
 import android.Manifest;
 import android.app.Notification;
@@ -29,6 +29,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
+import com.team29.cse110.team29dejaphoto.R;
+import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
+import com.team29.cse110.team29dejaphoto.activities.MainActivity;
+import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
+import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
+import com.team29.cse110.team29dejaphoto.models.Preferences;
+
 import java.util.List;
 import java.util.Locale;
 

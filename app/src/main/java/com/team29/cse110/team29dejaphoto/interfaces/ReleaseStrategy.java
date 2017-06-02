@@ -1,4 +1,4 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.interfaces;
 
 /**
  * Created by David Duplantier on 5/22/17.

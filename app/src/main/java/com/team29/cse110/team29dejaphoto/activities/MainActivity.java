@@ -1,4 +1,4 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.activities;
 
 import android.Manifest;
 import android.content.ClipData;
@@ -29,6 +29,9 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.team29.cse110.team29dejaphoto.services.PhotoService;
+import com.team29.cse110.team29dejaphoto.R;
 
 import java.util.ArrayList;
 

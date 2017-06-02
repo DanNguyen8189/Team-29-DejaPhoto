@@ -1,14 +1,15 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.services;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
+import com.team29.cse110.team29dejaphoto.utils.FirebasePhotosHelper;
+import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
+import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
 
 
 /**

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ocean_art"
-    tools:context="com.team29.cse110.team29dejaphoto.MainActivity">
+    tools:context="com.team29.cse110.team29dejaphoto.activities.MainActivity">
 
 
     <RelativeLayout

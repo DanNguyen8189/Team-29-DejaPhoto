@@ -1,8 +1,7 @@
-package com.team29.cse110.team29dejaphoto;
+package com.team29.cse110.team29dejaphoto.models;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
-import android.util.Log;
+
 
 /**
  * Manages the photos to be displayed on the homescreen
