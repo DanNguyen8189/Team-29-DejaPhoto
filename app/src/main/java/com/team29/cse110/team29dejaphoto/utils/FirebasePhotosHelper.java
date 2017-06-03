@@ -92,7 +92,6 @@ public class FirebasePhotosHelper {
         String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
         //Sets reference to current user in realtime database
-        //StorageReference storageUserRef = storageRef.child(userName);
         DatabaseReference dataFriendsRef = myFirebaseRef.child(userName).child("friends");
 
         Query friendsQuery = dataFriendsRef;
@@ -103,6 +102,24 @@ public class FirebasePhotosHelper {
                 for(DataSnapshot friend : dataSnapshot.getChildren())
                 {
                     Log.d("Friends", "Friends are: " + friend.getKey());
+                    //StorageReference storageUserRef = storageRef.child(friend.getKey());
+
+                    Query friendsPhotos = friend.getRef().child("Photos");
+                    friendsPhotos.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            Log.d("Friends", dataSnapshot.getKey());
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
 
             }
