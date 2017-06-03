@@ -53,7 +53,7 @@ public class FirebasePhotosHelper {
 
         String shortName = photoname.substring(0,photoname.indexOf("."));
 
-        String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'))
+        String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
         //Sets reference to current user
         StorageReference userRef = storageRef.child(userName);
