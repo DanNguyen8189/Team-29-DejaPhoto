@@ -109,7 +109,9 @@ public class FirebasePhotosHelper {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            Log.d("Friends", dataSnapshot.getKey());
+                            for ( DataSnapshot friendPhoto : dataSnapshot.getChildren() ) {
+                                Log.d("Friends", "Friends " + friendPhoto.getKey() );
+                            }
 
                         }
 

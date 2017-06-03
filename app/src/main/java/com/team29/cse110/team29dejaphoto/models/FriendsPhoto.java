@@ -118,4 +118,5 @@ public class FriendsPhoto implements Photo {
     private int mapBooleanToInt(boolean value) {
         return (value) ? 1 : 0;
     }
+
 }
