@@ -25,7 +25,7 @@ public class DejaPhoto implements Photo {
 
     /* DejaPhoto properties */
 
-    private boolean karma;        // Flags for karma, released, and whether the photo has been
+    private int karma;        // Flags for karma, released, and whether the photo has been
     private boolean released;     // shown recently
     private boolean showRecently;
 
@@ -100,7 +100,7 @@ public class DejaPhoto implements Photo {
 
 
     private int getKarmaPoints() {
-        return mapBooleanToInt(getKarma());
+        return getKarma();
     }
 
     /**
@@ -172,12 +172,12 @@ public class DejaPhoto implements Photo {
         return photoUri;
     }
 
-    public boolean getKarma() {
+    public int getKarma() {
         return karma;
     }
 
-    public void setKarma() {
-        karma = true;
+    public void addKarma() {
+        karma +=1;
     }
 
     public boolean isReleased() {

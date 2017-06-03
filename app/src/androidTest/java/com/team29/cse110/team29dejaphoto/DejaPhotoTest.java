@@ -125,9 +125,9 @@ public class DejaPhotoTest {
     @Test
     public void setKarma() throws Exception {
 
-        photo.setKarma();
+        photo.addKarma();
         assertTrue(photo.getKarma());
-        Log.d(TAG,"Testing setKarma() method");
+        Log.d(TAG,"Testing addKarma() method");
     }
 
 

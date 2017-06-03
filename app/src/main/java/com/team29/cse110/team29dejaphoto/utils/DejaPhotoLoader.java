@@ -116,7 +116,7 @@ public class DejaPhotoLoader implements PhotoLoader {
 
             //photo has karma so give karma
            /*if(sp.contains(photoIdKarma)){
-               gallery[count].setKarma();
+               gallery[count].addKarma();
            }*/
 
             count++;

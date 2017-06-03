@@ -328,7 +328,7 @@ public class PhotoService extends Service {
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
                             dejaPhoto.getPhotoUri()),
-                    dejaPhoto.getLocation())
+                    dejaPhoto.getLocation(), dejaPhoto.getKarma())
             );
 
             Log.d(TAG, "Displaying Previous Photo: " + dejaPhoto.getPhotoUri()
@@ -374,7 +374,7 @@ public class PhotoService extends Service {
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
                             dejaPhoto.getPhotoUri()),
-                    dejaPhoto.getLocation())
+                    dejaPhoto.getLocation(), dejaPhoto.getKarma())
             );
 
             Log.d(TAG, "Displaying Next Photo: "
@@ -394,6 +394,14 @@ public class PhotoService extends Service {
         }
     }
 
+    public Bitmap resizePhoto(Bitmap bitmap) {
+
+        return bitmap.getHeight()>= 4*bitmap.getWidth()/3
+                ? Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getWidth()*4/3),480,640,true)
+                : Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getHeight()*4/3,bitmap.getHeight()),480,640,true);
+    }
+
+
     /**
      * This method takes a bitmap image and location information, and returns a modified bitmap
      * with location info in the bottom left corner. If no information is available (i.e. location
@@ -404,7 +412,7 @@ public class PhotoService extends Service {
      * @return returns image with location info as bitmap
      * @throws Exception ArrayIndexOutOfBounds when no location info
      */
-    public Bitmap backgroundImage(Bitmap bitmap, Location location) throws Exception {
+    public Bitmap backgroundImage(Bitmap bitmap, Location location, int karma) throws Exception {
 
         Log.d(TAG, "Writing address to bitmap");
 
@@ -414,13 +422,19 @@ public class PhotoService extends Service {
         Geocoder geocoder;
         List<Address> list;
 
+
+
         // Generate new bitmap and paint objects for modification
         Bitmap newBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        newBitmap = resizePhoto(newBitmap);
+
+        Log.d("Size", "Height: " + newBitmap.getHeight() + ", Width: " + newBitmap.getWidth());
+
         Canvas canvas = new Canvas(newBitmap);
         Paint paint = new Paint();
         Rect rect = new Rect();
         paint.setColor(Color.RED);
-        paint.setTextSize(bitmap.getHeight() / PAINT_SIZE_CONSTANT);
+        paint.setTextSize(newBitmap.getHeight() / PAINT_SIZE_CONSTANT);
 
         // get address for location
         try {
@@ -440,9 +454,12 @@ public class PhotoService extends Service {
             locationTag = "No locationinfo\navailable";
         }
 
+
+
         // Write location info to bitmap and return
         paint.getTextBounds(locationTag, 0, locationTag.length(), rect);
         canvas.drawText(locationTag, 0, newBitmap.getHeight()-newBitmap.getHeight()/5, paint);
+        canvas.drawText("Karma: "+karma, newBitmap.getWidth()-newBitmap.getWidth()/3, newBitmap.getHeight()-newBitmap.getHeight()/5,paint);
 
         Log.d(TAG, "Printed location on photo: " + locationTag);
 
@@ -470,9 +487,9 @@ public class PhotoService extends Service {
     */
    public void givePhotoKarma() {
 
-       if ( currDisplayedPhoto != null && !currDisplayedPhoto.getKarma() ) {
+       if ( currDisplayedPhoto != null && !(currDisplayedPhoto.getKarma()==0) ) {
            Log.d(TAG, "Setting karma on currently displayed photo");
-           currDisplayedPhoto.setKarma();
+           currDisplayedPhoto.addKarma();
            if(!(ActivityCompat.checkSelfPermission(
                    context, Manifest.permission.ACCESS_FINE_LOCATION)
                    == PackageManager.PERMISSION_GRANTED &&
