@@ -54,6 +54,9 @@ public class FirebasePhotosHelper {
         StorageReference userRef = storageRef.child(
                 user.getEmail().substring(0, user.getEmail().indexOf('@')));
 
+        myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
+                .child("Photos").setValue("TestPhoto.jpg");
+
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
                 .setCustomMetadata("Karma", "0").build();
