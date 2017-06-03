@@ -104,7 +104,7 @@ public class FirebasePhotosHelper {
                     Log.d("Friends", "Friends are: " + friend.getKey());
                     //StorageReference storageUserRef = storageRef.child(friend.getKey());
 
-                    Query friendsPhotos = friend.getRef().child("Photos");
+                    Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
                     friendsPhotos.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
