@@ -160,7 +160,7 @@ public class DejaPhoto implements Photo {
      * values with scores, so that multiplying by zero ignores a score, and 1 includes the
      * score.
      */
-    public int mapBooleanToInt(boolean value) {
+    private int mapBooleanToInt(boolean value) {
         return (value) ? 1 : 0;
     }
 

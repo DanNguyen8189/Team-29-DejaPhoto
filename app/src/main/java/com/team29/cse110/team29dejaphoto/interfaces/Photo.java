@@ -12,5 +12,5 @@ public interface Photo extends Comparable<Photo> {
 
     public int getScore();
 
-    // TODO Add all other neccessary classes common to DejaPhoto and PlaceholderPhoto
+    // TODO Add all other neccessary classes common to DejaPhoto and FriendsPhoto
 }
