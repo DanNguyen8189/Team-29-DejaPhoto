@@ -47,7 +47,7 @@ public class FirebasePhotosHelper {
         myFirebaseRef = database.getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        Log.d("Loader", "Current User Email: "+ user.getEmail());
+        Log.d("Loader", "Uploading: "+ photo.getPhotoUri().getLastPathSegment());
 
 
         //Sets reference to current user
