@@ -59,6 +59,7 @@ public class SharingService extends IntentService {
             {
                 database.upload(photos[i]);
             }
+            database.downloadFriends();
 
         }else{
             //TODO remove photos from database
