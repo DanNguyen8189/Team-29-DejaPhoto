@@ -53,12 +53,17 @@ public class FirebasePhotosHelper {
 
         String shortName = photoname.substring(0,photoname.indexOf("."));
 
-        //Sets reference to current user
-        StorageReference userRef = storageRef.child(
-                user.getEmail().substring(0, user.getEmail().indexOf('@')));
+        String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'))
 
-        myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
-                .child("Photos").child(shortName).setValue(true);
+        //Sets reference to current user
+        StorageReference userRef = storageRef.child(userName);
+
+
+        myFirebaseRef.child(userName).child("Photos").child(shortName).setValue(true);
+        DatabaseReference userPhotos = myFirebaseRef.child(userName).child("Photos");
+
+        userPhotos.child(shortName).child("Karma").setValue("0");
+        userPhotos.child(shortName).child("Released").setValue(false);
 
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
@@ -66,7 +71,7 @@ public class FirebasePhotosHelper {
 
 
         //Creates new child reference of current user for photo and uploads photo
-            StorageReference photoRef = userRef.child(photo.getPhotoUri().getLastPathSegment());
+            StorageReference photoRef = userRef.child(photoname);
             photoRef.updateMetadata(metadata);
             uploadTask = photoRef.putFile(photo.getPhotoUri(), metadata);
 
