@@ -10,6 +10,6 @@ public class User {
 
     /* Constructor. Make connection to the realtime database. */
     public User() {
-
+        FirebaseDatabase database;
     }
 }
