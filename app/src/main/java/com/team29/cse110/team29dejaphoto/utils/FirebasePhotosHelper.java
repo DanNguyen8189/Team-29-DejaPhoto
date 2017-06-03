@@ -55,8 +55,9 @@ public class FirebasePhotosHelper {
                 user.getEmail().substring(0, user.getEmail().indexOf('@')));
 
         myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
-                .child("Photos").setValue("TestPhoto.jpg");
-
+                .child("Photos").child("TestPhoto1.jpg").setValue(true);
+        myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
+                .child("Photos").child("TestPhoto2.jpg").setValue(true);
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
                 .setCustomMetadata("Karma", "0").build();
