@@ -1,6 +1,7 @@
 package com.team29.cse110.team29dejaphoto.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,10 +79,17 @@ public class FirebasePhotosHelper {
                 .setCustomMetadata("Karma", "0").build();
 
 
+        Bitmap photoBitmap = BitmapFactory.decodeFile(photo.getPhotoUri().getPath());
+        BitmapUtil bitmapUtil = new BitmapUtil();
+
+        Bitmap resizedPhoto = bitmapUtil.resizePhoto(photoBitmap);
+        byte[] photoByteArray = bitmapUtil.bitmapToByteArray(resizedPhoto);
+
+
         //Creates new child reference of current user for photo and uploads photo
             StorageReference photoRef = userRef.child(photoname);
             photoRef.updateMetadata(metadata);
-            uploadTask = photoRef.putFile(photo.getPhotoUri(), metadata);
+            uploadTask = photoRef.putBytes(photoByteArray, metadata);
 
     }
 
