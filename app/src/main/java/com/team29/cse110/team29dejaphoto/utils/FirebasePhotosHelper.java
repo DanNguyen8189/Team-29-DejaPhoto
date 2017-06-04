@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +21,9 @@ import com.google.firebase.storage.UploadTask;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
+import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
+
+import java.util.ArrayList;
 
 /**
  * Created by Noah on 5/31/2017.
@@ -28,6 +32,7 @@ import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 public class FirebasePhotosHelper {
 
     private final String TAG = "FirebasePhotosHelper";
+    final long FIVE_MEGABYTES = 5*1024 * 1024;
 
     private PhotoLoader photoLoader = new DejaPhotoLoader();
 
@@ -66,13 +71,10 @@ public class FirebasePhotosHelper {
         }
 
         Log.d("Loader", "Current User Email: "+ user.getEmail());
-
         Log.d("Loader", "Uploading: "+ photoURI.getLastPathSegment());
 
         String photoname = photoURI.getLastPathSegment();
-
         String shortName = photoname.substring(0,photoname.indexOf("."));
-
         String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
         //Sets reference to current user
@@ -82,14 +84,19 @@ public class FirebasePhotosHelper {
         myFirebaseRef.child(userName).child("Photos").child(shortName).setValue(true);
         DatabaseReference userPhotos = myFirebaseRef.child(userName).child("Photos");
 
+        //Uploads the photo's metadata to the realtime database
         userPhotos.child(shortName).child("Karma").setValue("0");
         userPhotos.child(shortName).child("Released").setValue(false);
+        userPhotos.child(shortName).child("Latitude").setValue(photo.getLocation().getLatitude());
+        userPhotos.child(shortName).child("Longitude").setValue(photo.getLocation().getLongitude());
+        userPhotos.child(shortName).child("TimeTaken").setValue(photo.getTime().getTimeInMillis());
 
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
                 .setCustomMetadata("Karma", "0").build();
 
 
+        //Converts photo to a bitmap then resizes before uploading to database
         Bitmap photoBitmap = BitmapFactory.decodeFile(photoURI.getPath());
         BitmapUtil bitmapUtil = new BitmapUtil();
 
@@ -98,15 +105,17 @@ public class FirebasePhotosHelper {
 
 
         //Creates new child reference of current user for photo and uploads photo
-            StorageReference photoRef = userRef.child(photoname);
-            photoRef.updateMetadata(metadata);
-            uploadTask = photoRef.putBytes(photoByteArray, metadata);
+        StorageReference photoRef = userRef.child(photoname);
+        photoRef.updateMetadata(metadata);
+        uploadTask = photoRef.putBytes(photoByteArray, metadata);
 
     }
 
 
-    public byte[] downloadFriends()
+    public ArrayList<DejaPhoto> downloadFriends()
     {
+        final ArrayList<DejaPhoto> friendsPhotosArray= new ArrayList<DejaPhoto>();
+
         //Gets current User
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
@@ -125,15 +134,28 @@ public class FirebasePhotosHelper {
                 for(DataSnapshot friend : dataSnapshot.getChildren())
                 {
                     Log.d("Friends", "Friends are: " + friend.getKey());
-                    //StorageReference storageUserRef = storageRef.child(friend.getKey());
+                    final StorageReference storageUserRef = storageRef.child(friend.getKey());
 
                     Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
                     friendsPhotos.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            for ( DataSnapshot friendPhoto : dataSnapshot.getChildren() ) {
-                                Log.d("Friends", "Friends " + friendPhoto.getKey() );
+                            for ( final DataSnapshot friendPhotoRef : dataSnapshot.getChildren() ) {
+                                //Gets reference to friend's photos and downloads them to
+                                Log.d("Friends", "Friends " + friendPhotoRef.getKey() );
+                                StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
+                                photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes , 0, bytes.length);
+                                        if(bitmap != null) {
+                                            RemotePhoto friendPhoto = new RemotePhoto(bitmap, 0, 0, 0);
+                                            friendsPhotosArray.add(friendPhoto);
+                                        }
+
+                                    }
+                                });
                             }
 
                         }
@@ -150,7 +172,41 @@ public class FirebasePhotosHelper {
 
             }
         });
-        return null;
+        return friendsPhotosArray;
+    }
+
+    public void deleteMyPhotos()
+    {
+        //Gets current User
+        database = FirebaseDatabase.getInstance();
+        myFirebaseRef = database.getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+        final StorageReference storageUserRef = storageRef.child(userName);
+
+        //Loops through realtime database to delete user photos
+        Query userPhotosRef = myFirebaseRef.child("userName").child("Photos");
+        userPhotosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot userPhoto : dataSnapshot.getChildren()) {
+                    String photoName = userPhoto.getKey();
+                    //deletes from storage
+                    storageUserRef.child(photoName + ".jpg").delete();
+                    userPhoto.getRef().removeValue();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     public void enableSharing() {
