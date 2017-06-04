@@ -39,6 +39,7 @@ import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
+import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
@@ -334,13 +335,17 @@ public class PhotoService extends Service {
 
         try {
 
-            Uri photoURI = Uri.parse(dejaPhoto.getUniqueID());
+            Bitmap photoBitmap;
+            if ( dejaPhoto instanceof LocalPhoto ) {
+                photoBitmap = MediaStore.Images.Media.getBitmap(
+                        this.getContentResolver(),
+                        ((LocalPhoto) dejaPhoto).getPhotoUri());
+            }
+            else {
+                photoBitmap = ((RemotePhoto) dejaPhoto).getBitmap();
+            }
 
-            background.setBitmap(bitmapUtil.backgroundImage(
-                    MediaStore.Images.Media.getBitmap(
-                            this.getContentResolver(),
-                            photoURI), dejaPhoto.getLocation(), dejaPhoto.getKarma())
-            );
+            background.setBitmap(bitmapUtil.backgroundImage(photoBitmap, dejaPhoto.getLocation(), dejaPhoto.getKarma()));
 
             Log.d(TAG, "Displaying Previous DejaPhoto: " + dejaPhoto.getUniqueID()
                     + " (" + dejaPhoto.getScore() + ")");
@@ -382,17 +387,20 @@ public class PhotoService extends Service {
 
         try {
 
-            Uri photoUri = Uri.parse(dejaPhoto.getUniqueID());
+            Bitmap photoBitmap;
+            if ( dejaPhoto instanceof LocalPhoto ) {
+                photoBitmap = MediaStore.Images.Media.getBitmap(
+                        this.getContentResolver(),
+                        ((LocalPhoto) dejaPhoto).getPhotoUri());
+            }
+            else {
+                photoBitmap = ((RemotePhoto) dejaPhoto).getBitmap();
+            }
 
-            background.setBitmap(bitmapUtil.backgroundImage(
-                    MediaStore.Images.Media.getBitmap(
-                            this.getContentResolver(),
-                            photoUri),
-                    dejaPhoto.getLocation(), dejaPhoto.getKarma())
-            );
+            background.setBitmap(bitmapUtil.backgroundImage(photoBitmap, dejaPhoto.getLocation(), dejaPhoto.getKarma()));
 
-            Log.d(TAG, "Displaying Next DejaPhoto: "
-                    + dejaPhoto.getUniqueID() + " (" + dejaPhoto.getScore() + ")");
+            Log.d(TAG, "Displaying Next DejaPhoto: " + dejaPhoto.getUniqueID()
+                    + " (" + dejaPhoto.getScore() + ")");
         }
 
         catch (NullPointerException e) {

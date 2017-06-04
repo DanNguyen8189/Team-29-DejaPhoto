@@ -20,7 +20,7 @@ import java.util.GregorianCalendar;
  */
 public class RemotePhoto implements DejaPhoto {
 
-    Bitmap photo;
+    Bitmap bitmap;
     int myScore;
     int karma;
     double lat;
@@ -35,8 +35,8 @@ public class RemotePhoto implements DejaPhoto {
     private static final int NEAR_RADIUS = 1000;
     private final int SCORE_UNIT = 10;
 
-    public RemotePhoto(Bitmap photo, int karma, double lat, double lng) {
-        this.photo = photo;
+    public RemotePhoto(Bitmap bitmap, int karma, double lat, double lng) {
+        this.bitmap = bitmap;
         this.karma = karma;
         this.lat = lat;
         this.lng = lng;
@@ -140,4 +140,8 @@ public class RemotePhoto implements DejaPhoto {
     public Location getLocation() { return location; }
 
     public void setReleased() { released = true; }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 }
