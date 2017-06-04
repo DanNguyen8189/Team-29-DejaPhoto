@@ -29,8 +29,14 @@ public class ReleaseSharingStrategy implements ReleaseStrategy {
             return 1;
         }
 
-        String[] friends = user.getFriends();
-        return 1;
+        String idToRelease = dejaPhoto.getUniqueID();
+        int result = notifyFriends(idToRelease);
+        return result;
 
     }
+
+    private int notifyFriends(String idToRelease) {
+        return 0;
+    }
+
 }

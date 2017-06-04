@@ -47,7 +47,8 @@ public class DejaPhotoDownloader implements PhotoDownloader {
     @Override
     public ArrayList<DejaPhoto> downloadFriendsPhotos() {
 
-        String[] friends = user.getFriends();
+        FirebasePhotosHelper helper = new FirebasePhotosHelper();
+
         /*
         ArrayList<LocalPhoto> friendsPhotos = new ArrayList<>();
         String[] friends = UserInfo.getFriends();
