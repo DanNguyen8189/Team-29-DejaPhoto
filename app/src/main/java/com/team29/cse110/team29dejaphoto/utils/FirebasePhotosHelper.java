@@ -152,4 +152,21 @@ public class FirebasePhotosHelper {
         });
         return null;
     }
+
+    public void enableSharing() {
+        database = FirebaseDatabase.getInstance();
+        myFirebaseRef = database.getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@'))).
+                      child("SharingEnabled").setValue(true);
+
+    }
+
+    public void disableSharing() {
+        database = FirebaseDatabase.getInstance();
+        myFirebaseRef = database.getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@'))).
+                      child("SharingEnabled").setValue(false);
+    }
 }

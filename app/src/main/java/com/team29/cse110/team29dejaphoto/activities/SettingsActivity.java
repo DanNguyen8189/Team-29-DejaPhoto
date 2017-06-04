@@ -144,7 +144,7 @@ SettingsActivity extends AppCompatActivity {
                 }*/
 
                 //we only need this because service automatically destroys itself after finishing
-                shareStarter( isChecked );
+              //  shareStarter( isChecked );
             }
         };
 
@@ -323,13 +323,17 @@ SettingsActivity extends AppCompatActivity {
 
     public void applySettings(View view) {
 
+        CheckBox c = (CheckBox)findViewById(R.id.share_photos_box);
+        shareStarter(c.isChecked());
+        finish();
     }
 
     public void shareStarter( boolean isChecked )
     {
         Log.d(TAG, "shareStarter called");
         Intent shareIntent = new Intent(SettingsActivity.this,SharingService.class);
-        shareIntent.putExtra( "loadOrRemove", isChecked );
+        shareIntent.putExtra("loadOrRemove", isChecked);
+        shareIntent.putExtra( "sharingEnabled", isChecked );
         startService(shareIntent);
     }
 

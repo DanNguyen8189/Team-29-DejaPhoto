@@ -457,6 +457,8 @@ public class PhotoService extends Service {
            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0"
                    + currDisplayedPhoto.getUniqueID();
 
+
+
            //stores unique photo id
            editor.putString(photoid, "Karma DejaPhoto");
            editor.apply();

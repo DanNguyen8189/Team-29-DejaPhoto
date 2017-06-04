@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
@@ -24,7 +27,7 @@ public class SharingService extends IntentService {
     private static final String TAG = "SharingService";
 
     private PhotoLoader photoLoader = new DejaPhotoLoader();
-
+    private DatabaseReference myFirebaseRef;
     //used to get the extra data added to the intent
     Bundle extras;
 
@@ -44,7 +47,7 @@ public class SharingService extends IntentService {
         if (extras == null){
             Log.d(TAG, "Error: did not correctly modify intent to let us know whether to add or" +
                     " remove your photos from database");
-            onDestroy();
+            //onDestroy();
         }
 
         loadOrRemove = extras.getBoolean("loadOrRemove");
@@ -76,12 +79,20 @@ public class SharingService extends IntentService {
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         Log.d(TAG,"Share onStartCommand.");
+        if(intent.getExtras().getBoolean("sharingEnabled")) {
+
+            database.enableSharing();
+        }
+        else {
+            database.disableSharing();
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         Log.d(TAG,"Share service onDestroy.");
+        //database.disableSharing();
         super.onDestroy();
     }
 }

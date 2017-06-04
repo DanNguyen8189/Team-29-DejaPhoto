@@ -52,6 +52,7 @@ public class LocalPhotoTest {
         dejaVuAll = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
 
         // Adjust calendar to same day last week, but 3 hours earlier.  Only deja vu in date
+        // Times must be adjusted between 9:00pm and 12:00 am
         calendar = Calendar.getInstance();
        // calendar.set(2017, 05, 13, 12, 47);
         calendar.add(Calendar.DAY_OF_WEEK, -7);// 1 week ago

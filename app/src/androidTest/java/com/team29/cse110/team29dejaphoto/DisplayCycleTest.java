@@ -47,6 +47,8 @@ public class DisplayCycleTest {
      */
     @Before
     public void setUp() {
+
+        // Time values must be adjusted between 9:00pm and 12:00am
         one = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());
         calendar.add(Calendar.HOUR,1);
         two = new LocalPhoto(null, 300,300, calendar.getTimeInMillis());
