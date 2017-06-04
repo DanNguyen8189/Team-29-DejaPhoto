@@ -66,13 +66,10 @@ public class FirebasePhotosHelper {
         }
 
         Log.d("Loader", "Current User Email: "+ user.getEmail());
-
         Log.d("Loader", "Uploading: "+ photoURI.getLastPathSegment());
 
         String photoname = photoURI.getLastPathSegment();
-
         String shortName = photoname.substring(0,photoname.indexOf("."));
-
         String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
         //Sets reference to current user
@@ -82,14 +79,19 @@ public class FirebasePhotosHelper {
         myFirebaseRef.child(userName).child("Photos").child(shortName).setValue(true);
         DatabaseReference userPhotos = myFirebaseRef.child(userName).child("Photos");
 
+        //Uploads the photo's metadata to the realtime database
         userPhotos.child(shortName).child("Karma").setValue("0");
-        userPhotos.child(shortName).child("Released").setValue(false);
+        userPhotos.child(shortName).child("Released").setValue(photo.getKarma());
+        userPhotos.child(shortName).child("Latitude").setValue(photo.getLocation().getLatitude());
+        userPhotos.child(shortName).child("Longitude").setValue(photo.getLocation().getLongitude());
+        userPhotos.child(shortName).child("TimeTaken").setValue(photo.getTime().getTimeInMillis());
 
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
                 .setCustomMetadata("Karma", "0").build();
 
 
+        //Converts photo to a bitmap then resizes before uploading to database
         Bitmap photoBitmap = BitmapFactory.decodeFile(photoURI.getPath());
         BitmapUtil bitmapUtil = new BitmapUtil();
 
@@ -98,9 +100,9 @@ public class FirebasePhotosHelper {
 
 
         //Creates new child reference of current user for photo and uploads photo
-            StorageReference photoRef = userRef.child(photoname);
-            photoRef.updateMetadata(metadata);
-            uploadTask = photoRef.putBytes(photoByteArray, metadata);
+        StorageReference photoRef = userRef.child(photoname);
+        photoRef.updateMetadata(metadata);
+        uploadTask = photoRef.putBytes(photoByteArray, metadata);
 
     }
 
