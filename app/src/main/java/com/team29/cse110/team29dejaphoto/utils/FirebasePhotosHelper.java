@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +21,9 @@ import com.google.firebase.storage.UploadTask;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
+import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
+
+import java.util.ArrayList;
 
 /**
  * Created by Noah on 5/31/2017.
@@ -28,6 +32,7 @@ import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 public class FirebasePhotosHelper {
 
     private final String TAG = "FirebasePhotosHelper";
+    final long FIVE_MEGABYTES = 5*1024 * 1024;
 
     private PhotoLoader photoLoader = new DejaPhotoLoader();
 
@@ -81,7 +86,7 @@ public class FirebasePhotosHelper {
 
         //Uploads the photo's metadata to the realtime database
         userPhotos.child(shortName).child("Karma").setValue("0");
-        userPhotos.child(shortName).child("Released").setValue(photo.getKarma());
+        userPhotos.child(shortName).child("Released").setValue(false);
         userPhotos.child(shortName).child("Latitude").setValue(photo.getLocation().getLatitude());
         userPhotos.child(shortName).child("Longitude").setValue(photo.getLocation().getLongitude());
         userPhotos.child(shortName).child("TimeTaken").setValue(photo.getTime().getTimeInMillis());
@@ -107,8 +112,10 @@ public class FirebasePhotosHelper {
     }
 
 
-    public byte[] downloadFriends()
+    public ArrayList<RemotePhoto> downloadFriends()
     {
+        final ArrayList<RemotePhoto> friendsPhotosArray= new ArrayList<RemotePhoto>();
+
         //Gets current User
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
@@ -127,7 +134,7 @@ public class FirebasePhotosHelper {
                 for(DataSnapshot friend : dataSnapshot.getChildren())
                 {
                     Log.d("Friends", "Friends are: " + friend.getKey());
-                    //StorageReference storageUserRef = storageRef.child(friend.getKey());
+                    final StorageReference storageUserRef = storageRef.child(friend.getKey());
 
                     Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
                     friendsPhotos.addValueEventListener(new ValueEventListener() {
@@ -135,7 +142,20 @@ public class FirebasePhotosHelper {
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             for ( DataSnapshot friendPhoto : dataSnapshot.getChildren() ) {
+                                //Gets reference to friend's photos and downloads them to
                                 Log.d("Friends", "Friends " + friendPhoto.getKey() );
+                                StorageReference photoref = storageUserRef.child(friendPhoto.getKey() + ".jpg");
+                                photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes , 0, bytes.length);
+                                        if(bitmap != null) {
+                                            RemotePhoto friendPhoto = new RemotePhoto(bitmap, 0, 0, 0);
+                                            friendsPhotosArray.add(friendPhoto);
+                                        }
+
+                                    }
+                                });
                             }
 
                         }
@@ -152,7 +172,7 @@ public class FirebasePhotosHelper {
 
             }
         });
-        return null;
+        return friendsPhotosArray;
     }
 
     public void enableSharing() {
