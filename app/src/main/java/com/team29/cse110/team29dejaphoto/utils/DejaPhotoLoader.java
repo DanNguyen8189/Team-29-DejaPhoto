@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 
@@ -60,7 +61,7 @@ public class DejaPhotoLoader implements PhotoLoader {
      * object.
      */
     @Override
-    public LocalPhoto[] getPhotosAsArray(Context context) {
+    public DejaPhoto[] getPhotosAsArray(Context context) {
 
         Log.d(TAG, "Entering getPhotosAsArray method");
 
@@ -69,7 +70,7 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         int numOfPhotos = cursor.getCount();
 
-        LocalPhoto[] gallery = new LocalPhoto[numOfPhotos];
+        DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
 
         int numPhotos = 0;
 

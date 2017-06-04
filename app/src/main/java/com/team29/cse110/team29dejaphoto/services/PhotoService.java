@@ -21,6 +21,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -30,20 +31,23 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
-import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
-import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
-import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.R;
-import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
+import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
+import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
+import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
+
+//import java.net.URI;
 
 /**
  * Created by David Duplantier, Dan, Wis and Brian on 5/9/17.
@@ -323,21 +327,23 @@ public class PhotoService extends Service {
 
         /* Set previous photo */
 
-        LocalPhoto localPhoto = displayCycle.getPrevPhoto();
-        if ( localPhoto != null ) {
-            currDisplayedPhoto = localPhoto;
+        DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
+        if ( dejaPhoto != null ) {
+            currDisplayedPhoto = dejaPhoto;
         }
 
         try {
+
+            Uri photoURI = Uri.parse(dejaPhoto.getUniqueID());
+
             background.setBitmap(bitmapUtil.backgroundImage(
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
-                            localPhoto.getPhotoUri()),
-                    localPhoto.getLocation(), localPhoto.getKarma())
+                            photoURI), dejaPhoto.getLocation(), dejaPhoto.getKarma())
             );
 
-            Log.d(TAG, "Displaying Previous DejaPhoto: " + localPhoto.getPhotoUri()
-                    + " (" + localPhoto.getScore() + ")");
+            Log.d(TAG, "Displaying Previous DejaPhoto: " + dejaPhoto.getUniqueID()
+                    + " (" + dejaPhoto.getScore() + ")");
         }
 
         catch (NullPointerException e) {
@@ -369,22 +375,24 @@ public class PhotoService extends Service {
 
         /* Set next photo */
 
-        LocalPhoto localPhoto = displayCycle.getNextPhoto();
-        if ( localPhoto != null ) {
-            currDisplayedPhoto = localPhoto;
+        DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
+        if ( dejaPhoto != null ) {
+            currDisplayedPhoto = dejaPhoto;
         }
 
         try {
 
+            Uri photoUri = Uri.parse(dejaPhoto.getUniqueID());
+
             background.setBitmap(bitmapUtil.backgroundImage(
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
-                            localPhoto.getPhotoUri()),
-                    localPhoto.getLocation(), localPhoto.getKarma())
+                            photoUri),
+                    dejaPhoto.getLocation(), dejaPhoto.getKarma())
             );
 
             Log.d(TAG, "Displaying Next DejaPhoto: "
-                    + localPhoto.getPhotoUri() + " (" + localPhoto.getScore() + ")");
+                    + dejaPhoto.getUniqueID() + " (" + dejaPhoto.getScore() + ")");
         }
 
         catch (NullPointerException e) {

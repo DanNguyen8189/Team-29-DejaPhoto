@@ -2,6 +2,7 @@ package com.team29.cse110.team29dejaphoto.utils;
 
 import android.content.Context;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoDownloader;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
@@ -22,9 +23,9 @@ public class DejaPhotoDownloader implements PhotoDownloader {
     }
 
     @Override
-    public ArrayList<LocalPhoto> downloadAllPhotos() {
+    public ArrayList<DejaPhoto> downloadAllPhotos() {
 
-        ArrayList<LocalPhoto> allPhotos = new ArrayList<>();
+        ArrayList<DejaPhoto> allPhotos = new ArrayList<>();
         allPhotos.addAll( downloadMyPhotos() );
         allPhotos.addAll( downloadFriendsPhotos() );
         return allPhotos;
@@ -32,16 +33,16 @@ public class DejaPhotoDownloader implements PhotoDownloader {
     }
 
     @Override
-    public ArrayList<LocalPhoto> downloadMyPhotos() {
+    public ArrayList<DejaPhoto> downloadMyPhotos() {
 
         PhotoLoader loader = new DejaPhotoLoader();
-        LocalPhoto[] gallery = loader.getPhotosAsArray(context);
+        DejaPhoto[] gallery = loader.getPhotosAsArray(context);
         return new ArrayList<>(Arrays.asList(gallery));
 
     }
 
     @Override
-    public ArrayList<LocalPhoto> downloadFriendsPhotos() {
+    public ArrayList<DejaPhoto> downloadFriendsPhotos() {
         /*
         ArrayList<LocalPhoto> friendsPhotos = new ArrayList<>();
         String[] friends = UserInfo.getFriends();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.utils.FirebasePhotosHelper;
@@ -53,7 +54,7 @@ public class SharingService extends IntentService {
             //TODO load photos onto database
 
             //Loads photos into an array to be uploaded
-            LocalPhoto[] photos = photoLoader.getPhotosAsArray(this);
+            DejaPhoto[] photos = photoLoader.getPhotosAsArray(this);
 
             for(int i = 0; i < photos.length; i++)
             {

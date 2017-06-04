@@ -10,8 +10,8 @@ import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 
 public interface PhotoLoader {
 
-    public LocalPhoto[] getPhotosAsArray(Context context);
+    public DejaPhoto[] getPhotosAsArray(Context context);
 
-    public LocalPhoto[] getNewPhotosAsArray(Context context);
+    public DejaPhoto[] getNewPhotosAsArray(Context context);
 
 }

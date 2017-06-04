@@ -15,10 +15,10 @@ import java.util.List;
  */
 public interface PhotoDownloader {
 
-    public List<LocalPhoto> downloadAllPhotos();
+    public List<DejaPhoto> downloadAllPhotos();
 
-    public List<LocalPhoto> downloadMyPhotos();
+    public List<DejaPhoto> downloadMyPhotos();
 
-    public List<LocalPhoto> downloadFriendsPhotos();
+    public List<DejaPhoto> downloadFriendsPhotos();
 
 }

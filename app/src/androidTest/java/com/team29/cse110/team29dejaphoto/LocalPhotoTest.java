@@ -112,7 +112,7 @@ public class LocalPhotoTest {
     @Test
     public void getKarma() throws Exception {
 
-        assertFalse(photo.getKarma());
+        assertFalse(photo.getKarma() != 0);
         Log.d(TAG, "Testing getKarma() method");
     }
 
@@ -126,7 +126,7 @@ public class LocalPhotoTest {
     public void setKarma() throws Exception {
 
         photo.addKarma();
-        assertTrue(photo.getKarma());
+        assertTrue(photo.getKarma() != 0);
         Log.d(TAG,"Testing addKarma() method");
     }
 

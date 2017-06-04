@@ -2,6 +2,8 @@ package com.team29.cse110.team29dejaphoto.models;
 
 import android.location.Location;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.PriorityQueue;
@@ -12,11 +14,11 @@ import java.util.PriorityQueue;
 public class Priorities {
 
     /* Priority Queue of DejaPhotos based on scores */
-    private PriorityQueue<LocalPhoto> pq;
+    private PriorityQueue<DejaPhoto> pq;
 
     /** Default Constructor */
     public Priorities() {
-        pq = new PriorityQueue<>(10, Collections.<LocalPhoto>reverseOrder());
+        pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());
     }
 
     /**
@@ -26,7 +28,7 @@ public class Priorities {
      * @return True - If the photo is added
      *         False - Otherwise
      */
-    public boolean add(LocalPhoto photo) {
+    public boolean add(DejaPhoto photo) {
         if(photo == null) return false;
 
         return pq.add(photo);
@@ -37,7 +39,7 @@ public class Priorities {
      *
      * @return LocalPhoto - The LocalPhoto with the highest score
      */
-    public LocalPhoto getNewPhoto(){
+    public DejaPhoto getNewPhoto(){
         return pq.poll();
     }
 
@@ -49,18 +51,18 @@ public class Priorities {
     public void updatePriorities(Location location, Preferences prefs) {
         // Naive implementation
         // create new temporary arraylist to hold dejaphoto objects for reshuffling
-        ArrayList<LocalPhoto> temp = new ArrayList<>();
+        ArrayList<DejaPhoto> temp = new ArrayList<>();
 
         // update each photo's score
-        for (LocalPhoto photo : pq) {
+        for (DejaPhoto photo : pq) {
             photo.updateScore(location, prefs);
             temp.add(photo);
         }
 
         // reset the original priorityqueue and re-add each photo from the temporary
         // arraylist to it
-        pq = new PriorityQueue<>(10, Collections.<LocalPhoto>reverseOrder());
-        for (LocalPhoto photo : temp) {
+        pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());
+        for (DejaPhoto photo : temp) {
             pq.add(photo);
         }
     }

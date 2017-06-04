@@ -2,6 +2,8 @@ package com.team29.cse110.team29dejaphoto.models;
 
 import android.location.Location;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+
 
 /**
  * Manages the photos to be displayed on the homescreen
@@ -24,12 +26,12 @@ public class DisplayCycle {
     }
 
     /** Overloaded Constructor */
-    public DisplayCycle(LocalPhoto[] gallery) {
+    public DisplayCycle(DejaPhoto[] gallery) {
 
         history = new History();
         priorities = new Priorities();
 
-        for(LocalPhoto photo : gallery) {
+        for(DejaPhoto photo : gallery) {
             priorities.add(photo);
         }
     }
@@ -41,7 +43,7 @@ public class DisplayCycle {
      * @return True - If the photo was added to the display cycle
      *         False - otherwise
      */
-    public boolean addToCycle(LocalPhoto photo) {
+    public boolean addToCycle(DejaPhoto photo) {
         return priorities.add(photo);
     }
 
@@ -56,12 +58,12 @@ public class DisplayCycle {
      * @return True - if any photo from the gallery was added to the DisplayCycle
      *         False - otherwise
      */
-    public boolean addToCycle(LocalPhoto[] gallery) {
+    public boolean addToCycle(DejaPhoto[] gallery) {
 
         // An empty gallery is valid to load from
         if(gallery == null) return true;
 
-        for (LocalPhoto photo : gallery) {
+        for (DejaPhoto photo : gallery) {
             if(!priorities.add(photo)){
                 return false;
             }
@@ -75,13 +77,13 @@ public class DisplayCycle {
      *
      * @return LocalPhoto - photo to be displayed
      */
-    public LocalPhoto getNextPhoto() {
-        LocalPhoto next = history.getNext();
+    public DejaPhoto getNextPhoto() {
+        DejaPhoto next = history.getNext();
         if(next == null) {
-            LocalPhoto newPhoto = priorities.getNewPhoto();
+            DejaPhoto newPhoto = priorities.getNewPhoto();
 
             if(newPhoto != null) {
-                LocalPhoto removed = history.addPhoto(newPhoto);
+                DejaPhoto removed = history.addPhoto(newPhoto);
                 if(removed != null) priorities.add(removed);
 
             } else {
@@ -100,7 +102,7 @@ public class DisplayCycle {
      * @return LocalPhoto - photo to be displayed
      *         null - there are no previous photos available
      */
-    public LocalPhoto getPrevPhoto() {
+    public DejaPhoto getPrevPhoto() {
         return history.getPrev();
     }
 
@@ -120,7 +122,7 @@ public class DisplayCycle {
         history.removeFromHistory();
     }
 
-    public LocalPhoto getCurrentPhoto() {
+    public DejaPhoto getCurrentPhoto() {
         return history.getCurrentPhoto();
     }
 

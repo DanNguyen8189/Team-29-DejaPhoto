@@ -29,6 +29,7 @@ public class RemotePhoto implements DejaPhoto {
     boolean isShownRecently;
     private Calendar time;
     private Location location;
+    private boolean released;
 
     private static final double METERS_TO_FEET = 3.28084;
     private static final int NEAR_RADIUS = 1000;
@@ -39,6 +40,7 @@ public class RemotePhoto implements DejaPhoto {
         this.karma = karma;
         this.lat = lat;
         this.lng = lng;
+        this.released = false;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class RemotePhoto implements DejaPhoto {
 
     public int updateScore(Location location, Preferences prefs) {
 
-        myScore = getKarmaPoints() - mapBooleanToInt(isShownRecently()) +
+        myScore = getKarma() - mapBooleanToInt(isShownRecently()) +
                 mapBooleanToInt(prefs.isLocationOn()) * getLocationPoints(location) +
                 mapBooleanToInt(prefs.isDateOn()) * getDatePoints() +
                 mapBooleanToInt(prefs.isTimeOn()) * getTimeTakenPoints();
@@ -112,7 +114,7 @@ public class RemotePhoto implements DejaPhoto {
 
     public void setFriendKarma() { this.hasFriendKarma = true; }
 
-    public int getKarmaPoints() {
+    public int getKarma() {
         return karma;
     }
 
@@ -134,4 +136,8 @@ public class RemotePhoto implements DejaPhoto {
     public Calendar getTime() { return time; }
 
     public String getUniqueID() { return "";}
+
+    public Location getLocation() { return location; }
+
+    public void setReleased() { released = true; }
 }

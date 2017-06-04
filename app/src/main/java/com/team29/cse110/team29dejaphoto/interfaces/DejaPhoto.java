@@ -27,5 +27,11 @@ public interface DejaPhoto extends Comparable<DejaPhoto> {
 
     public String getUniqueID();
 
+    public Location getLocation();
+
+    public int getKarma();
+
+    public void setReleased();
+
     // TODO Add all other neccessary classes common to LocalPhoto and RemotePhoto
 }
