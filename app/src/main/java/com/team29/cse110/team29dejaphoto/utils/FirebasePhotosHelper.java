@@ -112,9 +112,9 @@ public class FirebasePhotosHelper {
     }
 
 
-    public ArrayList<RemotePhoto> downloadFriends()
+    public ArrayList<DejaPhoto> downloadFriends()
     {
-        final ArrayList<RemotePhoto> friendsPhotosArray= new ArrayList<RemotePhoto>();
+        final ArrayList<DejaPhoto> friendsPhotosArray= new ArrayList<DejaPhoto>();
 
         //Gets current User
         database = FirebaseDatabase.getInstance();
@@ -141,10 +141,10 @@ public class FirebasePhotosHelper {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            for ( DataSnapshot friendPhoto : dataSnapshot.getChildren() ) {
+                            for ( final DataSnapshot friendPhotoRef : dataSnapshot.getChildren() ) {
                                 //Gets reference to friend's photos and downloads them to
-                                Log.d("Friends", "Friends " + friendPhoto.getKey() );
-                                StorageReference photoref = storageUserRef.child(friendPhoto.getKey() + ".jpg");
+                                Log.d("Friends", "Friends " + friendPhotoRef.getKey() );
+                                StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
                                 photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                     @Override
                                     public void onSuccess(byte[] bytes) {
