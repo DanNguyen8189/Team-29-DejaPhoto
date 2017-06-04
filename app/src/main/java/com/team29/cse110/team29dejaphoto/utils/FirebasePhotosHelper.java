@@ -66,13 +66,10 @@ public class FirebasePhotosHelper {
         }
 
         Log.d("Loader", "Current User Email: "+ user.getEmail());
-
         Log.d("Loader", "Uploading: "+ photoURI.getLastPathSegment());
 
         String photoname = photoURI.getLastPathSegment();
-
         String shortName = photoname.substring(0,photoname.indexOf("."));
-
         String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
         //Sets reference to current user
@@ -94,6 +91,7 @@ public class FirebasePhotosHelper {
                 .setCustomMetadata("Karma", "0").build();
 
 
+        //Converts photo to a bitmap then resizes before uploading to database
         Bitmap photoBitmap = BitmapFactory.decodeFile(photoURI.getPath());
         BitmapUtil bitmapUtil = new BitmapUtil();
 
@@ -102,9 +100,9 @@ public class FirebasePhotosHelper {
 
 
         //Creates new child reference of current user for photo and uploads photo
-            StorageReference photoRef = userRef.child(photoname);
-            photoRef.updateMetadata(metadata);
-            uploadTask = photoRef.putBytes(photoByteArray, metadata);
+        StorageReference photoRef = userRef.child(photoname);
+        photoRef.updateMetadata(metadata);
+        uploadTask = photoRef.putBytes(photoByteArray, metadata);
 
     }
 
