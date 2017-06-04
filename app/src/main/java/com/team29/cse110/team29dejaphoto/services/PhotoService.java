@@ -328,7 +328,7 @@ public class PhotoService extends Service {
         }
 
         try {
-            background.setBitmap(backgroundImage(
+            background.setBitmap(bitmapUtil.backgroundImage(
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
                             dejaPhoto.getPhotoUri()),

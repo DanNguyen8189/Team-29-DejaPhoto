@@ -30,6 +30,10 @@ public class BitmapUtil {
         this.context = context;
     }
 
+    public BitmapUtil() {
+        this.context = null;
+    }
+
     public Bitmap resizePhoto(Bitmap bitmap) {
 
         return bitmap.getHeight()>= 4*bitmap.getWidth()/3
