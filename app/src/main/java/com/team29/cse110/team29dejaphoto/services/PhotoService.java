@@ -12,16 +12,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -44,11 +37,6 @@ import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
 
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Locale;
-
-//import java.net.URI;
 
 /**
  * Created by David Duplantier, Dan, Wis and Brian on 5/9/17.
@@ -78,8 +66,6 @@ public class PhotoService extends Service {
     /* Constants */
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152;   // Number of meters in a 500 feet
-    private static final long TWO_HOURS = 7200000;      // Two hours in milliseconds
-    private static final int PAINT_SIZE_CONSTANT = 50;  // Constant to derive brush size
     private static final int DEFAULT_INTERVAL = 300000;
 
 
