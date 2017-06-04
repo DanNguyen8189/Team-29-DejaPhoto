@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -33,6 +35,10 @@ import android.widget.Toast;
 import com.team29.cse110.team29dejaphoto.services.PhotoService;
 import com.team29.cse110.team29dejaphoto.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -307,6 +313,16 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = dejaPreferences.edit();
         //ArrayList imagesEncodedList;
         String imageEncoded;
+        String path = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied";
+
+        File DejaPhotoCopied = new File(path);
+        if (!DejaPhotoCopied.exists()){
+            DejaPhotoCopied.mkdirs();
+            Log.d(TAG, "directory made");
+        }
+        File outputFile;
+        FileOutputStream fos;
+        Bitmap finalBitmap = null;
 
         Log.d("TAG", "Running onActivityResult");
         if (requestCode == 1 && resultCode == RESULT_OK && data != null /*&& data.getData() != null*/) {
@@ -343,7 +359,32 @@ public class MainActivity extends AppCompatActivity {
                 cursor.close();*/
 
                 trueUri = getFileNameByUri(this, mImageUri);
+                Log.d(TAG, "old uri: " + mImageUri);
                 Log.d(TAG, "Found real uri of image: " + trueUri);
+
+                // write to directory in sd card
+                //outputFile = new File(DejaPhotoCopied, trueUri);
+
+                try{
+                    //String filePath = DejaPhotoCopied.toString() + trueUri;
+                    File temp = new File(trueUri);
+                    if(temp.exists()) {
+                        Log.d(TAG, "HELP");
+                    }
+                    fos = new FileOutputStream(trueUri.substring(0, trueUri.indexOf('/')) + "//" + trueUri.substring(trueUri.indexOf('/')));
+                    finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                    fos.flush();
+                    fos.close();
+                }
+                catch (FileNotFoundException e){
+                    Toast.makeText(this, "There's a problem saving photo to sd card: File not found", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                catch (IOException e){
+                    Toast.makeText(this, "There's a problem saving photo to sd card: IO exception", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
                 editor.putBoolean(trueUri, false);
 
             } else if (data.getClipData() != null) {

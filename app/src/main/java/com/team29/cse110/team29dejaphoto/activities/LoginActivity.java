@@ -78,6 +78,17 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        /* Initialize user to database */
+
+        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null) {
+                    initializeUser();
+                }
+            }
+        });
     }
 
     @Override
@@ -129,8 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             user = mAuth.getCurrentUser();
-
-                            initializeUser();
                             // updateUI(user);
 
                         } else {

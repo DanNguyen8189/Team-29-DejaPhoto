@@ -104,7 +104,7 @@ public class DejaPhotoLoader implements PhotoLoader {
 
            Log.d(TAG, photoId);
             // TODO Check that the photo is from the camera album
-            if(file.exists()) {
+            if(file.exists() && sp.contains(uri.toString())) {
                 gallery[count] = new DejaPhoto(uri,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
