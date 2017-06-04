@@ -313,8 +313,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         SharedPreferences.Editor editor = dejaPreferences.edit();
-        //ArrayList imagesEncodedList;
-        String imageEncoded;
         String path = Environment.getExternalStorageDirectory() + "/DejaPhoto/DejaPhotoCopied";
 
         File DejaPhotoCopied = new File(path);
@@ -328,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TAG", "Running onActivityResult");
         if (requestCode == 1 && resultCode == RESULT_OK && data != null /*&& data.getData() != null*/) {
 
-            Uri uri1 = data.getData();
+            /*Uri uri1 = data.getData();
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri1);
@@ -337,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
             String trueUri;
@@ -380,9 +378,11 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.d(TAG,"file1 is " +file1);
                     //Uri uri = Uri.fromFile(file);
-                    fos = new FileOutputStream(file1);
-                    finalBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
-                    Log.d(TAG, "finalBitmap is " + String.valueOf(finalBitmap));
+
+                    finalBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file1));
+                    fos = new FileOutputStream(path + trueUri.substring(trueUri.lastIndexOf('/')));
+
+                    //Log.d(TAG, "finalBitmap is " + String.valueOf(finalBitmap));
                     finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
                     fos.flush();
                     fos.close();
@@ -400,19 +400,18 @@ public class MainActivity extends AppCompatActivity {
 
             } else if (data.getClipData() != null) {
                 ClipData mClipData = data.getClipData();
-                ArrayList<Uri> mArrayUri = new ArrayList<>();
                 Log.d("TAG", "Entered clipdata");
                 for (int i = 0; i < mClipData.getItemCount(); i++) {
 
                     ClipData.Item item = mClipData.getItemAt(i);
                     Uri uri = item.getUri();
-                    mArrayUri.add(uri);
+
                     // Get the cursor
-                    /*Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                    Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
                     // Move to first row
                     cursor.moveToFirst();
 
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    /*int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     imageEncoded = cursor.getString(columnIndex) + uri;
                     editor.putString(uri.toString(), imageEncoded);
                     Log.d("TAG", "successfully wrote" + uri.toString() + " to sharedpref");
@@ -421,9 +420,42 @@ public class MainActivity extends AppCompatActivity {
 
                     trueUri = getFileNameByUri(this, uri);
                     Log.d(TAG, "Found real uri of image: " + trueUri);
+
+                    try{
+                        //String filePath = DejaPhotoCopied.toString() + trueUri;
+                    /*File temp = new File(DejaPhotoCopied, trueUri);
+                    if(temp.exists()) {
+                        Log.d(TAG, "HELP");
+                    }*/
+
+                        File file1 = new File(Environment.getExternalStorageDirectory()
+                                + "/DCIM/Camera/"
+                                + trueUri.substring(trueUri.lastIndexOf('/') + 1)
+                        );
+
+                        Log.d(TAG,"file1 is " +file1);
+                        //Uri uri = Uri.fromFile(file);
+
+                        finalBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file1));
+                        fos = new FileOutputStream(path + trueUri.substring(trueUri.lastIndexOf('/')));
+
+                        //Log.d(TAG, "finalBitmap is " + String.valueOf(finalBitmap));
+                        finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                        fos.flush();
+                        fos.close();
+                    }
+                    catch (FileNotFoundException e){
+                        Toast.makeText(this, "There's a problem finding photo to sd card: File not found", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    catch (IOException e){
+                        Toast.makeText(this, "There's a problem finding photo to sd card: IO exception", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+
+                    cursor.close();
                     editor.putBoolean(trueUri, false);
                 }
-                Log.d("TAG", "Selected Images" + mArrayUri.size());
             }
         }
         editor.commit();
