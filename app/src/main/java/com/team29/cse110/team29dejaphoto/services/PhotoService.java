@@ -416,79 +416,6 @@ public class PhotoService extends Service {
         }
     }
 
-    public Bitmap resizePhoto(Bitmap bitmap) {
-
-        return bitmap.getHeight()>= 4*bitmap.getWidth()/3
-                ? Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getWidth()*4/3),480,640,true)
-                : Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getHeight()*4/3,bitmap.getHeight()),480,640,true);
-    }
-
-
-
-    /**
-     * This method takes a bitmap image and location information, and returns a modified bitmap
-     * with location info in the bottom left corner. If no information is available (i.e. location
-     * is empty), appropriate text is printed.
-     *
-     * @param bitmap the background image to be modified
-     * @param location location info of the image
-     * @return returns image with location info as bitmap
-     * @throws Exception ArrayIndexOutOfBounds when no location info
-     */
-    public Bitmap backgroundImage(Bitmap bitmap, Location location, int karma) throws Exception {
-
-        Log.d(TAG, "Writing address to bitmap");
-
-        String locationTag;
-
-        // Geocoder to get address from remote server
-        Geocoder geocoder;
-        List<Address> list;
-
-
-
-        // Generate new bitmap and paint objects for modification
-        Bitmap newBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        newBitmap = resizePhoto(newBitmap);
-
-        Log.d("Size", "Height: " + newBitmap.getHeight() + ", Width: " + newBitmap.getWidth());
-
-        Canvas canvas = new Canvas(newBitmap);
-        Paint paint = new Paint();
-        Rect rect = new Rect();
-        paint.setColor(Color.RED);
-        paint.setTextSize(newBitmap.getHeight() / PAINT_SIZE_CONSTANT);
-
-        // get address for location
-        try {
-
-            // Geocoder to get address from remote server
-            geocoder = new Geocoder(this, Locale.getDefault());
-            list = geocoder.getFromLocation(location.getLatitude(),
-                    location.getLongitude(),1);
-
-            locationTag = list.get(0).getAddressLine(0);
-
-        }
-
-        // if no valid location
-        catch(Exception e) {
-
-            locationTag = "No location info available";
-        }
-
-
-
-        // Write location info to bitmap and return
-        paint.getTextBounds(locationTag, 0, locationTag.length(), rect);
-        canvas.drawText(locationTag, 0, newBitmap.getHeight()-newBitmap.getHeight()/5, paint);
-        canvas.drawText("Karma: "+karma, newBitmap.getWidth()-newBitmap.getWidth()/3, newBitmap.getHeight()-newBitmap.getHeight()/5,paint);
-
-        Log.d(TAG, "Printed location on photo: " + locationTag);
-
-        return newBitmap;
-    }
-
     /*
      * This method delegates release functionality to the ReleaseSingleUser, passing along the
      * DisplayCycle and SharedPreferences.
@@ -501,7 +428,6 @@ public class PhotoService extends Service {
         }
 
     }
-
 
 
    /*
