@@ -30,6 +30,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.R;
 import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
@@ -74,6 +75,9 @@ public class PhotoService extends Service {
     private static final long TWO_HOURS = 7200000;      // Two hours in milliseconds
     private static final int PAINT_SIZE_CONSTANT = 50;  // Constant to derive brush size
     private static final int DEFAULT_INTERVAL = 300000;
+
+
+    BitmapUtil bitmapUtil = new BitmapUtil(this);
 
 
     /* Handler to update home screen every user-customizable interval */
@@ -370,7 +374,8 @@ public class PhotoService extends Service {
         }
 
         try {
-            background.setBitmap(backgroundImage(
+
+            background.setBitmap(bitmapUtil.backgroundImage(
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
                             dejaPhoto.getPhotoUri()),
@@ -400,6 +405,7 @@ public class PhotoService extends Service {
                 ? Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getWidth()*4/3),480,640,true)
                 : Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getHeight()*4/3,bitmap.getHeight()),480,640,true);
     }
+
 
 
     /**
@@ -451,7 +457,7 @@ public class PhotoService extends Service {
         // if no valid location
         catch(Exception e) {
 
-            locationTag = "No locationinfo\navailable";
+            locationTag = "No location info available";
         }
 
 

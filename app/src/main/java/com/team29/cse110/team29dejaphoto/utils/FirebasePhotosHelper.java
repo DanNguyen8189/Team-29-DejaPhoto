@@ -1,5 +1,6 @@
 package com.team29.cse110.team29dejaphoto.utils;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +36,7 @@ public class FirebasePhotosHelper {
 
     //For checking if upload was successful or not
     private UploadTask uploadTask;
+
 
 
     public void upload(DejaPhoto photo)
