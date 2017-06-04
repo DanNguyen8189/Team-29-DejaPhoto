@@ -82,8 +82,12 @@ public class FirebasePhotosHelper {
         myFirebaseRef.child(userName).child("Photos").child(shortName).setValue(true);
         DatabaseReference userPhotos = myFirebaseRef.child(userName).child("Photos");
 
+        //Uploads the photo's metadata to the realtime database
         userPhotos.child(shortName).child("Karma").setValue("0");
-        userPhotos.child(shortName).child("Released").setValue(false);
+        userPhotos.child(shortName).child("Released").setValue(photo.getKarma());
+        userPhotos.child(shortName).child("Latitude").setValue(photo.getLocation().getLatitude());
+        userPhotos.child(shortName).child("Longitude").setValue(photo.getLocation().getLongitude());
+        userPhotos.child(shortName).child("TimeTaken").setValue(photo.getTime().getTimeInMillis());
 
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
