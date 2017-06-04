@@ -35,7 +35,9 @@ import android.widget.Toast;
 import com.team29.cse110.team29dejaphoto.services.PhotoService;
 import com.team29.cse110.team29dejaphoto.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -313,30 +315,29 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = dejaPreferences.edit();
         //ArrayList imagesEncodedList;
         String imageEncoded;
-        String path = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied";
+        String path = Environment.getExternalStorageDirectory() + "/DejaPhoto/DejaPhotoCopied";
 
         File DejaPhotoCopied = new File(path);
         if (!DejaPhotoCopied.exists()){
             DejaPhotoCopied.mkdirs();
             Log.d(TAG, "directory made");
         }
-        File outputFile;
         FileOutputStream fos;
         Bitmap finalBitmap = null;
 
         Log.d("TAG", "Running onActivityResult");
         if (requestCode == 1 && resultCode == RESULT_OK && data != null /*&& data.getData() != null*/) {
 
-            /*Uri uri = data.getData();
+            Uri uri1 = data.getData();
 
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri1);
                 // Log.d(TAG, String.valueOf(bitmap));
 
                 imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
 
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
             String trueUri;
@@ -362,26 +363,36 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "old uri: " + mImageUri);
                 Log.d(TAG, "Found real uri of image: " + trueUri);
 
-                // write to directory in sd card
                 //outputFile = new File(DejaPhotoCopied, trueUri);
 
+                //access the current directory of the image we want
                 try{
                     //String filePath = DejaPhotoCopied.toString() + trueUri;
-                    File temp = new File(trueUri);
+                    /*File temp = new File(DejaPhotoCopied, trueUri);
                     if(temp.exists()) {
                         Log.d(TAG, "HELP");
-                    }
-                    fos = new FileOutputStream(trueUri.substring(0, trueUri.indexOf('/')) + "//" + trueUri.substring(trueUri.indexOf('/')));
+                    }*/
+
+                    File file1 = new File(Environment.getExternalStorageDirectory()
+                            + "/DCIM/Camera/"
+                            + trueUri.substring(trueUri.lastIndexOf('/') + 1)
+                            );
+
+                    Log.d(TAG,"file1 is " +file1);
+                    //Uri uri = Uri.fromFile(file);
+                    fos = new FileOutputStream(file1);
+                    finalBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
+                    Log.d(TAG, "finalBitmap is " + String.valueOf(finalBitmap));
                     finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
                     fos.flush();
                     fos.close();
                 }
                 catch (FileNotFoundException e){
-                    Toast.makeText(this, "There's a problem saving photo to sd card: File not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "There's a problem finding photo to sd card: File not found", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
                 catch (IOException e){
-                    Toast.makeText(this, "There's a problem saving photo to sd card: IO exception", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "There's a problem finding photo to sd card: IO exception", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
 
