@@ -12,14 +12,14 @@ import java.util.PriorityQueue;
  * Created by David Duplantier on 6/3/17.
  */
 
-public class ReleaseQueue {
+public class ReleasedPhotos {
 
 
     private PriorityQueue<DejaPhoto> photosToRelease;
     private final int INITIAL_SIZE = 10;
 
 
-    public ReleaseQueue() {
+    public ReleasedPhotos() {
         photosToRelease = new PriorityQueue<>(INITIAL_SIZE, Collections.<DejaPhoto>reverseOrder());
     }
 
