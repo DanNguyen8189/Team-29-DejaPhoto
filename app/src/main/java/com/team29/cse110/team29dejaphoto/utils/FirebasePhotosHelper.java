@@ -175,6 +175,40 @@ public class FirebasePhotosHelper {
         return friendsPhotosArray;
     }
 
+    public void deleteMyPhotos()
+    {
+        //Gets current User
+        database = FirebaseDatabase.getInstance();
+        myFirebaseRef = database.getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+        final StorageReference storageUserRef = storageRef.child(userName);
+
+        //Loops through realtime database to delete user photos
+        Query userPhotosRef = myFirebaseRef.child("userName").child("Photos");
+        userPhotosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot userPhoto : dataSnapshot.getChildren()) {
+                    String photoName = userPhoto.getKey();
+                    //deletes from storage
+                    storageUserRef.child(photoName + ".jpg").delete();
+                    userPhoto.getRef().removeValue();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
     public void enableSharing() {
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
