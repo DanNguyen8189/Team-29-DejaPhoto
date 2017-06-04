@@ -61,4 +61,5 @@ public class User {
         String[] returnArray = new String[friends.size()];
         return friends.toArray(returnArray);
     }
+
 }
