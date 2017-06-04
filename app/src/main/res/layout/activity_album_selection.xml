@@ -29,7 +29,7 @@
         android:layout_marginTop="7dp"/>
 
     <Button
-        android:id="@+id/friendsPhotos"
+        android:id="@+id/friendsDejaPhotos"
         android:text="Friends Photos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

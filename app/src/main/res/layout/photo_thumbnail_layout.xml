@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:text="Include photo"/>
+            android:text="Include dejaPhoto"/>
         <CheckBox
             android:layout_width="30dp"
             android:layout_height="50dp"

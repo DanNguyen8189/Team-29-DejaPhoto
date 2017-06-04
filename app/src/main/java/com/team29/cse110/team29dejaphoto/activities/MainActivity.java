@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         //sets title of actionbar
-        getSupportActionBar().setTitle("DejaPhoto");
+        getSupportActionBar().setTitle("LocalPhoto");
 
         navigationView = (NavigationView) findViewById(R.id.navi_view);
 
@@ -147,12 +147,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Log.d(TAG, "app is ON");
-                    appOnOffText.setText("DejaPhoto is running!");
+                    appOnOffText.setText("LocalPhoto is running!");
                     toggleSetting(IsAppRunning, true);
                     starter();
                 } else {
                     Log.d(TAG, "app is OFF");
-                    appOnOffText.setText("DejaPhoto is not running!");
+                    appOnOffText.setText("LocalPhoto is not running!");
                     Log.d(TAG, "Dejaphoto disable called");
                     toggleSetting(IsAppRunning, false);
                     stopper();
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (appRunCheck) {
             appOnOff.setChecked(true);
-            appOnOffText.setText("DejaPhoto is running!");
+            appOnOffText.setText("LocalPhoto is running!");
         } else {
             Log.d(TAG, "app is disabled on startup");
             appOnOff.setChecked(false);

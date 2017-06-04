@@ -3,7 +3,7 @@ package com.team29.cse110.team29dejaphoto;
 import android.location.Location;
 import android.util.Log;
 
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 
@@ -27,15 +27,15 @@ public class DisplayCycleTest {
     Calendar calendar = Calendar.getInstance();
 
     // Create a few dummy Dejaphotos
-    private DejaPhoto one;
-    private DejaPhoto two;
-    private DejaPhoto three;
+    private LocalPhoto one;
+    private LocalPhoto two;
+    private LocalPhoto three;
 
-    // Create new DejaPhoto Galleries and populate them
-    private DejaPhoto[] testGalleryEmpty = {};
-    private DejaPhoto[] testGalleryOneElement = new DejaPhoto[1];
-    private DejaPhoto[] testGalleryThreeElements = new DejaPhoto[3];
-    private DejaPhoto[] testGalleryManyElements;// larger than history size
+    // Create new LocalPhoto Galleries and populate them
+    private LocalPhoto[] testGalleryEmpty = {};
+    private LocalPhoto[] testGalleryOneElement = new LocalPhoto[1];
+    private LocalPhoto[] testGalleryThreeElements = new LocalPhoto[3];
+    private LocalPhoto[] testGalleryManyElements;// larger than history size
 
     Location location;
     Preferences prefAllOn = new Preferences(true,true,true);
@@ -47,13 +47,13 @@ public class DisplayCycleTest {
      */
     @Before
     public void setUp() {
-        one = new DejaPhoto(null, 0, 0, calendar.getTimeInMillis());
+        one = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());
         calendar.add(Calendar.HOUR,1);
-        two = new DejaPhoto(null, 300,300, calendar.getTimeInMillis());
+        two = new LocalPhoto(null, 300,300, calendar.getTimeInMillis());
         calendar.add(Calendar.HOUR,3);
-        three = new DejaPhoto(null, 300, 300, calendar.getTimeInMillis());
+        three = new LocalPhoto(null, 300, 300, calendar.getTimeInMillis());
 
-        // Create new DejaPhoto Galleries and populate them
+        // Create new LocalPhoto Galleries and populate them
         testGalleryOneElement[0] = one;
         testGalleryThreeElements[0] = one;
         testGalleryThreeElements[1] = two;
@@ -93,15 +93,15 @@ public class DisplayCycleTest {
 
         // Test that photo is successfully added to an empty cycle
         ds.addToCycle(testGalleryEmpty);
-        assertTrue(ds.addToCycle(new DejaPhoto(null, 0, 0, 0L)));
+        assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L)));
 
         // Test that photo is successfully added to a non-empty cycle
         ds.addToCycle(testGalleryOneElement);
-        assertTrue(ds.addToCycle(new DejaPhoto(null, 0, 0, 0L)));
+        assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L)));
 
         // Test that several photos can be added
-        for (DejaPhoto d: testGalleryManyElements)  {
-            assertTrue(ds.addToCycle(new DejaPhoto(null, 0, 0, 0L)));
+        for (LocalPhoto d: testGalleryManyElements)  {
+            assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L)));
         }
         Log.d(TAG,"Testing addToCycle() method");
     }
@@ -204,12 +204,12 @@ public class DisplayCycleTest {
     /**
      *  Helper method to create a gallery of several photos
      */
-    private DejaPhoto[] fillTestGallery() {
-        DejaPhoto[] gallery = new DejaPhoto[11];
+    private LocalPhoto[] fillTestGallery() {
+        LocalPhoto[] gallery = new LocalPhoto[11];
         calendar = Calendar.getInstance();
 
         for(int i = 0; i < 11; i++) {
-          gallery[i] = new DejaPhoto(null, 0, 0, calendar.getTimeInMillis());
+          gallery[i] = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());
           //calendar.add(Calendar.HOUR, 1);
         }
         return gallery;

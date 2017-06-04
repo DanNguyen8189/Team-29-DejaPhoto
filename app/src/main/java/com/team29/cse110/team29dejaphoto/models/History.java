@@ -13,14 +13,14 @@ public class History {
 
     private static final String TAG = "History";
 
-    private LinkedList<DejaPhoto> historyList; // Underlying List structure
-    private ListIterator<DejaPhoto> iterator;  // Iterator to move through the history
+    private LinkedList<LocalPhoto> historyList; // Underlying List structure
+    private ListIterator<LocalPhoto> iterator;  // Iterator to move through the history
     private boolean forward;                   // Whether the iterator is currently moving forward
     private int nelems;                        // Number of elements
 
     /** Default Constructor */
     public History() {
-        historyList = new LinkedList<>(); //new LinkedList<DejaPhoto>();
+        historyList = new LinkedList<>(); //new LinkedList<LocalPhoto>();
         iterator = historyList.listIterator();
         forward = true;
     }
@@ -30,7 +30,7 @@ public class History {
     }
 
     /**
-     * Used to check if we are currently at the latest DejaPhoto in the history list.
+     * Used to check if we are currently at the latest LocalPhoto in the history list.
      *
      * @return boolean - False if the number of photos in the list equal the counter.
      *                   Otherwise, returns true.
@@ -40,7 +40,7 @@ public class History {
     }
 
     /**
-     * Used to check if we are currently at the oldest DejaPhoto in the history list.
+     * Used to check if we are currently at the oldest LocalPhoto in the history list.
      *
      * @return boolean - True if there are photos available when traversing backwards through
      *                   the history; false otherwise.
@@ -53,9 +53,9 @@ public class History {
      * Used to increment the counter (which photo we are looking at in the history
      * list) and to get the next photo.
      *
-     * @return DejaPhoto - the photo to be displayed
+     * @return LocalPhoto - the photo to be displayed
      */
-    public DejaPhoto getNext() {
+    public LocalPhoto getNext() {
         if(!forward && checkValidNext()) {
             iterator.previous();
             forward = true;
@@ -66,10 +66,10 @@ public class History {
     /**
      * Used to increment the iterator and to get the previous photo.
      *
-     * @return DejaPhoto - the photo to be displayed
+     * @return LocalPhoto - the photo to be displayed
      *         null - there are no previous photos available
      */
-    public DejaPhoto getPrev() {
+    public LocalPhoto getPrev() {
         if(forward && checkValidPrev()) {
             iterator.next();
             forward = false;
@@ -78,15 +78,15 @@ public class History {
     }
 
     /**
-     * Used to remove DejaPhoto's from the history list when it reaches 10
-     * photos, and to add DejaPhoto's to the history when we swipe left.
+     * Used to remove LocalPhoto's from the history list when it reaches 10
+     * photos, and to add LocalPhoto's to the history when we swipe left.
      *
-     * @param photo - Photo to add from priority queue to history list
-     * @return DejaPhoto - Photo to be added back into the PQ if removed from
+     * @param photo - DejaPhoto to add from priority queue to history list
+     * @return LocalPhoto - DejaPhoto to be added back into the PQ if removed from
      *                     the list
      */
-    public DejaPhoto addPhoto(DejaPhoto photo) {
-        DejaPhoto removed = null;
+    public LocalPhoto addPhoto(LocalPhoto photo) {
+        LocalPhoto removed = null;
 
         // if history is full, take the earliest photo out to make room for the new one
         if(nelems == 10) {
@@ -105,13 +105,13 @@ public class History {
 
     /**
      * Cycles the last photo in the history towards the front
-     * @return DejaPhoto cycled back to the front of the list
+     * @return LocalPhoto cycled back to the front of the list
      * used in the event there are less than 10 photos total
      */
-    public DejaPhoto cycle() {
+    public LocalPhoto cycle() {
         // make sure we have photos. If we do, proceed
         if(nelems != 0) {
-            DejaPhoto toCycle = historyList.removeLast();
+            LocalPhoto toCycle = historyList.removeLast();
             historyList.addFirst(toCycle);
             iterator = historyList.listIterator();
 
@@ -121,12 +121,12 @@ public class History {
     }
 
     /**
-     * Update the priorites of all DejaPhoto Objects held by this History structure
+     * Update the priorites of all LocalPhoto Objects held by this History structure
      *
      * @param location The new current location to update score with respects to
      */
     public void updatePriorities(Location location, Preferences prefs) {
-        for(DejaPhoto photo : historyList) {
+        for(LocalPhoto photo : historyList) {
             photo.updateScore(location, prefs);
         }
     }
@@ -150,7 +150,7 @@ public class History {
     }
 
     /* Returns photo currently displayed on the home screen */
-    public DejaPhoto getCurrentPhoto() {
+    public LocalPhoto getCurrentPhoto() {
 
         if(nelems == 0) {
             return null;

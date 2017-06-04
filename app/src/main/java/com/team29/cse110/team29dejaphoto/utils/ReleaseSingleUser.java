@@ -3,7 +3,7 @@ package com.team29.cse110.team29dejaphoto.utils;
 import android.content.SharedPreferences;
 
 import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 
 
@@ -32,7 +32,7 @@ public class ReleaseSingleUser implements ReleaseStrategy {
     public int releasePhoto() {
 
         /* Get currently displayed photo */
-        DejaPhoto currPhoto = displayCycle.getCurrentPhoto();
+        LocalPhoto currPhoto = displayCycle.getCurrentPhoto();
 
         /* If we got the current photo, record it is released and remove it from the DisplayCycle */
         if (currPhoto != null) {
@@ -47,7 +47,7 @@ public class ReleaseSingleUser implements ReleaseStrategy {
 
 
     /* This method handles all recording a photo is released in SharedPreferences */
-    private void recordIsReleasedInPrefs(DejaPhoto currPhoto) {
+    private void recordIsReleasedInPrefs(LocalPhoto currPhoto) {
 
         /* Create editor for storing unique photoids */
         SharedPreferences.Editor editor = sp.edit();
@@ -57,7 +57,7 @@ public class ReleaseSingleUser implements ReleaseStrategy {
                 + currPhoto.getPhotoUri();
 
         /* Stores unique photo id */
-        editor.putString(photoid, "Release Photo");
+        editor.putString(photoid, "Release DejaPhoto");
         editor.apply();
 
     }

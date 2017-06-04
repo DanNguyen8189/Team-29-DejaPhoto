@@ -3,7 +3,7 @@ package com.team29.cse110.team29dejaphoto.models;
 import android.graphics.Bitmap;
 import android.location.Location;
 
-import com.team29.cse110.team29dejaphoto.interfaces.Photo;
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,13 +18,14 @@ import java.util.GregorianCalendar;
  * contain any URI. Instead, this object is just a placeholder for photo data stored in Firebase
  * Storage, and contains a reference to the location of its corresponding photo in that storage.
  */
-public class FriendsPhoto implements Photo {
+public class RemotePhoto implements DejaPhoto {
 
     Bitmap photo;
     int myScore;
     int karma;
     double lat;
     double lng;
+    boolean hasFriendKarma;
     boolean isShownRecently;
     private Calendar time;
     private Location location;
@@ -33,7 +34,7 @@ public class FriendsPhoto implements Photo {
     private static final int NEAR_RADIUS = 1000;
     private final int SCORE_UNIT = 10;
 
-    public FriendsPhoto(Bitmap photo, int karma, double lat, double lng) {
+    public RemotePhoto(Bitmap photo, int karma, double lat, double lng) {
         this.photo = photo;
         this.karma = karma;
         this.lat = lat;
@@ -41,9 +42,9 @@ public class FriendsPhoto implements Photo {
     }
 
     @Override
-    public int compareTo(Photo photo) {
+    public int compareTo(DejaPhoto dejaPhoto) {
 
-        int theirScore = photo.getScore();
+        int theirScore = dejaPhoto.getScore();
 
         if ( myScore > theirScore ) {
             return 1;
@@ -107,8 +108,19 @@ public class FriendsPhoto implements Photo {
         return sameDayOfWeek ? SCORE_UNIT : 0;
     }
 
+    public boolean hasKarma() { return hasFriendKarma; }
+
+    public void setFriendKarma() { this.hasFriendKarma = true; }
+
     public int getKarmaPoints() {
         return karma;
+    }
+
+    public void addKarma() {
+        if(!hasKarma()) {
+            karma += 1;
+            setFriendKarma();
+        }
     }
 
     public boolean isShownRecently() {
@@ -119,4 +131,7 @@ public class FriendsPhoto implements Photo {
         return (value) ? 1 : 0;
     }
 
+    public Calendar getTime() { return time; }
+
+    public String getUniqueID() { return "";}
 }

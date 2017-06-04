@@ -2,7 +2,7 @@ package com.team29.cse110.team29dejaphoto.interfaces;
 
 import android.content.Context;
 
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 
 /**
  * Created by David Duplantier on 5/8/17.
@@ -10,8 +10,8 @@ import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
 
 public interface PhotoLoader {
 
-    public DejaPhoto[] getPhotosAsArray(Context context);
+    public LocalPhoto[] getPhotosAsArray(Context context);
 
-    public DejaPhoto[] getNewPhotosAsArray(Context context);
+    public LocalPhoto[] getNewPhotosAsArray(Context context);
 
 }

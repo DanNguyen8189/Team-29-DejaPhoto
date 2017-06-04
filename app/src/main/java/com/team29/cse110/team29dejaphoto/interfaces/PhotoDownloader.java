@@ -1,6 +1,6 @@
 package com.team29.cse110.team29dejaphoto.interfaces;
 
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 
 import java.util.List;
 
@@ -15,10 +15,10 @@ import java.util.List;
  */
 public interface PhotoDownloader {
 
-    public List<DejaPhoto> downloadAllPhotos();
+    public List<LocalPhoto> downloadAllPhotos();
 
-    public List<DejaPhoto> downloadMyPhotos();
+    public List<LocalPhoto> downloadMyPhotos();
 
-    public List<DejaPhoto> downloadFriendsPhotos();
+    public List<LocalPhoto> downloadFriendsPhotos();
 
 }

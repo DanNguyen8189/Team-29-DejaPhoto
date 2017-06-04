@@ -4,7 +4,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 
 import org.junit.Before;
@@ -17,15 +17,15 @@ import static org.junit.Assert.*;
 /**
  * Created by RobertChance on 5/14/17.
  */
-public class PhotoServiceTest {
+public class DejaPhotoServiceTest {
 
-    DejaPhoto[] gallery = new DejaPhoto[15];
-    DejaPhoto[] smallGallery = new DejaPhoto[3];
+    LocalPhoto[] gallery = new LocalPhoto[15];
+    LocalPhoto[] smallGallery = new LocalPhoto[3];
     Location location = new Location("");
     DisplayCycle displayCycle = new DisplayCycle();
     DisplayCycle smallDisplayCycle = new DisplayCycle();
 
-    private String TAG = "PhotoServiceTest";
+    private String TAG = "DejaPhotoServiceTest";
 
 
     @Before
@@ -33,12 +33,12 @@ public class PhotoServiceTest {
 
         // Populate gallery with dummy images of all the same score
         for(int i = 0; i < 15; i++) {
-            gallery[i] = new DejaPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
+            gallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
             displayCycle.addToCycle(gallery[i]);
         }
         for(int i = 0; i < 3; i++ ) {
 
-            smallGallery[i] = new DejaPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
+            smallGallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
             smallDisplayCycle.addToCycle(gallery[i]);
         }
 
@@ -76,10 +76,10 @@ public class PhotoServiceTest {
 
         //CHECK FULL DISPLAY CYCLE
         // Check that photo is released when at beginning of cycle
-        DejaPhoto d = displayCycle.getNextPhoto();
+        LocalPhoto d = displayCycle.getNextPhoto();
         displayCycle.removeCurrentPhoto();
         for(int i = 0; i < 15; i++) {
-            DejaPhoto d2 = displayCycle.getNextPhoto();
+            LocalPhoto d2 = displayCycle.getNextPhoto();
             assertFalse(d.equals(d2));
         }
 
@@ -87,7 +87,7 @@ public class PhotoServiceTest {
         d = displayCycle.getPrevPhoto();
         displayCycle.removeCurrentPhoto();
         for(int i = 0; i < 15; i++) {
-            DejaPhoto d2 = displayCycle.getNextPhoto();
+            LocalPhoto d2 = displayCycle.getNextPhoto();
             System.out.println("TESTTTTTTTTTT " + i);
             assertFalse(d.equals(d2));
         }
@@ -97,7 +97,7 @@ public class PhotoServiceTest {
         d = smallDisplayCycle.getNextPhoto();
         smallDisplayCycle.removeCurrentPhoto();
         for(int i = 0; i < 4; i++ ) {
-            DejaPhoto d2 = smallDisplayCycle.getNextPhoto();
+            LocalPhoto d2 = smallDisplayCycle.getNextPhoto();
             assertFalse(d.equals(d2));
         }
 
@@ -105,7 +105,7 @@ public class PhotoServiceTest {
         d = smallDisplayCycle.getPrevPhoto();
         smallDisplayCycle.removeCurrentPhoto();
         for(int i = 0; i < 4; i++ ) {
-            DejaPhoto d2 = smallDisplayCycle.getNextPhoto();
+            LocalPhoto d2 = smallDisplayCycle.getNextPhoto();
             assertFalse(d.equals(d2));
         }
     }

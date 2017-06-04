@@ -3,7 +3,7 @@ package com.team29.cse110.team29dejaphoto;
 import android.location.Location;
 import android.util.Log;
 
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 import com.team29.cse110.team29dejaphoto.models.Priorities;
 
@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 public class PrioritiesTest {
 
     private Priorities p;
-    DejaPhoto[] gallery;
-    DejaPhoto newPhoto;
+    LocalPhoto[] gallery;
+    LocalPhoto newPhoto;
     Calendar calendar = Calendar.getInstance();
     Long time;
     Preferences prefAll = new Preferences(true, true, true);
@@ -43,12 +43,12 @@ public class PrioritiesTest {
         calendar.add(Calendar.HOUR, -3);// Subtract 3 hours from the time
 
         // Priority is element 2, 1, 0 when all options are on.
-        gallery = new DejaPhoto[]{
-                new DejaPhoto(null, 0, 0, calendar.getTimeInMillis()), // #1 20 points
-                new DejaPhoto(null, 300, 300, calendar.getTimeInMillis()), //#3 10 points
-                new DejaPhoto(null, 300, 300, time), // #2 10 points
-                new DejaPhoto(null, 0, 0, time)}; // #0 20
-        newPhoto = new DejaPhoto(null, 0, 0, 0L);
+        gallery = new LocalPhoto[]{
+                new LocalPhoto(null, 0, 0, calendar.getTimeInMillis()), // #1 20 points
+                new LocalPhoto(null, 300, 300, calendar.getTimeInMillis()), //#3 10 points
+                new LocalPhoto(null, 300, 300, time), // #2 10 points
+                new LocalPhoto(null, 0, 0, time)}; // #0 20
+        newPhoto = new LocalPhoto(null, 0, 0, 0L);
 
     }
 
@@ -78,7 +78,7 @@ public class PrioritiesTest {
         location.setLongitude(0);
         location.setLatitude(0);
 
-        for (DejaPhoto d : gallery) {
+        for (LocalPhoto d : gallery) {
             p.add(d);
         }
         p.updatePriorities(location, prefAll);
@@ -92,7 +92,7 @@ public class PrioritiesTest {
 
 
         // When time is off, element 2 and 1 have same priority, 0 is lowest
-        for (DejaPhoto d : gallery) {
+        for (LocalPhoto d : gallery) {
             p.add(d);
             p.updatePriorities(location, prefNoTime);
         }
@@ -103,7 +103,7 @@ public class PrioritiesTest {
 
 
         // When all are off, the return order is reverse input order
-        for (DejaPhoto d : gallery) {
+        for (LocalPhoto d : gallery) {
             p.add(d);
         }
         p.updatePriorities(location, prefNone);
@@ -125,8 +125,8 @@ public class PrioritiesTest {
     @Test
     public void updatePriorities() throws Exception {
         p = new Priorities();
-        gallery[0] = new DejaPhoto(null, 0, 0, time);
-        gallery[1] = new DejaPhoto(null, 0, 0, calendar.getTimeInMillis());// subtract 3 hr
+        gallery[0] = new LocalPhoto(null, 0, 0, time);
+        gallery[1] = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());// subtract 3 hr
         p.updatePriorities(new Location(""), prefAll);
         p.add(gallery[0]);
         p.add(gallery[1]);

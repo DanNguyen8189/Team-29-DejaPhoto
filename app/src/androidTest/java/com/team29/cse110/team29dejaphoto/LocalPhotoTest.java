@@ -5,7 +5,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 
 import java.util.Calendar;
@@ -18,18 +18,18 @@ import static org.junit.Assert.*;
 /**
  * Created by tyler on 5/9/17.
  */
-public class DejaPhotoTest {
+public class LocalPhotoTest {
 
-    private String TAG = "DejaPhoto test";
+    private String TAG = "LocalPhoto test";
 
     Calendar calendar;
-    DejaPhoto photo;// A photo object to be modified
-    DejaPhoto emptyPhoto;// An empty photo
-    DejaPhoto dejaVuTime;// A photo with deja vu in time only
-    DejaPhoto dejaVuDate;// A photo with deja vu in date only
-    DejaPhoto dejaVuAll; // A photo with deja vu in time and dateS
-    DejaPhoto dejaVuLocation;// a Photo with deja vu in only location
-    DejaPhoto noDejaVu;// A photo with no deja vu
+    LocalPhoto photo;// A photo object to be modified
+    LocalPhoto emptyPhoto;// An empty photo
+    LocalPhoto dejaVuTime;// A photo with deja vu in time only
+    LocalPhoto dejaVuDate;// A photo with deja vu in date only
+    LocalPhoto dejaVuAll; // A photo with deja vu in time and dateS
+    LocalPhoto dejaVuLocation;// a DejaPhoto with deja vu in only location
+    LocalPhoto noDejaVu;// A photo with no deja vu
 
     Preferences prefAllOn = new Preferences(true,true,true);
 
@@ -43,33 +43,33 @@ public class DejaPhotoTest {
         calendar = Calendar.getInstance();
 
         // This photo will be left for modification
-        photo = new DejaPhoto(Uri.EMPTY, 0, 0, 0L);
+        photo = new LocalPhoto(Uri.EMPTY, 0, 0, 0L);
 
         // Empty photo with null parameters
-        emptyPhoto = new DejaPhoto(null, 0, 0, 0L);
+        emptyPhoto = new LocalPhoto(null, 0, 0, 0L);
 
-        // Photo from this instant in time, deja vu for time and date
-        dejaVuAll = new DejaPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
+        // DejaPhoto from this instant in time, deja vu for time and date
+        dejaVuAll = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
 
         // Adjust calendar to same day last week, but 3 hours earlier.  Only deja vu in date
         calendar = Calendar.getInstance();
        // calendar.set(2017, 05, 13, 12, 47);
         calendar.add(Calendar.DAY_OF_WEEK, -7);// 1 week ago
         calendar.add(Calendar.HOUR, 3);// 3 hours later
-        dejaVuDate = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
+        dejaVuDate = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
         // Adjust calendar to different day of week, but within current 2 hrs. Only deja vu in time
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_WEEK,-2);
-        dejaVuTime = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
+        dejaVuTime = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
         // Adjust calender to different time, and add local location
         calendar.add(Calendar.HOUR,3 );// calendar has no time or date deja vu
-        dejaVuLocation = new DejaPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
+        dejaVuLocation = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
 
         // Adjust calendar to different day, add non-local location
         calendar.add(Calendar.DAY_OF_WEEK, 3);
-        noDejaVu = new DejaPhoto(Uri.EMPTY, 300, 300, calendar.getTimeInMillis());
+        noDejaVu = new LocalPhoto(Uri.EMPTY, 300, 300, calendar.getTimeInMillis());
     }
 
 

@@ -30,6 +30,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.R;
@@ -37,7 +39,6 @@ import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 
@@ -322,25 +323,25 @@ public class PhotoService extends Service {
 
         /* Set previous photo */
 
-        DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
-        if ( dejaPhoto != null ) {
-            currDisplayedPhoto = dejaPhoto;
+        LocalPhoto localPhoto = displayCycle.getPrevPhoto();
+        if ( localPhoto != null ) {
+            currDisplayedPhoto = localPhoto;
         }
 
         try {
             background.setBitmap(bitmapUtil.backgroundImage(
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
-                            dejaPhoto.getPhotoUri()),
-                    dejaPhoto.getLocation(), dejaPhoto.getKarma())
+                            localPhoto.getPhotoUri()),
+                    localPhoto.getLocation(), localPhoto.getKarma())
             );
 
-            Log.d(TAG, "Displaying Previous Photo: " + dejaPhoto.getPhotoUri()
-                    + " (" + dejaPhoto.getScore() + ")");
+            Log.d(TAG, "Displaying Previous DejaPhoto: " + localPhoto.getPhotoUri()
+                    + " (" + localPhoto.getScore() + ")");
         }
 
         catch (NullPointerException e) {
-            Log.d(TAG, "No Photo could be retrieved");
+            Log.d(TAG, "No DejaPhoto could be retrieved");
             Toast.makeText(this, "End of history", Toast.LENGTH_SHORT).show();
         }
 
@@ -368,9 +369,9 @@ public class PhotoService extends Service {
 
         /* Set next photo */
 
-        DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
-        if ( dejaPhoto != null ) {
-            currDisplayedPhoto = dejaPhoto;
+        LocalPhoto localPhoto = displayCycle.getNextPhoto();
+        if ( localPhoto != null ) {
+            currDisplayedPhoto = localPhoto;
         }
 
         try {
@@ -378,16 +379,16 @@ public class PhotoService extends Service {
             background.setBitmap(bitmapUtil.backgroundImage(
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
-                            dejaPhoto.getPhotoUri()),
-                    dejaPhoto.getLocation(), dejaPhoto.getKarma())
+                            localPhoto.getPhotoUri()),
+                    localPhoto.getLocation(), localPhoto.getKarma())
             );
 
-            Log.d(TAG, "Displaying Next Photo: "
-                    + dejaPhoto.getPhotoUri() + " (" + dejaPhoto.getScore() + ")");
+            Log.d(TAG, "Displaying Next DejaPhoto: "
+                    + localPhoto.getPhotoUri() + " (" + localPhoto.getScore() + ")");
         }
 
         catch (NullPointerException e) {
-            Log.d(TAG, "No Photo could be retrieved");
+            Log.d(TAG, "No DejaPhoto could be retrieved");
         }
 
         catch (IllegalStateException e) {
@@ -493,7 +494,7 @@ public class PhotoService extends Service {
     */
    public void givePhotoKarma() {
 
-       if ( currDisplayedPhoto != null && !(currDisplayedPhoto.getKarma()==0) ) {
+       if ( currDisplayedPhoto != null && !(currDisplayedPhoto.hasKarma()) ) {
            Log.d(TAG, "Setting karma on currently displayed photo");
            currDisplayedPhoto.addKarma();
            if(!(ActivityCompat.checkSelfPermission(
@@ -510,12 +511,12 @@ public class PhotoService extends Service {
 
            //Creates editor for storing unique photo ids
            SharedPreferences.Editor editor = sp.edit();
-           //Unique Photo id given to a photo that has been given karma
+           //Unique DejaPhoto id given to a photo that has been given karma
            String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0"
-                   + currDisplayedPhoto.getPhotoUri();
+                   + currDisplayedPhoto.getUniqueID();
 
            //stores unique photo id
-           editor.putString(photoid, "Karma Photo");
+           editor.putString(photoid, "Karma DejaPhoto");
            editor.apply();
 
            Log.d(TAG, "Photoid is: " + photoid);

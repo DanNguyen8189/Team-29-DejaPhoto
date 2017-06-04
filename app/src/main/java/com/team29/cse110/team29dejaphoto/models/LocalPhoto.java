@@ -3,8 +3,7 @@ package com.team29.cse110.team29dejaphoto.models;
 import android.location.Location;
 import android.net.Uri;
 
-import com.team29.cse110.team29dejaphoto.interfaces.Photo;
-import com.team29.cse110.team29dejaphoto.models.Preferences;
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,18 +13,19 @@ import java.util.GregorianCalendar;
  * Created by David Duplantier and Noah Lovato on 5/1/17.
  */
 
-public class DejaPhoto implements Photo {
+public class LocalPhoto implements DejaPhoto {
 
-    /* Photo Metadata */
+    /* DejaPhoto Metadata */
 
     private Uri photoUri;         // Uri for this photo
     private Calendar time;        // This Calendar object will hold the time this photo was taken
     private Location location;    // Location object composing lat and long
                                   // coordinates where this photo was taken
 
-    /* DejaPhoto properties */
+    /* LocalPhoto properties */
 
     private int karma;        // Flags for karma, released, and whether the photo has been
+    private boolean karmaFromUser;
     private boolean released;     // shown recently
     private boolean showRecently;
 
@@ -39,10 +39,10 @@ public class DejaPhoto implements Photo {
 
 
     /**
-     * DejaPhoto constructor. The photo's data including Uri, latitude, longitude, time taken,
+     * LocalPhoto constructor. The photo's data including Uri, latitude, longitude, time taken,
      * and date taken, are passed as parameters to the constructor.
      */
-    public DejaPhoto(Uri photoUri, double latitude, double longitude, Long time) {
+    public LocalPhoto(Uri photoUri, double latitude, double longitude, Long time) {
 
         this.photoUri = photoUri;
         this.time = new GregorianCalendar();
@@ -50,19 +50,21 @@ public class DejaPhoto implements Photo {
         this.location = new Location("");
         this.location.setLatitude(latitude);
         this.location.setLongitude(longitude);
+        this.karma = 0;
+        this.karmaFromUser = false;
     }
 
     /**
-     * Used to compare to DejaPhoto objects by their priority score.
-     * @param photo Photo to compare against this photo object.
+     * Used to compare to LocalPhoto objects by their priority score.
+     * @param dejaPhoto DejaPhoto to compare against this dejaPhoto object.
      * @return For x.compareTo(y), this method returns:
      *         1   if x's score is greater than y's
      *         0   if x's score is equal to y's
      *         -1  if x's score is less than y's
      */
-    public int compareTo(Photo photo) {
+    public int compareTo(DejaPhoto dejaPhoto) {
 
-        int theirScore = photo.getScore();
+        int theirScore = dejaPhoto.getScore();
 
         if ( myScore > theirScore ) {
             return 1;
@@ -80,7 +82,7 @@ public class DejaPhoto implements Photo {
 
 
     /**
-     * Updates the score for this DejaPhoto object, given settings for location, date, and time.
+     * Updates the score for this LocalPhoto object, given settings for location, date, and time.
      *
      * @param location - The current location of the user/device
      *        prefs    - The DejaVu Mode preferences current enabled by the user
@@ -104,7 +106,7 @@ public class DejaPhoto implements Photo {
     }
 
     /**
-     * Calculates the score of this DejaPhoto based on location
+     * Calculates the score of this LocalPhoto based on location
      *
      * @returns SCORE_UNIT - If the location of the photo is close to the current location
      */
@@ -114,7 +116,7 @@ public class DejaPhoto implements Photo {
     }
 
     /**
-     * Calculates the score of this DejaPhoto based on time
+     * Calculates the score of this LocalPhoto based on time
      *
      * @returns SCORE_UNIT - If the time when the photo was taken is close to the current time
      */
@@ -141,7 +143,7 @@ public class DejaPhoto implements Photo {
     }
 
     /**
-     * Calculates the score of this DejaPhoto based on the day of the week
+     * Calculates the score of this LocalPhoto based on the day of the week
      *
      * @returns SCORE_UNIT - If the day that the photo was taken is the current day of the week
      */
@@ -167,6 +169,7 @@ public class DejaPhoto implements Photo {
 
     /* Getters and Setters */
 
+    public String getUniqueID() {return photoUri.toString(); }
 
     public Uri getPhotoUri() {
         return photoUri;
@@ -177,8 +180,16 @@ public class DejaPhoto implements Photo {
     }
 
     public void addKarma() {
-        karma +=1;
+
+        if(!karmaFromUser) {
+            karma +=1;
+            karmaFromUser = true;
+        }
     }
+
+    public boolean hasKarma() { return karmaFromUser; }
+
+    public void setKarmaFromUser(boolean karmaFromUser) { this.karmaFromUser = karmaFromUser; }
 
     public boolean isReleased() {
         return released;

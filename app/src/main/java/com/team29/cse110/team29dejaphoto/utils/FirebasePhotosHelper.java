@@ -17,8 +17,7 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
-import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 
 /**
  * Created by Noah on 5/31/2017.
@@ -44,17 +43,26 @@ public class FirebasePhotosHelper {
 
 
 
-    public void upload(DejaPhoto photo)
+    public void upload(LocalPhoto photo)
     {
-        //safety check
-        if(photo == null) return;
+        // safety check
+        if(photo == null) {
+            Log.d(TAG, "DejaPhoto is null");
+            return;
+        }
 
         //Gets current User
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user == null) return;
+        // Ensure a User is found
+        if(user == null) {
+            Log.d(TAG, "User authentication failed");
+            return;
+        }
+
+        Log.d("Loader", "Current User Email: "+ user.getEmail());
 
         Log.d("Loader", "Uploading: "+ photo.getPhotoUri().getLastPathSegment());
 

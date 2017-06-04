@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.utils.FirebasePhotosHelper;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
 
 
 /**
@@ -53,10 +53,15 @@ public class SharingService extends IntentService {
             //TODO load photos onto database
 
             //Loads photos into an array to be uploaded
-            DejaPhoto[] photos = photoLoader.getPhotosAsArray(this);
+            LocalPhoto[] photos = photoLoader.getPhotosAsArray(this);
 
             for(int i = 0; i < photos.length; i++)
             {
+                if(photos[i] == null) {
+                    Log.d(TAG, "Null photo");
+                    continue;
+                }
+
                 database.upload(photos[i]);
             }
             //database.downloadFriends();

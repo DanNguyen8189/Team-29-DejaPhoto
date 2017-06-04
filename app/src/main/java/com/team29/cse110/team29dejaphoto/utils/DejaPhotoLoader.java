@@ -10,7 +10,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
-import com.team29.cse110.team29dejaphoto.models.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 
 import java.io.File;
 
@@ -20,7 +20,7 @@ import java.io.File;
 
 /*
 * This class implements the PhotoLoader interface; it provides methods to load photos from a phones
-* storage, and return them as an array of DejaPhoto objects.
+* storage, and return them as an array of LocalPhoto objects.
 */
 public class DejaPhotoLoader implements PhotoLoader {
 
@@ -55,12 +55,12 @@ public class DejaPhotoLoader implements PhotoLoader {
 
     /*
      * This method searches all photos retrieved from the phone's storage and returns them as an
-     * array of DejaPhoto objects. This method is intended to be used only once during the app's
+     * array of LocalPhoto objects. This method is intended to be used only once during the app's
      * lifecycle - when the app first begins and needs to load all photos into the DisplayCycle
      * object.
      */
     @Override
-    public DejaPhoto[] getPhotosAsArray(Context context) {
+    public LocalPhoto[] getPhotosAsArray(Context context) {
 
         Log.d(TAG, "Entering getPhotosAsArray method");
 
@@ -69,7 +69,7 @@ public class DejaPhotoLoader implements PhotoLoader {
 
         int numOfPhotos = cursor.getCount();
 
-        DejaPhoto[] gallery = new DejaPhoto[numOfPhotos];
+        LocalPhoto[] gallery = new LocalPhoto[numOfPhotos];
 
         int numPhotos = 0;
 
@@ -105,7 +105,7 @@ public class DejaPhotoLoader implements PhotoLoader {
            Log.d(TAG, photoId);
             // TODO Check that the photo is from the camera album
             if(file.exists() && sp.contains(uri.toString())) {
-                gallery[count] = new DejaPhoto(uri,
+                gallery[count] = new LocalPhoto(uri,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
                         cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
@@ -134,9 +134,9 @@ public class DejaPhotoLoader implements PhotoLoader {
      * or getNewPhotosAsArray().
      */
     @Override
-    public DejaPhoto[] getNewPhotosAsArray(Context context) {
+    public LocalPhoto[] getNewPhotosAsArray(Context context) {
         // TODO
-        return new DejaPhoto[]{};
+        return new LocalPhoto[]{};
     }
 }
 

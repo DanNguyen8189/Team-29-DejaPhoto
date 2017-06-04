@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="photoPicker"
-                android:text="photo picker" />
+                android:text="dejaPhoto picker" />
         </RelativeLayout>
     </RelativeLayout>
 

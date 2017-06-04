@@ -2,7 +2,7 @@ package com.team29.cse110.team29dejaphoto.models;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.team29.cse110.team29dejaphoto.interfaces.Photo;
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class User {
 
     public String[] getFriends() {
 
-        ArrayList<Photo> friendsPhotos = new ArrayList<>();
+        ArrayList<DejaPhoto> friendsDejaPhotos = new ArrayList<>();
 
         return null;
     }
