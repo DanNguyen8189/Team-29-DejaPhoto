@@ -4,8 +4,12 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -51,24 +55,87 @@ public class FirebasePhotosHelper {
 
         Log.d("Loader", "Uploading: "+ photo.getPhotoUri().getLastPathSegment());
 
+        String photoname = photo.getPhotoUri().getLastPathSegment();
+
+        String shortName = photoname.substring(0,photoname.indexOf("."));
+
+        String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
         //Sets reference to current user
-        StorageReference userRef = storageRef.child(
-                user.getEmail().substring(0, user.getEmail().indexOf('@')));
+        StorageReference userRef = storageRef.child(userName);
 
-        myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
-                .child("Photos").child("TestPhoto1").setValue(true);
-        myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
-                .child("Photos").child("TestPhoto2").setValue(true);
+
+        myFirebaseRef.child(userName).child("Photos").child(shortName).setValue(true);
+        DatabaseReference userPhotos = myFirebaseRef.child(userName).child("Photos");
+
+        userPhotos.child(shortName).child("Karma").setValue("0");
+        userPhotos.child(shortName).child("Released").setValue(false);
+
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
                 .setCustomMetadata("Karma", "0").build();
 
 
         //Creates new child reference of current user for photo and uploads photo
-            StorageReference photoRef = userRef.child(photo.getPhotoUri().getLastPathSegment());
+            StorageReference photoRef = userRef.child(photoname);
             photoRef.updateMetadata(metadata);
             uploadTask = photoRef.putFile(photo.getPhotoUri(), metadata);
 
+    }
+
+
+    public byte[] downloadFriends()
+    {
+        //Gets current User
+        database = FirebaseDatabase.getInstance();
+        myFirebaseRef = database.getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+
+        //Sets reference to current user in realtime database
+        DatabaseReference dataFriendsRef = myFirebaseRef.child(userName).child("friends");
+
+        Query friendsQuery = dataFriendsRef;
+        friendsQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot friend : dataSnapshot.getChildren())
+                {
+                    Log.d("Friends", "Friends are: " + friend.getKey());
+                    //StorageReference storageUserRef = storageRef.child(friend.getKey());
+
+                    Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
+                    friendsPhotos.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            for ( DataSnapshot friendPhoto : dataSnapshot.getChildren() ) {
+                                Log.d("Friends", "Friends " + friendPhoto.getKey() );
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        return null;
     }
 }
