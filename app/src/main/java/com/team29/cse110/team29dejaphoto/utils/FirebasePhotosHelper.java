@@ -120,30 +120,30 @@ public class FirebasePhotosHelper {
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
-
         String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
         //Sets reference to current user in realtime database
         DatabaseReference dataFriendsRef = myFirebaseRef.child(userName).child("friends");
-
         Query friendsQuery = dataFriendsRef;
+
         friendsQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot friend : dataSnapshot.getChildren())
+                for( final DataSnapshot friend : dataSnapshot.getChildren())
                 {
-                    Log.d("Friends", "Friends are: " + friend.getKey());
+                    Log.d("Friends", "Friend is: " + friend.getKey());
                     final StorageReference storageUserRef = storageRef.child(friend.getKey());
-
                     Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
+
                     friendsPhotos.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             for ( final DataSnapshot friendPhotoRef : dataSnapshot.getChildren() ) {
                                 //Gets reference to friend's photos and downloads them to
-                                Log.d("Friends", "Friends " + friendPhotoRef.getKey() );
+                                Log.d("Friends", "Downloading "+ friend.getKey() + "'s " +
+                                        friendPhotoRef.getKey() +".jpg");
                                 StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
                                 photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                     @Override
@@ -186,12 +186,11 @@ public class FirebasePhotosHelper {
         final StorageReference storageUserRef = storageRef.child(userName);
         Log.d("Delete", "User is: " + userName);
 
-
         //Loops through realtime database to delete user photos
         Query userPhotosRef = myFirebaseRef.child(userName).child("Photos");
 
-
         userPhotosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot userPhoto : dataSnapshot.getChildren()) {
@@ -200,9 +199,7 @@ public class FirebasePhotosHelper {
                     //deletes from storage
                     storageUserRef.child(photoName + ".jpg").delete();
                     userPhoto.getRef().removeValue();
-
                 }
-
             }
 
             @Override
@@ -210,7 +207,6 @@ public class FirebasePhotosHelper {
 
             }
         });
-
 
     }
 
