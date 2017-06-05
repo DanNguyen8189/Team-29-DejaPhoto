@@ -35,6 +35,7 @@ public class FirebasePhotosHelper {
     final long FIVE_MEGABYTES = 5*1024 * 1024;
 
     private PhotoLoader photoLoader = new DejaPhotoLoader();
+    static boolean sharingSetting;
 
     //Firebase reference for accessing stored media
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -134,32 +135,55 @@ public class FirebasePhotosHelper {
                 {
                     Log.d("Friends", "Friend is: " + friend.getKey());
                     final StorageReference storageUserRef = storageRef.child(friend.getKey());
-                    Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
+                    final Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
 
-                    friendsPhotos.addValueEventListener(new ValueEventListener() {
+                    //Checks friend's sharing setting before downloading photos
+                    Query friendsSharing = myFirebaseRef.child(friend.getKey()).child("SharingEnabled");
+                    friendsSharing.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.d("Friends", "Setting is " + dataSnapshot.getValue());
+                            sharingSetting = ((boolean) dataSnapshot.getValue());
 
-                            for ( final DataSnapshot friendPhotoRef : dataSnapshot.getChildren() ) {
-                                //Gets reference to friend's photos and downloads them to
-                                Log.d("Friends", "Downloading "+ friend.getKey() + "'s " +
-                                        friendPhotoRef.getKey() +".jpg");
-                                StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
-                                photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            //Will download photos if friend has setting enabled
+                            Log.d("Friends", "Sharing is " + sharingSetting);
+                            if(sharingSetting) {
+
+                                Log.d("Friends", "Entering friends photos ");
+                                friendsPhotos.addValueEventListener(new ValueEventListener() {
                                     @Override
-                                    public void onSuccess(byte[] bytes) {
-                                        Log.d("Download", "Conversion to bitmap successful");
-                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes , 0, bytes.length);
-                                        if(bitmap != null) {
-                                            Log.d("Download", "Bitmap not null");
-                                            RemotePhoto friendPhoto = new RemotePhoto(bitmap, 0, 0, 0);
-                                            friendsPhotosArray.add(friendPhoto);
-                                            Log.d("Download","Size of returned array List: "+ friendsPhotosArray.size());
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        for (final DataSnapshot friendPhotoRef : dataSnapshot.getChildren()) {
+                                            //Gets reference to friend's photos and downloads them to
+                                            Log.d("Friends", "Downloading " + friend.getKey() + "'s " +
+                                                    friendPhotoRef.getKey() + ".jpg");
+                                            StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
+                                            photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                @Override
+                                                public void onSuccess(byte[] bytes) {
+                                                    Log.d("Download", "Conversion to bitmap successful");
+                                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                    if (bitmap != null) {
+                                                        Log.d("Download", "Bitmap not null");
+                                                        RemotePhoto friendPhoto = new RemotePhoto(bitmap, 0, 0, 0);
+                                                        friendsPhotosArray.add(friendPhoto);
+                                                        Log.d("Download", "Size of returned array List: " + friendsPhotosArray.size());
+                                                    }
+
+                                                }
+                                            });
                                         }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
                                     }
                                 });
                             }
+
 
                         }
 
