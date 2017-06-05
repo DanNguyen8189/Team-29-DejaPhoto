@@ -54,6 +54,7 @@ public class SharingService extends IntentService {
         Log.d(TAG, "Successfully passed through extra text " + loadOrRemove + " in intent");
 
         if(loadOrRemove){
+            Log.d("Delete", "Uploading photos..");
             //TODO load photos onto database
 
             //Loads photos into an array to be uploaded
@@ -72,6 +73,8 @@ public class SharingService extends IntentService {
 
         }else{
             //TODO remove photos from database
+            database.deleteMyPhotos();
+            Log.d("Delete", "Deleting photos from database...");
         }
 
     }

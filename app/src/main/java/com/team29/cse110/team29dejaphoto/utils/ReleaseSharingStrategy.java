@@ -7,7 +7,7 @@ import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
-import com.team29.cse110.team29dejaphoto.models.User;
+//import com.team29.cse110.team29dejaphoto.models.User;
 
 /**
  * Created by David Duplantier on 6/4/17.
@@ -16,14 +16,14 @@ import com.team29.cse110.team29dejaphoto.models.User;
 public class ReleaseSharingStrategy implements ReleaseStrategy {
 
     DisplayCycle displayCycle;
-    User user;
+    //User user;
 
     FirebaseDatabase database;
     DatabaseReference myRef;
 
     public ReleaseSharingStrategy(DisplayCycle displayCycle) {
         this.displayCycle = displayCycle;
-        this.user = new User();
+        //this.user = new User();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
     }
@@ -44,10 +44,10 @@ public class ReleaseSharingStrategy implements ReleaseStrategy {
 
     private int notifyFriends(String idToRelease) {
 
-        String[] friends = user.getFriends();
-        for ( String friend : friends ) {
+        //String[] friends = user.getFriends();
+        //for ( String friend : friends ) {
 
-        }
+        //}
         return 0;
     }
 

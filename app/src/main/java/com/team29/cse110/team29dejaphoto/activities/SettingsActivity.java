@@ -324,6 +324,7 @@ SettingsActivity extends AppCompatActivity {
     public void applySettings(View view) {
 
         CheckBox c = (CheckBox)findViewById(R.id.share_photos_box);
+        Log.d("Delete","Checkbox is checked: "+ c.isChecked());
         shareStarter(c.isChecked());
         finish();
     }

@@ -85,7 +85,7 @@ public class FirebasePhotosHelper {
         DatabaseReference userPhotos = myFirebaseRef.child(userName).child("Photos");
 
         //Uploads the photo's metadata to the realtime database
-        userPhotos.child(shortName).child("Karma").setValue("0");
+        userPhotos.child(shortName).child("Karma").setValue(photo.getKarma());
         userPhotos.child(shortName).child("Released").setValue(false);
         userPhotos.child(shortName).child("Latitude").setValue(photo.getLocation().getLatitude());
         userPhotos.child(shortName).child("Longitude").setValue(photo.getLocation().getLongitude());
@@ -184,14 +184,19 @@ public class FirebasePhotosHelper {
 
         String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
         final StorageReference storageUserRef = storageRef.child(userName);
+        Log.d("Delete", "User is: " + userName);
+
 
         //Loops through realtime database to delete user photos
-        Query userPhotosRef = myFirebaseRef.child("userName").child("Photos");
-        userPhotosRef.addValueEventListener(new ValueEventListener() {
+        Query userPhotosRef = myFirebaseRef.child(userName).child("Photos");
+
+
+        userPhotosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot userPhoto : dataSnapshot.getChildren()) {
                     String photoName = userPhoto.getKey();
+                    Log.d("Delete", "Deleting photo: " + photoName);
                     //deletes from storage
                     storageUserRef.child(photoName + ".jpg").delete();
                     userPhoto.getRef().removeValue();
