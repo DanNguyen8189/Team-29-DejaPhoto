@@ -241,11 +241,11 @@ public class PhotoService extends Service {
         /* Initializes DisplayCycle with photos from the system */
 
         PhotoLoader photoLoader = new DejaPhotoLoader();
-        DejaPhotoDownloader downloader = new DejaPhotoDownloader(context);
-        ArrayList<DejaPhoto> allPhotos = downloader.downloadAllPhotos();
-        DejaPhoto[] allPhotosArray = new DejaPhoto[allPhotos.size()];
-        displayCycle = new DisplayCycle(allPhotos.toArray(allPhotosArray));
-        //displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
+        //DejaPhotoDownloader downloader = new DejaPhotoDownloader(context);
+        //ArrayList<DejaPhoto> allPhotos = downloader.downloadAllPhotos();
+        //DejaPhoto[] allPhotosArray = new DejaPhoto[allPhotos.size()];
+        //displayCycle = new DisplayCycle(allPhotos.toArray(allPhotosArray));
+        displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
         // TODO More robust handling of score initialization
         displayCycle.updatePriorities(
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
