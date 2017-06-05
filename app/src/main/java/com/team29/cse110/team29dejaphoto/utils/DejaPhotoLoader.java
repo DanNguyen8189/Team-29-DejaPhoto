@@ -79,7 +79,8 @@ public class DejaPhotoLoader implements PhotoLoader {
         while ( cursor.moveToNext() ) {
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
-            String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/Camera/" + filename;
+            //String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/Camera/" + filename;
+            String absolutePath = Environment.getExternalStorageDirectory() + "/DejaPhoto/DejaPhotoCopied/" + filename;
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
@@ -105,7 +106,7 @@ public class DejaPhotoLoader implements PhotoLoader {
 
            Log.d(TAG, photoId);
             // TODO Check that the photo is from the camera album
-            if(file.exists() && sp.contains(uri.toString())) {
+            if(file.exists() /*&& sp.contains(uri.toString())*/) {
                 gallery[count] = new LocalPhoto(uri,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
