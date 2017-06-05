@@ -34,8 +34,12 @@ import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
+import com.team29.cse110.team29dejaphoto.utils.DejaPhotoDownloader;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 /**
@@ -237,8 +241,11 @@ public class PhotoService extends Service {
         /* Initializes DisplayCycle with photos from the system */
 
         PhotoLoader photoLoader = new DejaPhotoLoader();
-
-        displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
+        DejaPhotoDownloader downloader = new DejaPhotoDownloader(context);
+        ArrayList<DejaPhoto> allPhotos = downloader.downloadAllPhotos();
+        DejaPhoto[] allPhotosArray = new DejaPhoto[allPhotos.size()];
+        displayCycle = new DisplayCycle(allPhotos.toArray(allPhotosArray));
+        //displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
         // TODO More robust handling of score initialization
         displayCycle.updatePriorities(
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
