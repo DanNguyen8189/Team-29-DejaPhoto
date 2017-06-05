@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by David Duplantier on 6/3/17.
  */
 
-public class User {
+public class Database {
 
     private final String TAG = "User";
 
@@ -27,16 +27,59 @@ public class User {
     DatabaseReference myRef;
     FirebaseUser user;
     Query friendsList;
+    ArrayList<String> sharedPhotosID = new ArrayList<>();
+
 
     /*
      * Constructor. Get reference to the Firebase realtime database.
      */
-    public User() {
+    public Database() {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
+
+
+    public String[] getPhotoList() {
+
+        String[] friendList = getFriends();
+        Query photosList = myRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
+                .child("friends");
+        //sharedPhotosID.add(myRef.child(getName()).child("friends"));
+
+        photosList.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot d : dataSnapshot.getChildren()) {
+                    Query friend = myRef.child(d.getKey()).child("Photos");
+
+                    friend.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot d : dataSnapshot.getChildren()) {
+                                if(!((Boolean) d.child("Released").getValue())) {
+                                    sharedPhotosID.add(d.getKey());
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                         }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        String[] s = new String[sharedPhotosID.size()];
+        return sharedPhotosID.toArray(s);
+    }
 
     public String[] getFriends() {
 
@@ -65,6 +108,10 @@ public class User {
 
         String[] returnArray = new String[friends.size()];
         return friends.toArray(returnArray);
+    }
+
+    public String getName() {
+        return user.getEmail().substring(0,user.getEmail().indexOf('@'));
     }
 
 }
