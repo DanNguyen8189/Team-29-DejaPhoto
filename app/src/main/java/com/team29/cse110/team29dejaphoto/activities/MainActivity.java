@@ -341,11 +341,11 @@ public class MainActivity extends AppCompatActivity {
         String destinationPath = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied";
 
 
-        File DejaPhotoCopied = new File(destinationPath);
+        /*File DejaPhotoCopied = new File(destinationPath);
         if (!DejaPhotoCopied.exists()){
             DejaPhotoCopied.mkdirs();
             Log.d(TAG, "directory made");
-        }
+        }*/
         Uri photoPickerUri;
         //FileOutputStream fos;
         //Bitmap finalBitmap = null;
@@ -555,12 +555,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "DejaPhotoCopied directory created");
         }
 
-        else if (!DejaPhotoFriends.exists()){
+        if (!DejaPhotoFriends.exists()){
             DejaPhotoFriends.mkdirs();
             Log.d(TAG, "DejaPhotoFriends directory created");
         }
 
-        else if (!DejaPhoto.exists()){
+        if (!DejaPhoto.exists()){
             DejaPhoto.mkdirs();
             Log.d(TAG, "DejaPhoto directory created");
         }

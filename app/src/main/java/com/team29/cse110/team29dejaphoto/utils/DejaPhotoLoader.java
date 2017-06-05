@@ -80,7 +80,7 @@ public class DejaPhotoLoader implements PhotoLoader {
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             //String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/Camera/" + filename;
-            String absolutePath = Environment.getExternalStorageDirectory() + "/DejaPhoto/DejaPhotoCopied/" + filename;
+            String absolutePath = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied/" + filename;
             File file = new File(absolutePath);
             Uri uri = Uri.fromFile(file);
 
