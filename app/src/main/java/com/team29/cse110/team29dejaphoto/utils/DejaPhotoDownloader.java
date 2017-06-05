@@ -1,6 +1,7 @@
 package com.team29.cse110.team29dejaphoto.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoDownloader;
@@ -46,7 +47,11 @@ public class DejaPhotoDownloader implements PhotoDownloader {
     public ArrayList<DejaPhoto> downloadFriendsPhotos() {
 
         FirebasePhotosHelper helper = new FirebasePhotosHelper();
-        return helper.downloadFriends();
+        ArrayList<DejaPhoto>  test = new ArrayList<DejaPhoto>();
+        test = helper.downloadFriends();
+        Log.d("Download", "Size of array list: " + test.size());
+        return test;
+
 
     }
 

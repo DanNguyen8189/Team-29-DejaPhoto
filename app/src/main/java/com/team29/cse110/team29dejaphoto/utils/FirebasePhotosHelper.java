@@ -148,10 +148,13 @@ public class FirebasePhotosHelper {
                                 photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                     @Override
                                     public void onSuccess(byte[] bytes) {
+                                        Log.d("Download", "Conversion to bitmap successful");
                                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes , 0, bytes.length);
                                         if(bitmap != null) {
+                                            Log.d("Download", "Bitmap not null");
                                             RemotePhoto friendPhoto = new RemotePhoto(bitmap, 0, 0, 0);
                                             friendsPhotosArray.add(friendPhoto);
+                                            Log.d("Download","Size of returned array List: "+ friendsPhotosArray.size());
                                         }
 
                                     }
