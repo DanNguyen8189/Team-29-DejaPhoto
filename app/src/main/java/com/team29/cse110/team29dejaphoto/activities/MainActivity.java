@@ -266,6 +266,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             requestAllPermissions();
         }
+
+        createAlbums();
     }
 
     /* Method to call onDestroy when the user turns off the app */
@@ -297,23 +299,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method that sends the intent so that a grid-view screen opens up that allows the user to
+     * select 1 or more photos from their other albums and copy them into an album named
+     * DejaPhotoCopied.
+     *
+     * @param view
+     */
     public void photoPicker (View view){
         Intent intent = new Intent();
         // Show only images, no videos or anything else
         intent.setType("image/*");
+
+        // Allows user to select more than 1 photo at a time
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
+
         // Always show the chooser (if there are multiple options available)
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
 
     }
 
+    /**
+     * Callback for PhotoPicker Request
+     * @param requestCode - The integer request code allowing the user to identify who this result came from
+     * @param resultCode - The integer result code returned by the child activity
+     * @param data - an intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         SharedPreferences.Editor editor = dejaPreferences.edit();
-        String path = Environment.getExternalStorageDirectory() + "/DejaPhoto/DejaPhotoCopied";
+        String path = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied";
 
         File DejaPhotoCopied = new File(path);
         if (!DejaPhotoCopied.exists()){
@@ -510,5 +529,30 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
         return filePath;
+    }
+
+    public void createAlbums() {
+        String path1 = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied";
+        String path2 = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends";
+        String path3 = Environment.getExternalStorageDirectory() + "/DejaPhoto";
+
+        File DejaPhotoCopied = new File(path1);
+        File DejaPhotoFriends = new File(path2);
+        File DejaPhoto = new File(path3);
+
+        if (!DejaPhotoCopied.exists()){
+            DejaPhotoCopied.mkdirs();
+            Log.d(TAG, "DejaPhotoCopied directory created");
+        }
+
+        else if (!DejaPhotoFriends.exists()){
+            DejaPhotoFriends.mkdirs();
+            Log.d(TAG, "DejaPhotoFriends directory created");
+        }
+
+        else if (!DejaPhoto.exists()){
+            DejaPhoto.mkdirs();
+            Log.d(TAG, "DejaPhoto directory created");
+        }
     }
 }
