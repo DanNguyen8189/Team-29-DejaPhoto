@@ -3,6 +3,7 @@ package com.team29.cse110.team29dejaphoto.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +24,7 @@ import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -123,6 +125,9 @@ public class FirebasePhotosHelper {
         user = FirebaseAuth.getInstance().getCurrentUser();
         String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
+        //For storing photos in album
+        final String path = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends";
+
         //Sets reference to current user in realtime database
         DatabaseReference dataFriendsRef = myFirebaseRef.child(userName).child("friends");
         Query friendsQuery = dataFriendsRef;
@@ -159,6 +164,19 @@ public class FirebasePhotosHelper {
                                             Log.d("Friends", "Downloading " + friend.getKey() + "'s " +
                                                     friendPhotoRef.getKey() + ".jpg");
                                             StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
+
+                                            //creates new file for photo in album
+                                            File friendPhoto = new File(path + "/" + friendPhotoRef.getKey() + ".jpg");
+                                            try{
+                                                friendPhoto.createNewFile();
+                                            }
+                                            catch(Exception e)
+                                            {
+                                                Log.d("Download", "New file not created for image");
+                                            }
+                                            //downloads the file to storage
+                                            photoref.getFile(friendPhoto);
+
                                             photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                                 @Override
                                                 public void onSuccess(byte[] bytes) {
