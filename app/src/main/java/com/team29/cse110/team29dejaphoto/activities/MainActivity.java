@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             requestAllPermissions();
         }
 
-        createAlbums();
+        createAlbums(); // Create the new albums to store different photos
     }
 
     /* Method to call onDestroy when the user turns off the app */
@@ -333,11 +333,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
+        // Open the editor for the SharedPreferences file
         SharedPreferences.Editor editor = dejaPreferences.edit();
 
+        /* TODO probably delete this line */
         String path = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied";
 
+        // Initialize the path to the SD card where the copied photos are stored using PhotoPicker
         String destinationPath = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied";
 
 
@@ -346,11 +348,13 @@ public class MainActivity extends AppCompatActivity {
             DejaPhotoCopied.mkdirs();
             Log.d(TAG, "directory made");
         }*/
-        Uri photoPickerUri;
+
+        Uri photoPickerUri; // Holds the content Uri for a photo
         //FileOutputStream fos;
         //Bitmap finalBitmap = null;
-        File sourceFile;
-        File destinationFile;
+
+        File sourceFile; // Holds the original photo we are copying
+        File destinationFile; // Holds the copied photo
 
         Log.d("TAG", "Running onActivityResult");
         if (requestCode == 1 && resultCode == RESULT_OK && data != null /*&& data.getData() != null*/) {
@@ -386,13 +390,14 @@ public class MainActivity extends AppCompatActivity {
 
                 cursor.close();*/
 
+                // Get correct Uri of a photo
                 trueUri = getFileNameByUri(this, photoPickerUri);
                 Log.d(TAG, "old uri: " + photoPickerUri);
                 Log.d(TAG, "Found real uri of image: " + trueUri);
 
                 //outputFile = new File(DejaPhotoCopied, trueUri);
 
-                //access the current directory of the image we want
+                // Access the current directory of the image we want
                 try{
                     //String filePath = DejaPhotoCopied.toString() + trueUri;
                     /*File temp = new File(DejaPhotoCopied, trueUri);
@@ -406,7 +411,7 @@ public class MainActivity extends AppCompatActivity {
                             trueUri
                             );
 
-                    Log.d(TAG,"sourceFile is " +sourceFile);
+                    Log.d(TAG,"sourceFile is " + sourceFile);
                     //Uri uri = Uri.fromFile(file);
 
 //                    finalBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(sourceFile));
@@ -417,6 +422,7 @@ public class MainActivity extends AppCompatActivity {
 //                    fos.flush();
 //                    fos.close();
 
+                    // Copy the photo over to the new directory and update shared preferences
                     destinationFile = new File(destinationPath + trueUri.substring(trueUri.lastIndexOf('/')));
                     Log.d(TAG,"destinationFile is " +destinationFile);
                     FileUtils.copyFile(sourceFile, destinationFile);
@@ -431,8 +437,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "There's a problem finding photo to sd card: IO exception", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
+            }
 
-            } else if (data.getClipData() != null) {
+            // More than one photo was selected
+            else if (data.getClipData() != null) {
                 ClipData mClipData = data.getClipData();
                 Log.d("TAG", "Entered clipdata");
                 for (int i = 0; i < mClipData.getItemCount(); i++) {
@@ -449,6 +457,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Found real uri of image: " + trueUri);
 
                     try{
+
+                        // Access the current directory of the photo we want to copy
                         sourceFile = new File(Environment.getExternalStorageDirectory()
                                 + "/DCIM/Camera/"
                                 + trueUri.substring(trueUri.lastIndexOf('/') + 1)
@@ -465,6 +475,7 @@ public class MainActivity extends AppCompatActivity {
                         fos.flush();
                         fos.close();*/
 
+                        // Copy the photo over to the new directory and update shared preferences
                         destinationFile = new File(destinationPath + trueUri.substring(trueUri.lastIndexOf('/')));
                         Log.d(TAG,"destinationFile is " +destinationFile);
                         FileUtils.copyFile(sourceFile, destinationFile);
@@ -512,7 +523,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*Method to get the correct uri data from a photo*/
+    /**
+     * Method to get the correct uri data from a photo
+     */
     public String getFileNameByUri(Context context, Uri uri) {
 
         // Will return "image:x*"
@@ -541,25 +554,34 @@ public class MainActivity extends AppCompatActivity {
         return filePath;
     }
 
+    /**
+     * Method to create the 3 new albums for storing specific types of photos separately
+     */
     public void createAlbums() {
+
+        // Initialize the paths to where the 3 new folders in the SD card will be
         String path1 = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied";
         String path2 = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends";
         String path3 = Environment.getExternalStorageDirectory() + "/DejaPhoto";
 
+        // Initialize the 3 new folders in their respective paths
         File DejaPhotoCopied = new File(path1);
         File DejaPhotoFriends = new File(path2);
         File DejaPhoto = new File(path3);
 
+        // Create the DejaPhotoCopied album if it doesn't already exist
         if (!DejaPhotoCopied.exists()){
             DejaPhotoCopied.mkdirs();
             Log.d(TAG, "DejaPhotoCopied directory created");
         }
 
+        // Create the DejaPhotoFriends album if it doesn't already exist
         if (!DejaPhotoFriends.exists()){
             DejaPhotoFriends.mkdirs();
             Log.d(TAG, "DejaPhotoFriends directory created");
         }
 
+        // Create the DejaPhoto album if it doesn't already exist
         if (!DejaPhoto.exists()){
             DejaPhoto.mkdirs();
             Log.d(TAG, "DejaPhoto directory created");
