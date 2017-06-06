@@ -12,10 +12,12 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
@@ -24,6 +26,18 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.team29.cse110.team29dejaphoto.R;
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
@@ -36,10 +50,13 @@ import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoDownloader;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
+import com.team29.cse110.team29dejaphoto.utils.FirebasePhotosHelper;
 import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -71,6 +88,9 @@ public class PhotoService extends Service {
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152;   // Number of meters in a 500 feet
     private static final int DEFAULT_INTERVAL = 300000;
+    final long FIVE_MEGABYTES = 5*1024 * 1024;
+    static boolean sharingSetting;
+
 
 
     BitmapUtil bitmapUtil = new BitmapUtil(this);
@@ -198,6 +218,132 @@ public class PhotoService extends Service {
                         Log.d(TAG, "Update interval changed");
 
                         return;
+
+                    /* Commented for those who dont have friends for now
+                    case "IsViewingFriends":
+                        Log.d("Settings", "IsViewingFriends changed to " + sp.getBoolean("IsViewingFriends",true));
+                        //Firebase reference for accessing stored media
+                        final FirebaseStorage storage = FirebaseStorage.getInstance();
+                        final StorageReference storageRef = storage.getReference();
+
+                        if(sp.getBoolean("IsViewingFriends",true)) {
+                            //Firebase reference for getting user information
+                            FirebaseDatabase database;
+                            final DatabaseReference myFirebaseRef;
+                            FirebaseUser user;
+
+
+                            //Gets current User
+                            database = FirebaseDatabase.getInstance();
+                            myFirebaseRef = database.getReference();
+                            user = FirebaseAuth.getInstance().getCurrentUser();
+                            String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+
+                            //For storing photos in album
+                            final String path = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends";
+
+                            //Sets reference to current user in realtime database
+                            DatabaseReference dataFriendsRef = myFirebaseRef.child(userName).child("friends");
+                            Query friendsQuery = dataFriendsRef;
+
+                            friendsQuery.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    for( final DataSnapshot friend : dataSnapshot.getChildren())
+                                    {
+                                        Log.d("Friends", "Friend is: " + friend.getKey());
+                                        final StorageReference storageUserRef = storageRef.child(friend.getKey());
+                                        final Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
+
+                                        //Checks friend's sharing setting before downloading photos
+                                        Query friendsSharing = myFirebaseRef.child(friend.getKey()).child("SharingEnabled");
+                                        friendsSharing.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Log.d("Friends", "Setting is " + dataSnapshot.getValue());
+                                                sharingSetting = ((boolean) dataSnapshot.getValue());
+
+                                                //Will download photos if friend has setting enabled
+                                                Log.d("Friends", "Sharing is " + sharingSetting);
+                                                if(sharingSetting) {
+
+                                                    Log.d("Friends", "Entering friends photos ");
+                                                    friendsPhotos.addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                            for (final DataSnapshot friendPhotoRef : dataSnapshot.getChildren()) {
+                                                                //Gets reference to friend's photos and downloads them to
+                                                                Log.d("Friends", "Downloading " + friend.getKey() + "'s " +
+                                                                        friendPhotoRef.getKey() + ".jpg");
+                                                                StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
+
+                                                                //creates new file for photo in album
+                                                                File friendPhoto = new File(path + "/" + friendPhotoRef.getKey() + ".jpg");
+                                                                try{
+                                                                    friendPhoto.createNewFile();
+                                                                }
+                                                                catch(Exception e)
+                                                                {
+                                                                    Log.d("Download", "New file not created for image");
+                                                                }
+                                                                //downloads the file to storage
+                                                                photoref.getFile(friendPhoto);
+
+                                                                //gets metadata of friend's photos
+                                                                final long timeTaken = (long) friendPhotoRef.child("TimeTaken").getValue();
+                                                                final long latitude = (long) friendPhotoRef.child("Latitude").getValue();
+                                                                final long longitude = (long) friendPhotoRef.child("Longitude").getValue();
+                                                                final long karma = (long) friendPhotoRef.child("Karma").getValue();
+                                                                final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
+
+                                                                photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                                    @Override
+                                                                    public void onSuccess(byte[] bytes) {
+                                                                        Log.d("Download", "Conversion to bitmap successful");
+                                                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                                        if (bitmap != null) {
+                                                                            Log.d("Download", "Bitmap not null");
+                                                                            RemotePhoto friendPhoto = new RemotePhoto(
+                                                                                    bitmap, (int) karma, latitude, longitude,timeTaken,released);
+                                                                            if(friendPhoto != null) {
+                                                                                Log.d("Download", "Added to cycle");
+                                                                                displayCycle.addToCycle(friendPhoto);
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                });
+                                                            }
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+                                                }
+
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+                    */
 
                     case "IsLocationOn":
                     case "IsDateOn":
