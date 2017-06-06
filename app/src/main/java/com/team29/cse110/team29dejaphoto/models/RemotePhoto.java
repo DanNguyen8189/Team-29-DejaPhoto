@@ -27,7 +27,7 @@ public class RemotePhoto implements DejaPhoto {
     double lng;
     boolean hasFriendKarma;
     boolean isShownRecently;
-    private Calendar time;
+    private Calendar time = new GregorianCalendar();
     private Location location;
     private boolean released;
 
@@ -35,12 +35,13 @@ public class RemotePhoto implements DejaPhoto {
     private static final int NEAR_RADIUS = 1000;
     private final int SCORE_UNIT = 10;
 
-    public RemotePhoto(Bitmap bitmap, int karma, double lat, double lng) {
+    public RemotePhoto(Bitmap bitmap, int karma, double lat, double lng, long timeTaken, boolean released) {
         this.bitmap = bitmap;
         this.karma = karma;
         this.lat = lat;
         this.lng = lng;
-        this.released = false;
+        this.released = released;
+        time.setTimeInMillis(timeTaken);
     }
 
     @Override

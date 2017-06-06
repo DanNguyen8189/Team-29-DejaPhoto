@@ -177,6 +177,13 @@ public class FirebasePhotosHelper {
                                             //downloads the file to storage
                                             photoref.getFile(friendPhoto);
 
+                                            //gets metadata of friend's photos
+                                            final long timeTaken = (long) friendPhotoRef.child("TimeTaken").getValue();
+                                            final long latitude = (long) friendPhotoRef.child("Latitude").getValue();
+                                            final long longitude = (long) friendPhotoRef.child("Longitude").getValue();
+                                            final long karma = (long) friendPhotoRef.child("Karma").getValue();
+                                            final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
+
                                             photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                                 @Override
                                                 public void onSuccess(byte[] bytes) {
@@ -184,7 +191,8 @@ public class FirebasePhotosHelper {
                                                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                                     if (bitmap != null) {
                                                         Log.d("Download", "Bitmap not null");
-                                                        RemotePhoto friendPhoto = new RemotePhoto(bitmap, 0, 0, 0);
+                                                        RemotePhoto friendPhoto = new RemotePhoto(
+                                                                bitmap, (int) karma, latitude, longitude,timeTaken,released);
                                                         friendsPhotosArray.add(friendPhoto);
                                                         Log.d("Download", "Size of returned array List: " + friendsPhotosArray.size());
                                                     }
