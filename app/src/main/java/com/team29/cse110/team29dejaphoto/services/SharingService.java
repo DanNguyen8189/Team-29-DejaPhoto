@@ -53,9 +53,13 @@ public class SharingService extends IntentService {
         loadOrRemove = extras.getBoolean("loadOrRemove");
         Log.d(TAG, "Successfully passed through extra text " + loadOrRemove + " in intent");
 
+        //if(extras.getBoolean("viewFriends"))
+        //{
+        //    database.downloadFriends();
+        //}
+
         if(loadOrRemove){
             Log.d("Delete", "Uploading photos..");
-            //TODO load photos onto database
 
             //Loads photos into an array to be uploaded
             DejaPhoto[] photos = photoLoader.getPhotosAsArray(this);
@@ -69,10 +73,8 @@ public class SharingService extends IntentService {
 
                 database.upload(photos[i]);
             }
-            //database.downloadFriends();
 
         }else{
-            //TODO remove photos from database
             database.deleteMyPhotos();
             Log.d("Delete", "Deleting photos from database...");
         }

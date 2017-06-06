@@ -335,6 +335,7 @@ SettingsActivity extends AppCompatActivity {
         Intent shareIntent = new Intent(SettingsActivity.this,SharingService.class);
         shareIntent.putExtra("loadOrRemove", isChecked);
         shareIntent.putExtra( "sharingEnabled", isChecked );
+        shareIntent.putExtra("viewFriends",dejaPreferences.getBoolean(IsViewingFriends,true));
         startService(shareIntent);
     }
 
