@@ -124,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intentLogin);
                         }
 
+                        if (item.getTitle().toString().equalsIgnoreCase("Camera")) {
+                            Intent intentCamera = new Intent(MainActivity.this, CameraActivity.class);
+                            startActivity(intentCamera);
+                        }
+
                         return true;
                     }
                 }

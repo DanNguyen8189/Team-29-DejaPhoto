@@ -50,6 +50,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.team29.cse110.team29dejaphoto.activities.MainActivity" />
         </activity>
+        <activity android:name=".activities.CameraActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.FriendActivity" />
         <activity android:name=".activities.SettingsActivity" />
@@ -62,6 +63,16 @@
         <service
             android:name=".services.SharingService"
             android:exported="false"></service>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>
