@@ -42,6 +42,9 @@ public class RemotePhoto implements DejaPhoto {
         this.lng = lng;
         this.released = released;
         time.setTimeInMillis(timeTaken);
+        this.location = new Location("");
+        location.setLatitude(lat);
+        location.setLongitude(lng);
     }
 
     @Override
