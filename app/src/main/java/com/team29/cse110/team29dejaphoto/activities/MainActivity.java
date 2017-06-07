@@ -427,8 +427,9 @@ public class MainActivity extends AppCompatActivity {
 //                    fos.flush();
 //                    fos.close();
 
-                    // Copy the photo over to the new directory and update shared preferences
-                    destinationFile = new File(destinationPath + trueUri.substring(trueUri.lastIndexOf('/')));
+                    // Copy the photo over to the new directory and update shared preferences. the +dejacopied in the file path
+                    // is added so that it can be differentiated from the original photo uduring loading
+                    destinationFile = new File(destinationPath + "/dejaCopied" + trueUri.substring(trueUri.lastIndexOf('/')+1));
                     Log.d(TAG,"destinationFile is " +destinationFile);
                     FileUtils.copyFile(sourceFile, destinationFile);
                     MediaScannerConnection.scanFile(this, new String[] { destinationFile.getPath() }, null, null);

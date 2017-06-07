@@ -2,6 +2,7 @@ package com.team29.cse110.team29dejaphoto.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -30,6 +31,9 @@ public class CameraActivity extends AppCompatActivity {
     private static final String TAG = "CameraActivity";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int CAMERA_PERMISSION = 2;
+    public static final String DEJA_PREFS = "Deja_Preferences"; // SharedPreference file key
+
+    public static SharedPreferences dejaPreferences;
 
     private String mCurrentPhotoPath;
 
@@ -37,6 +41,8 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Camera");
+
+        dejaPreferences = getSharedPreferences(DEJA_PREFS, 0); //sharedpref file to record added photos
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -65,7 +71,12 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Log.d(TAG, "Photo successfully stored at " + mCurrentPhotoPath);
+
+            // store new photo in shared preferences
+            SharedPreferences.Editor editor = dejaPreferences.edit();
+            editor.putBoolean("file://"+mCurrentPhotoPath, false);
+
+            Log.d(TAG, "Photo successfully stored at AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + mCurrentPhotoPath);
             galleryAddPic();
         }
         finish();

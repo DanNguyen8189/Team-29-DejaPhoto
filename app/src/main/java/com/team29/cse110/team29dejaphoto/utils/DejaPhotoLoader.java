@@ -80,19 +80,25 @@ public class DejaPhotoLoader implements PhotoLoader {
 
             String filename = cursor.getString(TITLE_INDEX) + ".jpg";
             //String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/Camera/" + filename;
-            String absolutePath = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied/" + filename;
-            File file = new File(absolutePath);
-            Uri uri = Uri.fromFile(file);
 
-            //Shared Preference stores unique photoid that represents if photo was
-            //released or given karma
-            SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
+            String absolutePathDejaPhotoCopied = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied/dejaCopied" + filename;
+            File fileDejaPhotoCopied = new File(absolutePathDejaPhotoCopied);
+            Uri uriDejaPhotoCopied = Uri.fromFile(fileDejaPhotoCopied);
 
-            //Unique Id that would be stored if given karma
-            //String photoId = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0" + uri;
+            String absolutePathDejaPhotoTaken = Environment.getExternalStorageDirectory() + "/DejaPhoto/" + filename;
+            Log.d(TAG, "absolutepath of dejaphototaken " + absolutePathDejaPhotoTaken);
+            File fileDejaPhotoTaken = new File(absolutePathDejaPhotoTaken);
+            Uri uriDejaPhotoTaken = Uri.fromFile(fileDejaPhotoTaken);
 
-            String photoId = uri.toString();
-            Log.d(TAG, "photoId we want to load is " + photoId);
+//            //Shared Preference stores unique photoid that represents if photo was
+//            //released or given karma
+//            SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
+//
+//            //Unique Id that would be stored if given karma
+//            String photoId = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0" + uri;
+
+//            String photoId = uriDejaPhotoCopied.toString();
+//            Log.d(TAG, "photoId we want to load is " + photoId);
 
             //Unique Id that would be stored if released
             //String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1" + uri;
@@ -104,15 +110,25 @@ public class DejaPhotoLoader implements PhotoLoader {
                continue;
            }*/
 
-           Log.d(TAG, photoId);
+           //Log.d(TAG, photoId);
             // TODO Check that the photo is from the camera album
-            if(file.exists() /*&& sp.contains(uri.toString())*/) {
-                gallery[count] = new LocalPhoto(uri,
+            if(fileDejaPhotoCopied.exists() /*&& sp.contains(uri.toString())*/) {
+                gallery[count] = new LocalPhoto(uriDejaPhotoCopied,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
                         cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
 
-                Log.d(TAG, "Loading photo: " + uri);
+                Log.d(TAG, "Loading photo from photopicker: " + uriDejaPhotoCopied);
+                numPhotos++;
+            }
+
+            if(fileDejaPhotoTaken.exists()){
+                gallery[count] = new LocalPhoto(uriDejaPhotoTaken,
+                        cursor.getDouble(LAT_INDEX),
+                        cursor.getDouble(LONG_INDEX),
+                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+
+                Log.d(TAG, "Loading photo from inapp camera: " + uriDejaPhotoTaken);
                 numPhotos++;
             }
 
