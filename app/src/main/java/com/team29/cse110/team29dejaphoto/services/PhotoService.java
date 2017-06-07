@@ -219,9 +219,9 @@ public class PhotoService extends Service {
 
                         return;
 
-                    /* Commented for those who dont have friends for now
+                    // Commented for those who dont have friends for now
                     case "IsViewingFriends":
-                        Log.d("Settings", "IsViewingFriends changed to " + sp.getBoolean("IsViewingFriends",true));
+                        Log.d(TAG, "IsViewingFriends changed to " + sp.getBoolean("IsViewingFriends",true));
                         //Firebase reference for accessing stored media
                         final FirebaseStorage storage = FirebaseStorage.getInstance();
                         final StorageReference storageRef = storage.getReference();
@@ -252,7 +252,7 @@ public class PhotoService extends Service {
 
                                     for( final DataSnapshot friend : dataSnapshot.getChildren())
                                     {
-                                        Log.d("Friends", "Friend is: " + friend.getKey());
+                                        Log.d(TAG, "Friend is: " + friend.getKey());
                                         final StorageReference storageUserRef = storageRef.child(friend.getKey());
                                         final Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
 
@@ -261,24 +261,23 @@ public class PhotoService extends Service {
                                         friendsSharing.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                Log.d("Friends", "Setting is " + dataSnapshot.getValue());
+                                                Log.d(TAG, "Setting is " + dataSnapshot.getValue());
                                                 sharingSetting = ((boolean) dataSnapshot.getValue());
 
                                                 //Will download photos if friend has setting enabled
-                                                Log.d("Friends", "Sharing is " + sharingSetting);
+                                                Log.d(TAG, "Sharing is " + sharingSetting);
                                                 if(sharingSetting) {
 
-                                                    Log.d("Friends", "Entering friends photos ");
+                                                    Log.d(TAG, "Entering friends photos ");
                                                     friendsPhotos.addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                                                             for (final DataSnapshot friendPhotoRef : dataSnapshot.getChildren()) {
                                                                 //Gets reference to friend's photos and downloads them to
-                                                                Log.d("Friends", "Downloading " + friend.getKey() + "'s " +
+                                                                Log.d(TAG, "Downloading " + friend.getKey() + "'s " +
                                                                         friendPhotoRef.getKey() + ".jpg");
                                                                 StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
-
                                                                 //creates new file for photo in album
                                                                 File friendPhoto = new File(path + "/" + friendPhotoRef.getKey() + ".jpg");
                                                                 try{
@@ -286,7 +285,7 @@ public class PhotoService extends Service {
                                                                 }
                                                                 catch(Exception e)
                                                                 {
-                                                                    Log.d("Download", "New file not created for image");
+                                                                    Log.d(TAG, "New file not created for image");
                                                                 }
                                                                 //downloads the file to storage
                                                                 photoref.getFile(friendPhoto);
@@ -301,14 +300,14 @@ public class PhotoService extends Service {
                                                                 photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                                                     @Override
                                                                     public void onSuccess(byte[] bytes) {
-                                                                        Log.d("Download", "Conversion to bitmap successful");
+                                                                        Log.d(TAG, "Conversion to bitmap successful");
                                                                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                                                         if (bitmap != null) {
-                                                                            Log.d("Download", "Bitmap not null");
+                                                                            Log.d(TAG, "Bitmap not null");
                                                                             RemotePhoto friendPhoto = new RemotePhoto(
                                                                                     bitmap, (int) karma, latitude, longitude,timeTaken,released);
                                                                             if(friendPhoto != null) {
-                                                                                Log.d("Download", "Added to cycle");
+                                                                                Log.d(TAG, "Friend photo added to cycle");
                                                                                 displayCycle.addToCycle(friendPhoto);
                                                                             }
                                                                         }
@@ -343,7 +342,14 @@ public class PhotoService extends Service {
                             });
 
                         }
-                    */
+                        else
+                        {
+                            Log.d(TAG, "Turning viewing friends off, resetting display..");
+
+                            PhotoLoader photoLoader = new DejaPhotoLoader();
+                            displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(PhotoService.this));
+                        }
+
 
                     case "IsLocationOn":
                     case "IsDateOn":
