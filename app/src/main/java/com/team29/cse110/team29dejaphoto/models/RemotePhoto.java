@@ -30,12 +30,13 @@ public class RemotePhoto implements DejaPhoto {
     private Calendar time = new GregorianCalendar();
     private Location location;
     private boolean released;
+    String fileName;
 
     private static final double METERS_TO_FEET = 3.28084;
     private static final int NEAR_RADIUS = 1000;
     private final int SCORE_UNIT = 10;
 
-    public RemotePhoto(Bitmap bitmap, int karma, double lat, double lng, long timeTaken, boolean released) {
+    public RemotePhoto(Bitmap bitmap, int karma, double lat, double lng, long timeTaken, boolean released, String fileName) {
         this.bitmap = bitmap;
         this.karma = karma;
         this.lat = lat;
@@ -45,6 +46,7 @@ public class RemotePhoto implements DejaPhoto {
         this.location = new Location("");
         location.setLatitude(lat);
         location.setLongitude(lng);
+        this.fileName = fileName;
     }
 
     @Override
@@ -147,5 +149,10 @@ public class RemotePhoto implements DejaPhoto {
 
     public Bitmap getBitmap() {
         return bitmap;
+    }
+
+    public String getFileName()
+    {
+        return this.fileName;
     }
 }

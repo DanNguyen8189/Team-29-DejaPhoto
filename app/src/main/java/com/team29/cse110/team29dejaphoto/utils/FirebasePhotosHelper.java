@@ -192,7 +192,13 @@ public class FirebasePhotosHelper {
                                                     if (bitmap != null) {
                                                         Log.d("Download", "Bitmap not null");
                                                         RemotePhoto friendPhoto = new RemotePhoto(
-                                                                bitmap, (int) karma, latitude, longitude,timeTaken,released);
+                                                                bitmap,
+                                                                (int) karma,
+                                                                latitude,
+                                                                longitude,
+                                                                timeTaken,
+                                                                released,
+                                                                friendPhotoRef.getKey());
                                                         friendsPhotosArray.add(friendPhoto);
                                                         Log.d("Download", "Size of returned array List: " + friendsPhotosArray.size());
                                                     }
