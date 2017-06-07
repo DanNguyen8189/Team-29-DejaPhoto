@@ -507,7 +507,8 @@ public class PhotoService extends Service {
                 photoBitmap = ((RemotePhoto) dejaPhoto).getBitmap();
             }
 
-            background.setBitmap(bitmapUtil.backgroundImage(photoBitmap, dejaPhoto.getLocation(), dejaPhoto.getKarma()));
+            background.setBitmap(bitmapUtil.backgroundImage(photoBitmap, dejaPhoto.getLocation(),
+                    dejaPhoto.getCustomLocation(), dejaPhoto.getKarma()));
 
             Log.d(TAG, "Displaying Previous DejaPhoto: " + dejaPhoto.getUniqueID()
                     + " (" + dejaPhoto.getScore() + ")");
@@ -559,7 +560,8 @@ public class PhotoService extends Service {
                 photoBitmap = ((RemotePhoto) dejaPhoto).getBitmap();
             }
 
-            background.setBitmap(bitmapUtil.backgroundImage(photoBitmap, dejaPhoto.getLocation(), dejaPhoto.getKarma()));
+            background.setBitmap(bitmapUtil.backgroundImage(photoBitmap, dejaPhoto.getLocation(),
+                    dejaPhoto.getCustomLocation(), dejaPhoto.getKarma()));
 
             Log.d(TAG, "Displaying Next DejaPhoto: " + dejaPhoto.getUniqueID()
                     + " (" + dejaPhoto.getScore() + ")");

@@ -51,6 +51,7 @@ public class LocalPhoto implements DejaPhoto {
         this.location = new Location("");
         this.location.setLatitude(latitude);
         this.location.setLongitude(longitude);
+        this.customLocation = "";
         this.karma = 0;
         this.karmaFromUser = false;
     }

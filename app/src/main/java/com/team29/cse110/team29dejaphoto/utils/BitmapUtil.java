@@ -60,7 +60,7 @@ public class BitmapUtil {
      * @return returns image with location info as bitmap
      * @throws Exception ArrayIndexOutOfBounds when no location info
      */
-    public Bitmap backgroundImage(Bitmap bitmap, Location location, int karma) throws Exception {
+    public Bitmap backgroundImage(Bitmap bitmap, Location location, String personalizedLocation, int karma) throws Exception {
 
         Log.d(TAG, "Writing address to bitmap");
 
@@ -84,24 +84,30 @@ public class BitmapUtil {
         paint.setColor(Color.RED);
         paint.setTextSize(newBitmap.getHeight() / PAINT_SIZE_CONSTANT);
 
-        // get address for location
-        try {
-
-            // Geocoder to get address from remote server
-            geocoder = new Geocoder(context, Locale.getDefault());
-            list = geocoder.getFromLocation(location.getLatitude(),
-                    location.getLongitude(),1);
-
-            locationTag = list.get(0).getAddressLine(0);
-
+        // check if user has set a custom location for this photo
+        if (personalizedLocation != null && personalizedLocation != ""){
+            locationTag = personalizedLocation;
         }
+        else {
 
-        // if no valid location
-        catch(Exception e) {
+            // get address for location
+            try {
 
-            locationTag = "No locationinfo\navailable";
+                // Geocoder to get address from remote server
+                geocoder = new Geocoder(context, Locale.getDefault());
+                list = geocoder.getFromLocation(location.getLatitude(),
+                        location.getLongitude(), 1);
+
+                locationTag = list.get(0).getAddressLine(0);
+
+            }
+
+            // if no valid location
+            catch (Exception e) {
+
+                locationTag = "No locationinfo\navailable";
+            }
         }
-
 
 
         // Write location info to bitmap and return
