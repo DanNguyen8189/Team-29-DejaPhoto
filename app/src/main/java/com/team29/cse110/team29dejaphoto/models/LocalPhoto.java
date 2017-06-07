@@ -21,6 +21,7 @@ public class LocalPhoto implements DejaPhoto {
     private Calendar time;        // This Calendar object will hold the time this photo was taken
     private Location location;    // Location object composing lat and long
                                   // coordinates where this photo was taken
+    private String customLocation; // Holds the location that a user may set
 
     /* LocalPhoto properties */
 
@@ -230,4 +231,11 @@ public class LocalPhoto implements DejaPhoto {
         this.location = location;
     }
 
+    public void setCustomLocation(String customLocation) {
+        this.customLocation = customLocation;
+    }
+
+    public String getCustomLocation() {
+        return customLocation;
+    }
 }

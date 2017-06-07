@@ -33,5 +33,9 @@ public interface DejaPhoto extends Comparable<DejaPhoto> {
 
     public void setReleased();
 
-    // TODO Add all other neccessary classes common to LocalPhoto and RemotePhoto
+    public void setCustomLocation(String customLocation);
+
+    public String getCustomLocation();
+
+    // TODO Add all other necessary classes common to LocalPhoto and RemotePhoto
 }
