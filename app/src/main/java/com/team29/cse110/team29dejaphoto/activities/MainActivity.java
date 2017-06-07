@@ -482,7 +482,7 @@ public class MainActivity extends AppCompatActivity {
                         fos.close();*/
 
                         // Copy the photo over to the new directory and update shared preferences
-                        destinationFile = new File(destinationPath + trueUri.substring(trueUri.lastIndexOf('/')));
+                        destinationFile = new File(destinationPath + "/dejaCopied" + trueUri.substring(trueUri.lastIndexOf('/')+1));
                         Log.d(TAG,"destinationFile is " +destinationFile);
                         FileUtils.copyFile(sourceFile, destinationFile);
                         MediaScannerConnection.scanFile(this, new String[] { destinationFile.getPath() }, null, null);
