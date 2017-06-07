@@ -219,7 +219,7 @@ public class PhotoService extends Service {
 
                         return;
 
-                    // Commented for those who dont have friends for now
+                    /* Commented for those who dont have friends for now
                     case "IsViewingFriends":
                         Log.d(TAG, "IsViewingFriends changed to " + sp.getBoolean("IsViewingFriends",true));
                         //Firebase reference for accessing stored media
@@ -349,6 +349,8 @@ public class PhotoService extends Service {
                             PhotoLoader photoLoader = new DejaPhotoLoader();
                             displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(PhotoService.this));
                         }
+
+                        */
 
 
                     case "IsLocationOn":
