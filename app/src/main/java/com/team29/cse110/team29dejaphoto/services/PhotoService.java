@@ -53,6 +53,8 @@ import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.utils.FirebasePhotosHelper;
 import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -351,7 +353,14 @@ public class PhotoService extends Service {
                         else
                         {
                             Log.d(TAG, "Turning viewing friends off, resetting display..");
-
+                            //Deletes friend album to sync with database
+                            try{
+                                FileUtils.deleteDirectory(new File(Environment.getExternalStorageDirectory() + "/DejaPhotoFriends"));
+                            }
+                            catch(Exception e)
+                            {
+                                Log.d(TAG, "Error when deleting directory");
+                            }
                             PhotoLoader photoLoader = new DejaPhotoLoader();
                             displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(PhotoService.this));
                         }
