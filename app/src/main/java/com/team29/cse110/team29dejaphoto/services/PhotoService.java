@@ -148,9 +148,15 @@ public class PhotoService extends Service {
 
                 case "EDIT_LOCATION":
                     Log.d(TAG, "Edit location intent received");
-
-                    Intent intentLocation = new Intent(PhotoService.this, CustomLocationActivity.class);
-                    startActivity(intentLocation);
+                    if(currDisplayedPhoto instanceof RemotePhoto) {
+                       Toast.makeText(context, "Cannot edit location of friend's photo",
+                               Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        currDisplayedPhoto.setCustomLocation(intent.getStringExtra("customLocation"));
+                        Toast.makeText(context, "Your location was successfully set!",
+                                Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         }

@@ -1,14 +1,22 @@
 package layout;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.RemoteViews;
 
 import com.team29.cse110.team29dejaphoto.R;
+import com.team29.cse110.team29dejaphoto.activities.CustomLocationActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -16,6 +24,9 @@ import com.team29.cse110.team29dejaphoto.R;
 public class WIDGET_DejaPhoto extends AppWidgetProvider {
 
     private final String TAG = "WIDGET_DejaPhoto"; // Used for logging
+
+    public static SharedPreferences dejaPreferences; // Holds the reference to the SharedPreferences file
+    public static final String DEJA_PREFS = "Deja_Preferences"; // SharedPreference file key
 
     public static String SWIPE_RIGHT = "swipe right"; // Variable indicating a right swipe action
     public static String SWIPE_LEFT = "swipe left"; // Variable indicating a left swipe action
@@ -111,8 +122,13 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
         else if (intent.getAction().equals(EDIT_LOCATION)) {
             Log.d(TAG, "Editing Location Text");
 
+            Intent locationIntent = new Intent(context, CustomLocationActivity.class);
+            locationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(locationIntent);
+
             Intent serviceIntent = new Intent();
             serviceIntent.setAction("EDIT_LOCATION");
+            serviceIntent.putExtra("customLocation", "LALALA");
             context.sendBroadcast(serviceIntent);
         }
     }
