@@ -30,6 +30,7 @@ public class RemotePhoto implements DejaPhoto {
     private Calendar time = new GregorianCalendar();
     private Location location;
     private boolean released;
+    String customLocation;
     String fileName;
 
     private static final double METERS_TO_FEET = 3.28084;
@@ -154,5 +155,13 @@ public class RemotePhoto implements DejaPhoto {
     public String getFileName()
     {
         return this.fileName;
+    }
+
+    public void setCustomLocation(String customLocation) {
+        this.customLocation = customLocation;
+    }
+
+    public String getCustomLocation() {
+        return customLocation;
     }
 }

@@ -229,6 +229,15 @@ public class PhotoService extends Service {
                         final StorageReference storageRef = storage.getReference();
 
                         if(sp.getBoolean("IsViewingFriends",true)) {
+
+                            String path2 = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends";
+                            File DejaPhotoFriends = new File(path2);
+                            // Create the DejaPhotoFriends album if it doesn't already exist
+                            if (!DejaPhotoFriends.exists()){
+                                DejaPhotoFriends.mkdirs();
+                                Log.d(TAG, "DejaPhotoFriends directory created");
+                            }
+
                             //Firebase reference for getting user information
                             FirebaseDatabase database;
                             final DatabaseReference myFirebaseRef;
