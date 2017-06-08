@@ -612,7 +612,7 @@ public class PhotoService extends Service {
     public void releasePhoto() {
 
         /* If photo was successfully released, cycle forward */
-        if ( releaseController.releasePhoto() == 1 ) {
+        if ( releaseController.releasePhoto(currDisplayedPhoto) == 1 ) {
             cycleForward();
         }
 
