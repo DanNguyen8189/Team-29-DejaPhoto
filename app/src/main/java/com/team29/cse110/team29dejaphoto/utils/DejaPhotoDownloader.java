@@ -37,7 +37,9 @@ public class DejaPhotoDownloader implements PhotoDownloader {
     @Override
     public ArrayList<DejaPhoto> downloadMyPhotos() {
 
-        PhotoLoader loader = new DejaPhotoLoader();
+        PhotoLoader loader
+                = new DejaPhotoLoader(
+                        context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE));
         DejaPhoto[] gallery = loader.getPhotosAsArray(context);
         return new ArrayList<>(Arrays.asList(gallery));
 
@@ -46,7 +48,9 @@ public class DejaPhotoDownloader implements PhotoDownloader {
     @Override
     public ArrayList<DejaPhoto> downloadFriendsPhotos() {
 
-        FirebasePhotosHelper helper = new FirebasePhotosHelper();
+        FirebasePhotosHelper helper
+                = new FirebasePhotosHelper(
+                        context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE));
         ArrayList<DejaPhoto>  test = new ArrayList<DejaPhoto>();
         //test = helper.downloadFriends();
         Log.d("Download", "Size of array list: " + test.size());

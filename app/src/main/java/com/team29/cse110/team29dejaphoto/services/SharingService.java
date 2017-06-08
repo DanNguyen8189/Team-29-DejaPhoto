@@ -1,7 +1,9 @@
 package com.team29.cse110.team29dejaphoto.services;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -26,15 +28,17 @@ public class SharingService extends IntentService {
 
     private static final String TAG = "SharingService";
 
-    private PhotoLoader photoLoader = new DejaPhotoLoader();
+    private PhotoLoader photoLoader;
     private DatabaseReference myFirebaseRef;
     //used to get the extra data added to the intent
     Bundle extras;
 
-    FirebasePhotosHelper database = new FirebasePhotosHelper();
+    FirebasePhotosHelper database
+            = new FirebasePhotosHelper(getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE));
 
-    public SharingService() {
+    public SharingService(SharedPreferences sp) {
         super("SharingService");
+        photoLoader = new DejaPhotoLoader(sp);
     }
 
     @Override

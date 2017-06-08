@@ -53,6 +53,13 @@ public class DejaPhotoLoader implements PhotoLoader {
     /* This is the Uri for the storage of all photos */
     private final Uri MEDIA_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
+    /* SharedPreferences for karma and release */
+    private SharedPreferences sp;
+
+
+    public DejaPhotoLoader(SharedPreferences sp) {
+        this.sp = sp;
+    }
 
     /*
      * This method searches all photos retrieved from the phone's storage and returns them as an
@@ -112,23 +119,43 @@ public class DejaPhotoLoader implements PhotoLoader {
 
            //Log.d(TAG, photoId);
             // TODO Check that the photo is from the camera album
-            if(fileDejaPhotoCopied.exists() /*&& sp.contains(uri.toString())*/) {
-                gallery[count] = new LocalPhoto(uriDejaPhotoCopied,
-                        cursor.getDouble(LAT_INDEX),
-                        cursor.getDouble(LONG_INDEX),
-                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+//            if(fileDejaPhotoCopied.exists() /*&& sp.contains(uri.toString())*/) {
+//                gallery[count] = new LocalPhoto(uriDejaPhotoCopied,
+//                        cursor.getDouble(LAT_INDEX),
+//                        cursor.getDouble(LONG_INDEX),
+//                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+//
+//                numPhotos++;
+//            }
+//
+//            if(fileDejaPhotoTaken.exists()){
+//                gallery[count] = new LocalPhoto(uriDejaPhotoTaken,
+//                        cursor.getDouble(LAT_INDEX),
+//                        cursor.getDouble(LONG_INDEX),
+//                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+//
+//                numPhotos++;
+//            }
 
+            Uri uri = null;
+
+            if(fileDejaPhotoCopied.exists()) {
+                uri = uriDejaPhotoCopied;
                 Log.d(TAG, "Loading photo from photopicker: " + uriDejaPhotoCopied);
-                numPhotos++;
+
+            } else if(fileDejaPhotoTaken.exists()) {
+                uri = uriDejaPhotoTaken;
+                Log.d(TAG, "Loading photo from in-app camera: " + uriDejaPhotoTaken);
             }
 
-            if(fileDejaPhotoTaken.exists()){
-                gallery[count] = new LocalPhoto(uriDejaPhotoTaken,
+            if(uri != null && !sp.getBoolean("R_" + uri, false)) {
+                gallery[count] = new LocalPhoto(uri,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
                         cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
 
-                Log.d(TAG, "Loading photo from inapp camera: " + uriDejaPhotoTaken);
+                if(sp.getBoolean("K_" + uri, false)) gallery[count].addKarma();
+
                 numPhotos++;
             }
 

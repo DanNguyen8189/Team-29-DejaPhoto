@@ -54,13 +54,11 @@ public class ReleaseSingleUser implements ReleaseStrategy {
         SharedPreferences.Editor editor = sp.edit();
 
         /* Unique photoid given to a photo that has been released */
-        String photoid = Long.toString(currPhoto.getTime().getTimeInMillis()/1000) + "0" + "1"
-                + currPhoto.getUniqueID();
+        String photoid = "R_" + currPhoto.getUniqueID();
 
         /* Stores unique photo id */
-        editor.putString(photoid, "Release DejaPhoto");
+        editor.putBoolean(photoid, true);
         editor.apply();
-
     }
 
 }
