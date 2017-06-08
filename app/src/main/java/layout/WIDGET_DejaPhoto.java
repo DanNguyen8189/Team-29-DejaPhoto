@@ -21,6 +21,7 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
     public static String SWIPE_LEFT = "swipe left"; // Variable indicating a left swipe action
     public static String GIVE_KARMA = "give karma"; // Variable indicating a give karma action
     public static String RELEASE_PHOTO = "release photo"; // Variable indicating a release photo action
+    public static String EDIT_LOCATION = "edit location"; // Variable indicating an edit location action
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -34,6 +35,7 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
             remoteView.setOnClickPendingIntent(R.id.leftArrow, getPendingSelfIntent(context, SWIPE_RIGHT));
             remoteView.setOnClickPendingIntent(R.id.karmaButton, getPendingSelfIntent(context, GIVE_KARMA));
             remoteView.setOnClickPendingIntent(R.id.releaseButton, getPendingSelfIntent(context, RELEASE_PHOTO));
+            remoteView.setOnClickPendingIntent(R.id.editLocation, getPendingSelfIntent(context, EDIT_LOCATION));
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteView);
         }
@@ -102,6 +104,15 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
 
             Intent serviceIntent = new Intent();
             serviceIntent.setAction("RELEASE_BUTTON");
+            context.sendBroadcast(serviceIntent);
+        }
+
+        // Edit Location Text was clicked - perform onClick action
+        else if (intent.getAction().equals(EDIT_LOCATION)) {
+            Log.d(TAG, "Editing Location Text");
+
+            Intent serviceIntent = new Intent();
+            serviceIntent.setAction("EDIT_LOCATION");
             context.sendBroadcast(serviceIntent);
         }
     }

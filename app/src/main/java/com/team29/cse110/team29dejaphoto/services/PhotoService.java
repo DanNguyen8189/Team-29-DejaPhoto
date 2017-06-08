@@ -1,12 +1,14 @@
 package com.team29.cse110.team29dejaphoto.services;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -20,10 +22,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +46,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.team29.cse110.team29dejaphoto.R;
+import com.team29.cse110.team29dejaphoto.activities.CustomLocationActivity;
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
@@ -136,6 +144,13 @@ public class PhotoService extends Service {
                     Log.d(TAG, "Release button intent received");
 
                     releasePhoto();
+                    break;
+
+                case "EDIT_LOCATION":
+                    Log.d(TAG, "Edit location intent received");
+
+                    Intent intentLocation = new Intent(PhotoService.this, CustomLocationActivity.class);
+                    startActivity(intentLocation);
                     break;
             }
         }
@@ -403,6 +418,7 @@ public class PhotoService extends Service {
         filter.addAction("PREV_BUTTON");
         filter.addAction("KARMA_BUTTON");
         filter.addAction("RELEASE_BUTTON");
+        filter.addAction("EDIT_LOCATION");
 
         receiver = new MyReceiver();
         registerReceiver(receiver, filter);
@@ -633,7 +649,43 @@ public class PhotoService extends Service {
        else {
            Log.d(TAG, "No reference to currently displayed photo - cannot set karma, or photo already has karma");
        }
-
    }
 
+    /**
+     * Method to allow a user to type in their own location for a photo that prompts an
+     * input dialog.
+     */
+   /*protected void showInputDialog() {
+       // Gets prompts.xml view
+       LayoutInflater layoutInflater = LayoutInflater.from(PhotoService.this);
+       View promptView = layoutInflater.inflate(R.layout.custom_location, null);
+
+       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PhotoService.this);
+       alertDialogBuilder.setView(promptView);
+
+       Log.d(TAG, "Set up dialog");
+       // TODO - maybe not need final
+       final EditText editText = (EditText) promptView.findViewById(R.id.editText);
+
+       // Set up the dialog window
+       alertDialogBuilder.setCancelable(false)
+               .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+                Log.d(TAG, "Edit Location TEXTTTTTTTT");
+                currDisplayedPhoto.setCustomLocation("" + editText.getText());
+           }
+       })
+               .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       dialog.cancel();
+                   }
+               });
+
+       // Create an alert dialog
+       AlertDialog alert = alertDialogBuilder.create();
+       alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+       alert.show();
+       Log.d(TAG, "End of Dialog Method");
+
+   }*/
 }

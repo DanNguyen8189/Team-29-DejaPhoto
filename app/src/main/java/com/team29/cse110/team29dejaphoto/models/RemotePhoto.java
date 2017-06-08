@@ -31,6 +31,7 @@ public class RemotePhoto implements DejaPhoto {
     private Location location;
     private boolean released;
     String fileName;
+    private String customLocation; // Holds the location that a user may set
 
     private static final double METERS_TO_FEET = 3.28084;
     private static final int NEAR_RADIUS = 1000;
@@ -154,5 +155,13 @@ public class RemotePhoto implements DejaPhoto {
     public String getFileName()
     {
         return this.fileName;
+    }
+
+    public void setCustomLocation(String customLocation) {
+        this.customLocation = customLocation;
+    }
+
+    public String getCustomLocation() {
+        return customLocation;
     }
 }

@@ -19,7 +19,8 @@
         android:text="Previous"
         android:textSize="20dp"
         android:textColor="@color/white"
-        android:layout_below="@id/leftArrow"/>
+        android:layout_below="@id/leftArrow"
+        android:id="@+id/textView2" />
 
     <ImageButton
         android:id="@+id/rightArrow"
@@ -65,7 +66,8 @@
         android:layout_toRightOf="@+id/textView"
         android:layout_toEndOf="@+id/textView"
         android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp" />
+        android:layout_marginStart="15dp"
+        android:id="@+id/textView3" />
 
     <ImageButton
         android:id="@+id/releaseButton"
@@ -88,6 +90,15 @@
         android:layout_toStartOf="@+id/rightArrow"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:id="@+id/editLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Customize Location!"
+        android:textSize="20dp"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
