@@ -30,10 +30,7 @@ public class ReleaseSingleUser implements ReleaseStrategy {
      * Return 1 if photo is successfully released, and 0 if not.
      */
     @Override
-    public int releasePhoto() {
-
-        /* Get currently displayed photo */
-        DejaPhoto currPhoto = displayCycle.getCurrentPhoto();
+    public int releasePhoto(DejaPhoto currPhoto) {
 
         /* If we got the current photo, record it is released and remove it from the DisplayCycle */
         if (currPhoto != null) {

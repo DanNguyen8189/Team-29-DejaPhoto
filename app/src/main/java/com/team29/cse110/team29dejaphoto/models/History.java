@@ -151,22 +151,4 @@ public class History {
         nelems--;
     }
 
-    /* Returns photo currently displayed on the home screen */
-    public DejaPhoto getCurrentPhoto() {
-
-        if(nelems == 0) {
-            return null;
-        }
-
-        if(forward) {
-            if(iterator.hasNext()) return iterator.next();
-
-        } else {
-            if(iterator.hasPrevious()) return iterator.previous();
-            forward = true;
-        }
-
-        return null;
-    }
-
 }

@@ -14,6 +14,6 @@ public interface ReleaseStrategy {
      * This method releases the photo currently displayed on the home screen.
      * Return 1 if photo was successfully released, and 0 if not.
      */
-    int releasePhoto();
+    int releasePhoto(DejaPhoto currPhoto);
 
 }
