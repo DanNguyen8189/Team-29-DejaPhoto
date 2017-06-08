@@ -1,5 +1,6 @@
 package com.team29.cse110.team29dejaphoto.utils;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -36,7 +37,7 @@ public class FirebasePhotosHelper {
     private final String TAG = "FirebasePhotosHelper";
     final long FIVE_MEGABYTES = 5*1024 * 1024;
 
-    private PhotoLoader photoLoader = new DejaPhotoLoader();
+    private PhotoLoader photoLoader;
     static boolean sharingSetting;
 
     //Firebase reference for accessing stored media
@@ -52,6 +53,9 @@ public class FirebasePhotosHelper {
     private UploadTask uploadTask;
 
 
+    public FirebasePhotosHelper(SharedPreferences sp) {
+        photoLoader = new DejaPhotoLoader(sp);
+    }
 
     public void upload(DejaPhoto photo)
     {

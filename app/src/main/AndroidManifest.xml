@@ -56,7 +56,6 @@
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.FriendActivity" />
         <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".AlbumSelection" />
         <activity
             android:name=".activities.PhotoPickerActivity"
             android:label="@string/title_activity_photo_picker"

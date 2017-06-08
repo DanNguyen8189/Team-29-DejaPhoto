@@ -440,7 +440,7 @@ public class PhotoService extends Service {
 
         /* Initializes DisplayCycle with photos from the system */
 
-        PhotoLoader photoLoader = new DejaPhotoLoader();
+        PhotoLoader photoLoader = new DejaPhotoLoader(sp);
         //DejaPhotoDownloader downloader = new DejaPhotoDownloader(context);
         //ArrayList<DejaPhoto> allPhotos = downloader.downloadAllPhotos();
         //DejaPhoto[] allPhotosArray = new DejaPhoto[allPhotos.size()];
@@ -618,7 +618,7 @@ public class PhotoService extends Service {
     public void releasePhoto() {
 
         /* If photo was successfully released, cycle forward */
-        if ( releaseController.releasePhoto() == 1 ) {
+        if ( releaseController.releasePhoto(currDisplayedPhoto) == 1 ) {
             cycleForward();
         }
 
@@ -649,13 +649,11 @@ public class PhotoService extends Service {
            //Creates editor for storing unique photo ids
            SharedPreferences.Editor editor = sp.edit();
            //Unique DejaPhoto id given to a photo that has been given karma
-           String photoid = Long.toString(currDisplayedPhoto.getTime().getTimeInMillis()/1000) + "1" + "0"
-                   + currDisplayedPhoto.getUniqueID();
 
-
+           String photoid = "K_" + currDisplayedPhoto.getUniqueID();
 
            //stores unique photo id
-           editor.putString(photoid, "Karma DejaPhoto");
+           editor.putBoolean(photoid, true);
            editor.apply();
 
            Log.d(TAG, "Photoid is: " + photoid);

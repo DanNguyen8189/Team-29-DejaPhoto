@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,8 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,8 +60,9 @@ public class CameraActivity extends AppCompatActivity {
                         == PackageManager.PERMISSION_GRANTED) {
 
                     dispatchTakePictureIntent();
+                } else {
+                    finish();
                 }
-                return;
         }
     }
 
@@ -114,7 +112,7 @@ public class CameraActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "IMG_" + timeStamp + "_";
 
         File storageDir = new File(Environment.getExternalStorageDirectory() + "/DejaPhoto");
         File image = File.createTempFile(

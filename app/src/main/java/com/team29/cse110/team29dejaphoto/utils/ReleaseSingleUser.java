@@ -30,10 +30,7 @@ public class ReleaseSingleUser implements ReleaseStrategy {
      * Return 1 if photo is successfully released, and 0 if not.
      */
     @Override
-    public int releasePhoto() {
-
-        /* Get currently displayed photo */
-        DejaPhoto currPhoto = displayCycle.getCurrentPhoto();
+    public int releasePhoto(DejaPhoto currPhoto) {
 
         /* If we got the current photo, record it is released and remove it from the DisplayCycle */
         if (currPhoto != null) {
@@ -54,13 +51,11 @@ public class ReleaseSingleUser implements ReleaseStrategy {
         SharedPreferences.Editor editor = sp.edit();
 
         /* Unique photoid given to a photo that has been released */
-        String photoid = Long.toString(currPhoto.getTime().getTimeInMillis()/1000) + "0" + "1"
-                + currPhoto.getUniqueID();
+        String photoid = "R_" + currPhoto.getUniqueID();
 
         /* Stores unique photo id */
-        editor.putString(photoid, "Release DejaPhoto");
+        editor.putBoolean(photoid, true);
         editor.apply();
-
     }
 
 }

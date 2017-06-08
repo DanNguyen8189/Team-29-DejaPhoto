@@ -38,9 +38,8 @@ public class BitmapUtil {
 
         return bitmap.getHeight()>= 4*bitmap.getWidth()/3
                 ? Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getWidth()*4/3),480,640,true)
-                : Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getHeight()*4/3,bitmap.getHeight()),480,640,true);
+                : Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getHeight()*3/4,bitmap.getHeight()),480,640,true);
     }
-
 
     public byte[] bitmapToByteArray(Bitmap b) {
 
@@ -69,8 +68,6 @@ public class BitmapUtil {
         // Geocoder to get address from remote server
         Geocoder geocoder;
         List<Address> list;
-
-
 
         // Generate new bitmap and paint objects for modification
         Bitmap newBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -109,11 +106,10 @@ public class BitmapUtil {
             }
         }
 
-
         // Write location info to bitmap and return
         paint.getTextBounds(locationTag, 0, locationTag.length(), rect);
         canvas.drawText(locationTag, 0, newBitmap.getHeight()-newBitmap.getHeight()/5, paint);
-        canvas.drawText("Karma: "+karma, newBitmap.getWidth()-newBitmap.getWidth()/3, newBitmap.getHeight()-newBitmap.getHeight()/5,paint);
+        canvas.drawText("Karma: "+karma, newBitmap.getWidth()-2*newBitmap.getWidth()/5, newBitmap.getHeight()-newBitmap.getHeight()/5,paint);
 
         Log.d(TAG, "Printed location on photo: " + locationTag);
 
