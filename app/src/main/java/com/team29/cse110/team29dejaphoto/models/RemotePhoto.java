@@ -30,6 +30,7 @@ public class RemotePhoto implements DejaPhoto {
     private Calendar time = new GregorianCalendar();
     private Location location;
     private boolean released;
+    String customLocation;
     String fileName;
     private String customLocation; // Holds the location that a user may set
 
