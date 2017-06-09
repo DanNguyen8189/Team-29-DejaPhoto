@@ -1,5 +1,6 @@
 package com.team29.cse110.team29dejaphoto.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,27 +35,21 @@ public class CustomLocationActivity extends AppCompatActivity {
         setLocationButton = (Button) findViewById(R.id.set_location_button);
         cancelLocationButton = (Button) findViewById(R.id.cancel_location_button);
 
-        // sharedpref will hold the custom location the user wants for a particular photo
-        dejaPreferences = getSharedPreferences(DEJA_PREFS, 0);
-        SharedPreferences.Editor editor  = dejaPreferences.edit();
-        editor.putString("customLocation", "");
-
     }
 
     public void cancel(View view) {
-        dejaPreferences = getSharedPreferences(DEJA_PREFS, 0);
-        SharedPreferences.Editor editor  = dejaPreferences.edit();
-        editor.putBoolean("wantedCustomLocation", false);
-        editor.commit();
         finish();
     }
 
     //TODO - get the location from the editText and update the bitmap/photo
     public void done(View view) {
-        dejaPreferences = getSharedPreferences(DEJA_PREFS, 0);
-        SharedPreferences.Editor editor  = dejaPreferences.edit();
-        editor.putBoolean("wantedCustomLocation", true);
-        editor.commit();
+
+        // send message to photoservice that we set a custom location on the current photo
+        Intent serviceIntent = new Intent();
+        serviceIntent.setAction("EDIT_LOCATION");
+        serviceIntent.putExtra("customLocation", editText.getText().toString());
+        sendBroadcast(serviceIntent);
+
         finish();
     }
 

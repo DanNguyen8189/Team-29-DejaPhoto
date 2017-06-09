@@ -126,10 +126,10 @@ public class WIDGET_DejaPhoto extends AppWidgetProvider {
             locationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(locationIntent);
 
-            Intent serviceIntent = new Intent();
+            /*Intent serviceIntent = new Intent();
             serviceIntent.setAction("EDIT_LOCATION");
             serviceIntent.putExtra("customLocation", "LALALA");
-            context.sendBroadcast(serviceIntent);
+            context.sendBroadcast(serviceIntent);*/
         }
     }
 }
