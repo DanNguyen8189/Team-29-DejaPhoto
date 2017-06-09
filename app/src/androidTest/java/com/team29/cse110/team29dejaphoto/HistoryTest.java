@@ -4,8 +4,8 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.LinkedListHistory;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
-import com.team29.cse110.team29dejaphoto.models.History;
 import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 
 import java.util.Calendar;
@@ -22,10 +22,10 @@ public class HistoryTest {
 
     DejaPhoto[] gallery = new LocalPhoto[10];
     DejaPhoto[] remoteGallery = new RemotePhoto[10];
-    DejaPhoto[] shortgallery = new DejaPhoto[] {new LocalPhoto(Uri.EMPTY,0,0,0L),
-                                                new LocalPhoto(Uri.EMPTY,0,0,0L),
+    DejaPhoto[] shortgallery = new DejaPhoto[] {new LocalPhoto(Uri.EMPTY,0,0,0L, ""),
+                                                new LocalPhoto(Uri.EMPTY,0,0,0L, ""),
                                                 new RemotePhoto(null,0,0,0,0L,false, null)};
-    History history = new History();
+    LinkedListHistory history = new LinkedListHistory();
 
     private String TAG = "HistoryTest";
 
@@ -38,7 +38,7 @@ public class HistoryTest {
 
         for(int i = 0; i < 10; i++) {
 
-            gallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
+            gallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis(), "");
         }
 
         for(int i =0; i < 10; i++) {
@@ -160,7 +160,7 @@ public class HistoryTest {
         assertTrue(history.cycle().equals(gallery[0]));// history has cycled entire list
 
         // Test partially full history
-        history = new History();
+        history = new LinkedListHistory();
 
         for(DejaPhoto d: shortgallery) {
             history.addPhoto(d);

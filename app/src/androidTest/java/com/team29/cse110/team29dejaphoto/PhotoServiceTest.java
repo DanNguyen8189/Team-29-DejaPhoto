@@ -5,8 +5,8 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.DisplayCycleMediator;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
-import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +23,8 @@ public class PhotoServiceTest {
     DejaPhoto[] gallery = new LocalPhoto[15];
     DejaPhoto[] smallGallery = new LocalPhoto[3];
     Location location = new Location("");
-    DisplayCycle displayCycle = new DisplayCycle();
-    DisplayCycle smallDisplayCycle = new DisplayCycle();
+    DisplayCycleMediator displayCycle = new DisplayCycleMediator();
+    DisplayCycleMediator smallDisplayCycle = new DisplayCycleMediator();
 
     private String TAG = "PhotoServiceTest";
 
@@ -34,12 +34,12 @@ public class PhotoServiceTest {
 
         // Populate gallery with dummy images of all the same score
         for(int i = 0; i < 15; i++) {
-            gallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
+            gallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis(), "");
             displayCycle.addToCycle(gallery[i]);
         }
         for(int i = 0; i < 3; i++ ) {
 
-            smallGallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
+            smallGallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis(), "");
             smallDisplayCycle.addToCycle(gallery[i]);
         }
 

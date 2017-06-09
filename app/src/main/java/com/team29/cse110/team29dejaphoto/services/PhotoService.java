@@ -1,72 +1,41 @@
 package com.team29.cse110.team29dejaphoto.services;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.team29.cse110.team29dejaphoto.R;
-import com.team29.cse110.team29dejaphoto.activities.CustomLocationActivity;
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
-import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
+import com.team29.cse110.team29dejaphoto.models.DisplayCycleMediator;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
-import com.team29.cse110.team29dejaphoto.utils.DejaPhotoDownloader;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
-import com.team29.cse110.team29dejaphoto.utils.FirebasePhotosHelper;
 import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -79,7 +48,7 @@ public class PhotoService extends Service {
     Context context = this;
 
     /* Underlying Object that handles image cycling */
-    private DisplayCycle displayCycle;
+    private DisplayCycleMediator displayCycle;
 
     /* Home screen background setter */
     private WallpaperManager background;
@@ -403,7 +372,7 @@ public class PhotoService extends Service {
                                 Log.d(TAG, "Error when deleting directory");
                             }
                             PhotoLoader photoLoader = new DejaPhotoLoader();
-                            displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(PhotoService.this));
+                            displayCycle = new DisplayCycleMediator(photoLoader.getPhotosAsArray(PhotoService.this));
                         }
 
                         */
@@ -449,14 +418,14 @@ public class PhotoService extends Service {
         receiver = new MyReceiver();
         registerReceiver(receiver, filter);
 
-        /* Initializes DisplayCycle with photos from the system */
+        /* Initializes DisplayCycleMediator with photos from the system */
 
         PhotoLoader photoLoader = new DejaPhotoLoader(sp);
         //DejaPhotoDownloader downloader = new DejaPhotoDownloader(context);
         //ArrayList<DejaPhoto> allPhotos = downloader.downloadAllPhotos();
         //DejaPhoto[] allPhotosArray = new DejaPhoto[allPhotos.size()];
-        //displayCycle = new DisplayCycle(allPhotos.toArray(allPhotosArray));
-        displayCycle = new DisplayCycle(photoLoader.getPhotosAsArray(this));
+        //displayCycle = new DisplayCycleMediator(allPhotos.toArray(allPhotosArray));
+        displayCycle = new DisplayCycleMediator(photoLoader.getPhotosAsArray(this));
         // TODO More robust handling of score initialization
         displayCycle.updatePriorities(
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
@@ -624,7 +593,7 @@ public class PhotoService extends Service {
 
     /*
      * This method delegates release functionality to the ReleaseSingleUser, passing along the
-     * DisplayCycle and SharedPreferences.
+     * DisplayCycleMediator and SharedPreferences.
      */
     public void releasePhoto() {
 

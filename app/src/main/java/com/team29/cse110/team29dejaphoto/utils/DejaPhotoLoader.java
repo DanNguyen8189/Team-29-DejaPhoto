@@ -64,7 +64,7 @@ public class DejaPhotoLoader implements PhotoLoader {
     /*
      * This method searches all photos retrieved from the phone's storage and returns them as an
      * array of LocalPhoto objects. This method is intended to be used only once during the app's
-     * lifecycle - when the app first begins and needs to load all photos into the DisplayCycle
+     * lifecycle - when the app first begins and needs to load all photos into the DisplayCycleMediator
      * object.
      */
     @Override

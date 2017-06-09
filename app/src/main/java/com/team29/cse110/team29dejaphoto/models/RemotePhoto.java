@@ -15,7 +15,7 @@ import java.util.GregorianCalendar;
  */
 
 /*
- * This class represents a photo object eligible to be entered into a DisplayCycle that does not
+ * This class represents a photo object eligible to be entered into a DisplayCycleMediator that does not
  * contain any URI. Instead, this object is just a placeholder for photo data stored in Firebase
  * Storage, and contains a reference to the location of its corresponding photo in that storage.
  */

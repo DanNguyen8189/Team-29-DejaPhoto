@@ -4,8 +4,8 @@ import android.location.Location;
 import android.util.Log;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.models.DisplayCycleMediator;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
-import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 
@@ -23,8 +23,8 @@ import static org.junit.Assert.*;
  */
 public class DisplayCycleTest {
 
-    // Create a new DisplayCycle
-    private DisplayCycle ds;
+    // Create a new DisplayCycleMediator
+    private DisplayCycleMediator ds;
 
     Calendar calendar = Calendar.getInstance();
 
@@ -51,14 +51,14 @@ public class DisplayCycleTest {
     @Before
     public void setUp() {
 
-        ds = new DisplayCycle();
+        ds = new DisplayCycleMediator();
 
         // Time values must be adjusted between 9:00pm and 12:00am
-        one = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());
+        one = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis(), "");
         calendar.add(Calendar.HOUR,1);
-        two = new LocalPhoto(null, 300,300, calendar.getTimeInMillis());
+        two = new LocalPhoto(null, 300,300, calendar.getTimeInMillis(), "");
         calendar.add(Calendar.HOUR,3);
-        three = new LocalPhoto(null, 300, 300, calendar.getTimeInMillis());
+        three = new LocalPhoto(null, 300, 300, calendar.getTimeInMillis(), "");
 
         // Create new LocalPhoto Galleries and populate them
         testGalleryOneElement[0] = one;
@@ -100,15 +100,15 @@ public class DisplayCycleTest {
 
         // Test that photo is successfully added to an empty cycle
         ds.addToCycle(testGalleryEmpty);
-        assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L)));
+        assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L, "")));
 
         // Test that photo is successfully added to a non-empty cycle
         ds.addToCycle(testGalleryOneElement);
-        assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L)));
+        assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L, "")));
 
         // Test that several photos can be added
         for (DejaPhoto d: testGalleryManyElements)  {
-            assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L)));
+            assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L, "")));
         }
         Log.d(TAG,"Testing addToCycle() method");
     }
@@ -133,13 +133,13 @@ public class DisplayCycleTest {
         assertNull(ds.getNextPhoto());
 
         // Test get next on a one-element set
-        ds = new DisplayCycle();
+        ds = new DisplayCycleMediator();
         ds.addToCycle(testGalleryOneElement);
         assertTrue(ds.getNextPhoto().equals(one));
         assertTrue(ds.getNextPhoto().equals(one));
 
         // Test get next on a three-element set
-        ds = new DisplayCycle();
+        ds = new DisplayCycleMediator();
         ds.addToCycle(testGalleryThreeElements);
         ds.updatePriorities(location,prefAllOn);
         assertTrue(ds.getNextPhoto().equals(one));
@@ -148,7 +148,7 @@ public class DisplayCycleTest {
         assertTrue(ds.getNextPhoto().equals(one));
 
         // Test get next on a full history set
-        ds = new DisplayCycle();
+        ds = new DisplayCycleMediator();
         ds.addToCycle(testGalleryManyElements);
         ds.getNextPhoto();
         for(int i = testGalleryManyElements.length - 1; i >= 0 ; i-- ) {
@@ -174,14 +174,14 @@ public class DisplayCycleTest {
         assertNull(ds.getPrevPhoto());
 
         // Test get prev on a one-element set
-        ds = new DisplayCycle();
+        ds = new DisplayCycleMediator();
         ds.addToCycle(testGalleryOneElement);
         assertNull(ds.getPrevPhoto());
         ds.getNextPhoto();
         assertNull(ds.getPrevPhoto());
 
         // Test get prev on a three-element set
-        ds = new DisplayCycle();
+        ds = new DisplayCycleMediator();
         ds.addToCycle(testGalleryThreeElements);
         ds.updatePriorities(location,prefAllOn);
         ds.getNextPhoto();
@@ -193,7 +193,7 @@ public class DisplayCycleTest {
         assertNull(ds.getPrevPhoto());// end of history
 
         // Test get prev on a full history set
-        ds = new DisplayCycle();
+        ds = new DisplayCycleMediator();
         ds.addToCycle(testGalleryManyElements);
         ds.getNextPhoto();
         for(int i = testGalleryManyElements.length - 1; i >= 0 ; i-- ) {
@@ -216,7 +216,7 @@ public class DisplayCycleTest {
         calendar = Calendar.getInstance();
 
         for(int i = 0; i < 6; i++) {
-          gallery[i] = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());
+          gallery[i] = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis(), "");
           //calendar.add(Calendar.HOUR, 1);
         }
 

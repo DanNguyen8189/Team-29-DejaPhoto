@@ -8,27 +8,27 @@ import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 /**
  * Manages the photos to be displayed on the homescreen
  */
-public class DisplayCycle {
+public class DisplayCycleMediator {
 
 
     /* TAG to log debug statements for this class */
-    private final static String TAG = "DisplayCycle";
+    private final static String TAG = "DisplayCycleMediator";
 
-    /* Initialize member variables for DisplayCycle */
-    private History history;
+    /* Initialize member variables for DisplayCycleMediator */
+    private LinkedListHistory history;
     private Priorities priorities;
 
     /** Default Constructor */
-    public DisplayCycle() {
+    public DisplayCycleMediator() {
 
-        history = new History();
+        history = new LinkedListHistory();
         priorities = new Priorities();
     }
 
     /** Overloaded Constructor */
-    public DisplayCycle(DejaPhoto[] gallery) {
+    public DisplayCycleMediator(DejaPhoto[] gallery) {
 
-        history = new History();
+        history = new LinkedListHistory();
         priorities = new Priorities();
 
         for(DejaPhoto photo : gallery) {
@@ -39,7 +39,7 @@ public class DisplayCycle {
     /**
      * Add a single photo to the display cycle.
      *
-     * @param photo - The LocalPhoto object to add to the DisplayCycle
+     * @param photo - The LocalPhoto object to add to the DisplayCycleMediator
      * @return True - If the photo was added to the display cycle
      *         False - otherwise
      */
@@ -49,13 +49,13 @@ public class DisplayCycle {
 
     /**
      * Overloaded to add an array of LocalPhoto objects to the display cycle. This method
-     * is intended to allow instantiating a DisplayCycle object before an array of LocalPhoto
-     * objects becomes available, and fill the DisplayCycle at a later time. This is
+     * is intended to allow instantiating a DisplayCycleMediator object before an array of LocalPhoto
+     * objects becomes available, and fill the DisplayCycleMediator at a later time. This is
      * useful so the app does not crash if the user presses the forwards/backwards button
      * before images are loaded.
      *
-     * @param gallery - The input array of DejaPhotos to add to the DisplayCycle
-     * @return True - if any photo from the gallery was added to the DisplayCycle
+     * @param gallery - The input array of DejaPhotos to add to the DisplayCycleMediator
+     * @return True - if any photo from the gallery was added to the DisplayCycleMediator
      *         False - otherwise
      */
     public boolean addToCycle(DejaPhoto[] gallery) {
@@ -107,7 +107,7 @@ public class DisplayCycle {
     }
 
     /**
-     * Updates the priorities of each LocalPhoto in the DisplayCycle.
+     * Updates the priorities of each LocalPhoto in the DisplayCycleMediator.
      *
      * @param location - The location for which scores are to be calculated with respects to
      */

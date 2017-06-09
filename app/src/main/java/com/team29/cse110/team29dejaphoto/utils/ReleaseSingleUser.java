@@ -4,8 +4,7 @@ import android.content.SharedPreferences;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
-import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
-import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
+import com.team29.cse110.team29dejaphoto.models.DisplayCycleMediator;
 
 
 /**
@@ -17,11 +16,11 @@ import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
  */
 public class ReleaseSingleUser implements ReleaseStrategy {
 
-    private DisplayCycle displayCycle;
+    private DisplayCycleMediator displayCycle;
     private SharedPreferences sp;
 
-    /* The contructor. The PhotoService needs to pass is the DisplayCycle and the SharedPreferences */
-    public ReleaseSingleUser(DisplayCycle displayCycle, SharedPreferences sp) {
+    /* The contructor. The PhotoService needs to pass is the DisplayCycleMediator and the SharedPreferences */
+    public ReleaseSingleUser(DisplayCycleMediator displayCycle, SharedPreferences sp) {
         this.displayCycle = displayCycle;
         this.sp = sp;
     }
@@ -32,7 +31,7 @@ public class ReleaseSingleUser implements ReleaseStrategy {
     @Override
     public int releasePhoto(DejaPhoto currPhoto) {
 
-        /* If we got the current photo, record it is released and remove it from the DisplayCycle */
+        /* If we got the current photo, record it is released and remove it from the DisplayCycleMediator */
         if (currPhoto != null) {
             currPhoto.setReleased();
             recordIsReleasedInPrefs(currPhoto);

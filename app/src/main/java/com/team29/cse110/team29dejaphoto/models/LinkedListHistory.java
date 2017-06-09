@@ -11,9 +11,9 @@ import java.util.ListIterator;
 /**
  * Manages history of previous photos
  */
-public class History {
+public class LinkedListHistory {
 
-    private static final String TAG = "History";
+    private static final String TAG = "LinkedListHistory";
 
     private LinkedList<DejaPhoto> historyList; // Underlying List structure
     private ListIterator<DejaPhoto> iterator;  // Iterator to move through the history
@@ -21,7 +21,7 @@ public class History {
     private int nelems;                        // Number of elements
 
     /** Default Constructor */
-    public History() {
+    public LinkedListHistory() {
         historyList = new LinkedList<>(); //new LinkedList<LocalPhoto>();
         iterator = historyList.listIterator();
         forward = true;
@@ -123,7 +123,7 @@ public class History {
     }
 
     /**
-     * Update the priorites of all LocalPhoto Objects held by this History structure
+     * Update the priorites of all LocalPhoto Objects held by this LinkedListHistory structure
      *
      * @param location The new current location to update score with respects to
      */
