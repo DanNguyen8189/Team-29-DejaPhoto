@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
-import com.team29.cse110.team29dejaphoto.models.Priorities;
+import com.team29.cse110.team29dejaphoto.models.PriorityQueuePriorities;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  */
 public class PrioritiesTest {
 
-    private Priorities p;
+    private PriorityQueuePriorities p;
     LocalPhoto[] gallery;
     LocalPhoto newPhoto;
     Calendar calendar = Calendar.getInstance();
@@ -38,17 +38,17 @@ public class PrioritiesTest {
      */
     @Before
     public void setUp() {
-        p = new Priorities();
+        p = new PriorityQueuePriorities();
         time = calendar.getTimeInMillis();// The current time, maximum deja vu.
         calendar.add(Calendar.HOUR, -3);// Subtract 3 hours from the time
 
         // Priority is element 2, 1, 0 when all options are on.
         gallery = new LocalPhoto[]{
-                new LocalPhoto(null, 0, 0, calendar.getTimeInMillis()), // #1 20 points
-                new LocalPhoto(null, 300, 300, calendar.getTimeInMillis()), //#3 10 points
-                new LocalPhoto(null, 300, 300, time), // #2 10 points
-                new LocalPhoto(null, 0, 0, time)}; // #0 20
-        newPhoto = new LocalPhoto(null, 0, 0, 0L);
+                new LocalPhoto(null, 0, 0, calendar.getTimeInMillis(), ""), // #1 20 points
+                new LocalPhoto(null, 300, 300, calendar.getTimeInMillis(), ""), //#3 10 points
+                new LocalPhoto(null, 300, 300, time, ""), // #2 10 points
+                new LocalPhoto(null, 0, 0, time, "")}; // #0 20
+        newPhoto = new LocalPhoto(null, 0, 0, 0L, "");
 
     }
 
@@ -124,9 +124,9 @@ public class PrioritiesTest {
      */
     @Test
     public void updatePriorities() throws Exception {
-        p = new Priorities();
-        gallery[0] = new LocalPhoto(null, 0, 0, time);
-        gallery[1] = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());// subtract 3 hr
+        p = new PriorityQueuePriorities();
+        gallery[0] = new LocalPhoto(null, 0, 0, time, "");
+        gallery[1] = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis(), "");// subtract 3 hr
         p.updatePriorities(new Location(""), prefAll);
         p.add(gallery[0]);
         p.add(gallery[1]);

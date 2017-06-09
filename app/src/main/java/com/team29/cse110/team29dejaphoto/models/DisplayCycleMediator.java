@@ -3,6 +3,8 @@ package com.team29.cse110.team29dejaphoto.models;
 import android.location.Location;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.interfaces.HistoryStrategy;
+import com.team29.cse110.team29dejaphoto.interfaces.PrioritiesStrategy;
 
 
 /**
@@ -15,21 +17,21 @@ public class DisplayCycleMediator {
     private final static String TAG = "DisplayCycleMediator";
 
     /* Initialize member variables for DisplayCycleMediator */
-    private LinkedListHistory history;
-    private Priorities priorities;
+    private HistoryStrategy history;
+    private PrioritiesStrategy priorities;
 
     /** Default Constructor */
     public DisplayCycleMediator() {
 
         history = new LinkedListHistory();
-        priorities = new Priorities();
+        priorities = new PriorityQueuePriorities();
     }
 
     /** Overloaded Constructor */
     public DisplayCycleMediator(DejaPhoto[] gallery) {
 
         history = new LinkedListHistory();
-        priorities = new Priorities();
+        priorities = new PriorityQueuePriorities();
 
         for(DejaPhoto photo : gallery) {
             priorities.add(photo);

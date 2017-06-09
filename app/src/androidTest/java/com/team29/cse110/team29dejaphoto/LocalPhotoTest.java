@@ -44,13 +44,13 @@ public class LocalPhotoTest {
         calendar = Calendar.getInstance();
 
         // This photo will be left for modification
-        photo = new LocalPhoto(Uri.EMPTY, 0, 0, 0L);
+        photo = new LocalPhoto(Uri.EMPTY, 0, 0, 0L, "");
 
         // Empty photo with null parameters
-        emptyPhoto = new LocalPhoto(null, 0, 0, 0L);
+        emptyPhoto = new LocalPhoto(null, 0, 0, 0L, "");
 
         // DejaPhoto from this instant in time, deja vu for time and date
-        dejaVuAll = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
+        dejaVuAll = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis(), "");
 
         // Adjust calendar to same day last week, but 3 hours earlier.  Only deja vu in date
         // Times must be adjusted between 9:00pm and 12:00 am
@@ -58,20 +58,20 @@ public class LocalPhotoTest {
        // calendar.set(2017, 05, 13, 12, 47);
         calendar.add(Calendar.DAY_OF_WEEK, -7);// 1 week ago
         calendar.add(Calendar.HOUR, 3);// 3 hours later
-        dejaVuDate = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
+        dejaVuDate = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis(), "");
 
         // Adjust calendar to different day of week, but within current 2 hrs. Only deja vu in time
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_WEEK,-2);
-        dejaVuTime = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
+        dejaVuTime = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis(), "");
 
         // Adjust calender to different time, and add local location
         calendar.add(Calendar.HOUR,3 );// calendar has no time or date deja vu
-        dejaVuLocation = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis());
+        dejaVuLocation = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis(), "");
 
         // Adjust calendar to different day, add non-local location
         calendar.add(Calendar.DAY_OF_WEEK, 3);
-        noDejaVu = new LocalPhoto(Uri.EMPTY, 300, 300, calendar.getTimeInMillis());
+        noDejaVu = new LocalPhoto(Uri.EMPTY, 300, 300, calendar.getTimeInMillis(), "");
     }
 
 

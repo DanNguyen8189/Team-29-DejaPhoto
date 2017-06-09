@@ -3,6 +3,7 @@ package com.team29.cse110.team29dejaphoto.models;
 import android.location.Location;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.interfaces.PrioritiesStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,18 +12,18 @@ import java.util.PriorityQueue;
 /**
  * Manages the photos to be shown to the user that is not in history
  */
-public class Priorities {
+public class PriorityQueuePriorities implements PrioritiesStrategy{
 
     /* Priority Queue of DejaPhotos based on scores */
     private PriorityQueue<DejaPhoto> pq;
 
     /** Default Constructor */
-    public Priorities() {
+    public PriorityQueuePriorities() {
         pq = new PriorityQueue<>(10, Collections.<DejaPhoto>reverseOrder());
     }
 
     /**
-     * Adds a photo to the Priorities object
+     * Adds a photo to the PriorityQueuePriorities object
      *
      * @param photo - The photo to be added into the sorted structure
      * @return True - If the photo is added
