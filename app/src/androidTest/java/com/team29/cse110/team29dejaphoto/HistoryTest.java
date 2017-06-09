@@ -3,8 +3,10 @@ package com.team29.cse110.team29dejaphoto;
 import android.net.Uri;
 import android.util.Log;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.History;
+import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 
 import java.util.Calendar;
 
@@ -18,10 +20,11 @@ import static org.junit.Assert.*;
  */
 public class HistoryTest {
 
-    LocalPhoto[] gallery = new LocalPhoto[10];
-    LocalPhoto[] shortgallery = new LocalPhoto[] {new LocalPhoto(Uri.EMPTY,0,0,0L),
+    DejaPhoto[] gallery = new LocalPhoto[10];
+    DejaPhoto[] remoteGallery = new RemotePhoto[10];
+    DejaPhoto[] shortgallery = new DejaPhoto[] {new LocalPhoto(Uri.EMPTY,0,0,0L),
                                                 new LocalPhoto(Uri.EMPTY,0,0,0L),
-                                                new LocalPhoto(Uri.EMPTY,0,0,0L)};
+                                                new RemotePhoto(null,0,0,0,0L,false, null)};
     History history = new History();
 
     private String TAG = "HistoryTest";
@@ -37,6 +40,12 @@ public class HistoryTest {
 
             gallery[i] = new LocalPhoto(Uri.EMPTY, 0, 0, Calendar.getInstance().getTimeInMillis());
         }
+
+        for(int i =0; i < 10; i++) {
+
+            remoteGallery[i] = new RemotePhoto(null, 0, 0, 0, Calendar.getInstance().
+                                                                       getTimeInMillis(),false, null);
+        }
     }
 
 
@@ -50,15 +59,31 @@ public class HistoryTest {
     public void addPhoto() throws Exception {
 
         assertNull(history.addPhoto(gallery[0]));// No item is returned from history
-        for(LocalPhoto d: gallery) {
+        for(DejaPhoto d: gallery) {
             history.addPhoto(d);
         }// 10 photos are added
 
         // this will kick the earliest item out of the history, as the gallery is ordered.
-        for(LocalPhoto d: gallery) {
+        for(DejaPhoto d: gallery) {
             assertTrue(history.addPhoto(d).equals(d));
         }
         Log.d(TAG,"Testing addPhoto() method");
+    }
+
+
+    @Test
+    public void addRemotePhoto() throws Exception {
+
+        assertNull(history.addPhoto(gallery[0]));
+        for(DejaPhoto d: gallery) {
+            history.addPhoto(d);
+        }// history filled with 10 photos
+
+        // kicks out the gallery in order
+        for(DejaPhoto d:gallery) {
+            assertTrue(history.addPhoto(d).equals(d));
+        }
+        Log.d(TAG,"Testing addRemotePhotos() method");
     }
 
 
@@ -73,7 +98,7 @@ public class HistoryTest {
         assertNull(history.getPrev());// Null when no history
 
         // fill the history
-        for (LocalPhoto d: gallery) {
+        for (DejaPhoto d: gallery) {
             history.addPhoto(d);
         }
         for(int i = 8; i >= 0; i-- ) {
@@ -95,12 +120,12 @@ public class HistoryTest {
         assertNull(history.getNext());
 
         // fill the history
-        for (LocalPhoto d: gallery) {
+        for (DejaPhoto d: gallery) {
             history.addPhoto(d);
         }
 
         // Move to end of history
-        for(LocalPhoto d:gallery) {
+        for(DejaPhoto d:gallery) {
             history.getPrev();
         }
 
@@ -123,7 +148,7 @@ public class HistoryTest {
         assertNull(history.cycle());
 
         // fill the history
-        for (LocalPhoto d: gallery) {
+        for (DejaPhoto d: gallery) {
             history.addPhoto(d);
         }
 
@@ -137,7 +162,7 @@ public class HistoryTest {
         // Test partially full history
         history = new History();
 
-        for(LocalPhoto d: shortgallery) {
+        for(DejaPhoto d: shortgallery) {
             history.addPhoto(d);
         }
 

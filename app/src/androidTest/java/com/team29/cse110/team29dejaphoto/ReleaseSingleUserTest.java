@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
  * Created by tyler on 6/2/17.
  */
 public class ReleaseSingleUserTest {
+
     @Test
     public void releasePhoto() throws Exception {
 

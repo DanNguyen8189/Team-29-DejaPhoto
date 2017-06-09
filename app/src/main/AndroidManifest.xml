@@ -43,15 +43,6 @@
 
         <service android:name=".services.PhotoService" />
 
-        <activity
-            android:name=".activities.CustomAlbumActivity"
-            android:label="@string/title_activity_custom_album"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.team29.cse110.team29dejaphoto.activities.MainActivity" />
-        </activity>
         <activity android:name=".activities.CameraActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.FriendActivity" />

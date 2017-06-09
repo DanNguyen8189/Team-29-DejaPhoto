@@ -90,11 +90,11 @@ public class Database {
         friendsList = myRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
                            .child("friends");
 
-
-        friendsList.addValueEventListener(new ValueEventListener() {
+        friendsList.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for(DataSnapshot d : dataSnapshot.getChildren()) {
                     friends.add((String) d.getValue());
                 }
