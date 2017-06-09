@@ -3,9 +3,11 @@ package com.team29.cse110.team29dejaphoto;
 import android.location.Location;
 import android.util.Log;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycle;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
+import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 
 import java.util.Calendar;
 
@@ -22,20 +24,21 @@ import static org.junit.Assert.*;
 public class DisplayCycleTest {
 
     // Create a new DisplayCycle
-    private DisplayCycle ds = new DisplayCycle();
+    private DisplayCycle ds;
 
     Calendar calendar = Calendar.getInstance();
 
     // Create a few dummy Dejaphotos
-    private LocalPhoto one;
-    private LocalPhoto two;
-    private LocalPhoto three;
+    private DejaPhoto one;
+    private DejaPhoto two;
+    private DejaPhoto three;
 
     // Create new LocalPhoto Galleries and populate them
-    private LocalPhoto[] testGalleryEmpty = {};
-    private LocalPhoto[] testGalleryOneElement = new LocalPhoto[1];
-    private LocalPhoto[] testGalleryThreeElements = new LocalPhoto[3];
-    private LocalPhoto[] testGalleryManyElements;// larger than history size
+    private DejaPhoto[] testGalleryEmpty = {};
+    private DejaPhoto[] testGalleryOneElement = new LocalPhoto[1];
+    private DejaPhoto[] testGalleryThreeElements = new LocalPhoto[3];
+    private DejaPhoto[] testGalleryManyElements;// larger than history size
+    private DejaPhoto[] mixedGallery;// contains both local and remote photos
 
     Location location;
     Preferences prefAllOn = new Preferences(true,true,true);
@@ -47,6 +50,8 @@ public class DisplayCycleTest {
      */
     @Before
     public void setUp() {
+
+        ds = new DisplayCycle();
 
         // Time values must be adjusted between 9:00pm and 12:00am
         one = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());
@@ -60,7 +65,7 @@ public class DisplayCycleTest {
         testGalleryThreeElements[0] = one;
         testGalleryThreeElements[1] = two;
         testGalleryThreeElements[2] = three;
-        testGalleryManyElements = fillTestGallery();
+        testGalleryManyElements = fillTestGallery();// half/half of local/remote dejaPhotos
 
         location = new Location("");
         location.setLatitude(0);
@@ -102,7 +107,7 @@ public class DisplayCycleTest {
         assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L)));
 
         // Test that several photos can be added
-        for (LocalPhoto d: testGalleryManyElements)  {
+        for (DejaPhoto d: testGalleryManyElements)  {
             assertTrue(ds.addToCycle(new LocalPhoto(null, 0, 0, 0L)));
         }
         Log.d(TAG,"Testing addToCycle() method");
@@ -206,14 +211,22 @@ public class DisplayCycleTest {
     /**
      *  Helper method to create a gallery of several photos
      */
-    private LocalPhoto[] fillTestGallery() {
-        LocalPhoto[] gallery = new LocalPhoto[11];
+    private DejaPhoto[] fillTestGallery() {
+        DejaPhoto[] gallery = new DejaPhoto[11];
         calendar = Calendar.getInstance();
 
-        for(int i = 0; i < 11; i++) {
+        for(int i = 0; i < 6; i++) {
           gallery[i] = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis());
           //calendar.add(Calendar.HOUR, 1);
         }
+
+        for(int i = 0; i < 5; i++ ) {
+            gallery [i+6] = new RemotePhoto(null,0,0,0,calendar.getTimeInMillis(),false, null);
+        }
         return gallery;
     }
+
+
+
 }
+

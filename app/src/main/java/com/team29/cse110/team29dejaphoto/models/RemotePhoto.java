@@ -74,6 +74,10 @@ public class RemotePhoto implements DejaPhoto {
         return myScore;
     }
 
+    public void setScore(int score) {
+        this.myScore = score;
+    }
+
     public int updateScore(Location location, Preferences prefs) {
 
         myScore = getKarma() - mapBooleanToInt(isShownRecently()) +

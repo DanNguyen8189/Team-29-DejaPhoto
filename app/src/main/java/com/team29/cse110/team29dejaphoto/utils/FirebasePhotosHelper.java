@@ -52,7 +52,6 @@ public class FirebasePhotosHelper {
     //For checking if upload was successful or not
     private UploadTask uploadTask;
 
-
     public FirebasePhotosHelper(SharedPreferences sp) {
         photoLoader = new DejaPhotoLoader(sp);
     }
@@ -117,6 +116,7 @@ public class FirebasePhotosHelper {
         uploadTask = photoRef.putBytes(photoByteArray, metadata);
 
     }
+
 
 
     public ArrayList<DejaPhoto> downloadFriends()
@@ -206,34 +206,22 @@ public class FirebasePhotosHelper {
                                                         friendsPhotosArray.add(friendPhoto);
                                                         Log.d("Download", "Size of returned array List: " + friendsPhotosArray.size());
                                                     }
-
                                                 }
                                             });
                                         }
-
                                     }
-
                                     @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
+                                    public void onCancelled(DatabaseError databaseError) {}
                                 });
                             }
-
-
                         }
-
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
+                        public void onCancelled(DatabaseError databaseError) {}
                     });
                 }
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
         return friendsPhotosArray;
     }

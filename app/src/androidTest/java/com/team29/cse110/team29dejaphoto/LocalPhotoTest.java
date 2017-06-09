@@ -5,6 +5,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
+import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 
@@ -23,13 +24,13 @@ public class LocalPhotoTest {
     private String TAG = "LocalPhoto test";
 
     Calendar calendar;
-    LocalPhoto photo;// A photo object to be modified
-    LocalPhoto emptyPhoto;// An empty photo
-    LocalPhoto dejaVuTime;// A photo with deja vu in time only
-    LocalPhoto dejaVuDate;// A photo with deja vu in date only
-    LocalPhoto dejaVuAll; // A photo with deja vu in time and dateS
-    LocalPhoto dejaVuLocation;// a DejaPhoto with deja vu in only location
-    LocalPhoto noDejaVu;// A photo with no deja vu
+    DejaPhoto photo;// A photo object to be modified
+    DejaPhoto emptyPhoto;// An empty photo
+    DejaPhoto dejaVuTime;// A photo with deja vu in time only
+    DejaPhoto dejaVuDate;// A photo with deja vu in date only
+    DejaPhoto dejaVuAll; // A photo with deja vu in time and dateS
+    DejaPhoto dejaVuLocation;// a DejaPhoto with deja vu in only location
+    DejaPhoto noDejaVu;// A photo with no deja vu
 
     Preferences prefAllOn = new Preferences(true,true,true);
 
@@ -92,19 +93,6 @@ public class LocalPhotoTest {
     }
 
 
-    /**
-     * This tests that photos with null and non-null URI can return the URI.  Expected behavior
-     * for null URI is return null.  No URI is expected to be null, so no handling is done.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void getPhotoUri() throws Exception {
-        assertNull(emptyPhoto.getPhotoUri());
-        assertNotNull(photo.getPhotoUri());
-        Log.d(TAG, "Testing getPhotoUri() method");
-    }
-
 
     /** This tests that the karma of a photo is properly returned
      *
@@ -140,7 +128,7 @@ public class LocalPhotoTest {
      */
     @Test
     public void isShownRecently() throws Exception {
-        assertFalse(photo.isShownRecently());
+        assertFalse(((LocalPhoto)photo).isShownRecently());
         Log.d(TAG,"Testing isShownRecently() method");
     }
 
@@ -152,8 +140,8 @@ public class LocalPhotoTest {
      */
     @Test
     public void setShowRecently() throws Exception {
-        photo.setShowRecently();
-        assertTrue(photo.isShownRecently());
+        ((LocalPhoto)photo).setShowRecently();
+        assertTrue(((LocalPhoto)photo).isShownRecently());
         Log.d(TAG,"Testing setShowRecently() method");
     }
 
@@ -182,7 +170,7 @@ public class LocalPhotoTest {
     public void setTime() throws Exception {
 
         assertEquals("Testing photo has 0 time", 0, photo.getTime().getTimeInMillis());
-        photo.setTime(Calendar.getInstance());
+        ((LocalPhoto)photo).setTime(Calendar.getInstance());
         assertEquals("Testing dejaVu photo has some time", false,
                       photo.getTime().getTimeInMillis() == 0);
         Log.d(TAG,"Testing setTime() method");
@@ -197,7 +185,7 @@ public class LocalPhotoTest {
     @Test
     public void compareTo() throws Exception {
         assertEquals("Test comparing two empty photo objects", photo.compareTo(emptyPhoto), 0);
-        photo.setScore(20);
+        ((LocalPhoto)photo).setScore(20);
         assertEquals("Test comparing photo with emptyPhoto", photo.compareTo(emptyPhoto), 1);
         assertEquals("Test comparing emptyPhoto with photo", emptyPhoto.compareTo(photo), -1);
         Log.d(TAG,"Testing compareTo() method");
@@ -225,8 +213,8 @@ public class LocalPhotoTest {
         reference.setLongitude(0);
         reference.setLatitude(38);
 
-        dejaVuLocation.setLocation(inBounds);
-        noDejaVu.setLocation(outBounds);
+        dejaVuLocation.setCustomLocation("");
+        noDejaVu.setCustomLocation("");
 
         assertTrue(dejaVuLocation.updateScore(reference, prefAllOn)
                      > noDejaVu.updateScore(reference, prefAllOn));
