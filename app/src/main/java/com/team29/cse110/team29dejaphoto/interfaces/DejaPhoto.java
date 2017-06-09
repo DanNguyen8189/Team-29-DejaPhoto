@@ -3,6 +3,7 @@ package com.team29.cse110.team29dejaphoto.interfaces;
 
 import java.util.Calendar;
 import android.location.Location;
+import android.net.Uri;
 
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 
@@ -14,6 +15,8 @@ public interface DejaPhoto extends Comparable<DejaPhoto> {
 
     @Override
     public int compareTo(DejaPhoto dejaPhoto);
+
+    public Uri getPhotoUri();
 
     public int getScore();
 

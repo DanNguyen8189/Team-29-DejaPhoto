@@ -137,7 +137,13 @@ public class DejaPhotoLoader implements PhotoLoader {
 //                numPhotos++;
 //            }
 
+            // used to hold uri of photo we want to load
             Uri uri = null;
+            //used to get custom location of photo if there is one
+            SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
+            /*SharedPreferences.Editor editor = sp.edit();
+            editor.clear();
+            editor.commit();*/
 
             if(fileDejaPhotoCopied.exists()) {
                 uri = uriDejaPhotoCopied;
@@ -152,7 +158,10 @@ public class DejaPhotoLoader implements PhotoLoader {
                 gallery[count] = new LocalPhoto(uri,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
-                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
+                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND,
+                        sp.getString(uri.toString(), ""));
+
+                Log.d(TAG, "custom location is " + sp.getString(uri.toString(), ""));
 
                 if(sp.getBoolean("K_" + uri, false)) gallery[count].addKarma();
 

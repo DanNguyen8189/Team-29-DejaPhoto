@@ -91,10 +91,12 @@ public class PhotoService extends Service {
     private LocationManager locationManager;
 
     /* SharedPreferences */
+    private SharedPreferences dejaPreferences;
     private SharedPreferences sp;
     private SharedPreferences.OnSharedPreferenceChangeListener spListener;
 
     /* Constants */
+    public static final String DEJA_PREFS = "Deja_Preferences"; // SharedPreference file key
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152;   // Number of meters in a 500 feet
     private static final int DEFAULT_INTERVAL = 300000;
@@ -154,8 +156,17 @@ public class PhotoService extends Service {
                     }
                     else {
                         currDisplayedPhoto.setCustomLocation(intent.getStringExtra("customLocation"));
+
+                        //record change in sharedPreferences
+                        dejaPreferences = getSharedPreferences(DEJA_PREFS, 0);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString(currDisplayedPhoto.getPhotoUri().toString(), intent.getStringExtra("customLocation"));
+                        editor.commit();
+
                         Toast.makeText(context, "Your location was successfully set!",
                                 Toast.LENGTH_SHORT).show();
+
+                        Log.d(TAG, "location was set for photo with this URI: " + currDisplayedPhoto.getPhotoUri().toString());
                     }
                     break;
             }
@@ -663,42 +674,4 @@ public class PhotoService extends Service {
            Log.d(TAG, "No reference to currently displayed photo - cannot set karma, or photo already has karma");
        }
    }
-
-    /**
-     * Method to allow a user to type in their own location for a photo that prompts an
-     * input dialog.
-     */
-   /*protected void showInputDialog() {
-       // Gets prompts.xml view
-       LayoutInflater layoutInflater = LayoutInflater.from(PhotoService.this);
-       View promptView = layoutInflater.inflate(R.layout.custom_location, null);
-
-       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PhotoService.this);
-       alertDialogBuilder.setView(promptView);
-
-       Log.d(TAG, "Set up dialog");
-       // TODO - maybe not need final
-       final EditText editText = (EditText) promptView.findViewById(R.id.editText);
-
-       // Set up the dialog window
-       alertDialogBuilder.setCancelable(false)
-               .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-           public void onClick(DialogInterface dialog, int id) {
-                Log.d(TAG, "Edit Location TEXTTTTTTTT");
-                currDisplayedPhoto.setCustomLocation("" + editText.getText());
-           }
-       })
-               .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                       dialog.cancel();
-                   }
-               });
-
-       // Create an alert dialog
-       AlertDialog alert = alertDialogBuilder.create();
-       alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-       alert.show();
-       Log.d(TAG, "End of Dialog Method");
-
-   }*/
 }

@@ -43,7 +43,7 @@ public class LocalPhoto implements DejaPhoto {
      * LocalPhoto constructor. The photo's data including Uri, latitude, longitude, time taken,
      * and date taken, are passed as parameters to the constructor.
      */
-    public LocalPhoto(Uri photoUri, double latitude, double longitude, Long time) {
+    public LocalPhoto(Uri photoUri, double latitude, double longitude, Long time, String customUserLocation) {
 
         this.photoUri = photoUri;
         this.time = new GregorianCalendar();
@@ -51,7 +51,7 @@ public class LocalPhoto implements DejaPhoto {
         this.location = new Location("");
         this.location.setLatitude(latitude);
         this.location.setLongitude(longitude);
-        this.customLocation = "";
+        this.customLocation = customUserLocation;
         this.karma = 0;
         this.karmaFromUser = false;
     }

@@ -2,6 +2,7 @@ package com.team29.cse110.team29dejaphoto.models;
 
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 
@@ -21,6 +22,7 @@ import java.util.GregorianCalendar;
 public class RemotePhoto implements DejaPhoto {
 
     Bitmap bitmap;
+    Uri photoUri;
     int myScore;
     int karma;
     double lat;
@@ -131,6 +133,10 @@ public class RemotePhoto implements DejaPhoto {
             karma += 1;
             setFriendKarma();
         }
+    }
+
+    public Uri getPhotoUri(){
+        return photoUri;
     }
 
     public boolean isShownRecently() {

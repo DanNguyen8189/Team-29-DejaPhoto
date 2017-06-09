@@ -433,7 +433,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG,"destinationFile is " +destinationFile);
                     FileUtils.copyFile(sourceFile, destinationFile);
                     MediaScannerConnection.scanFile(this, new String[] { destinationFile.getPath() }, null, null);
-                    editor.putBoolean(Uri.fromFile(destinationFile).toString(), false);
+
+                    //put in sharedpreferences if not there already
+                    if (!dejaPreferences.contains(Uri.fromFile(destinationFile).toString())) {
+                        editor.putString(Uri.fromFile(destinationFile).toString(), "");
+                    }
+
+                    Log.d(TAG, "WE ARE WRITING THIS TO SHARED: " +Uri.fromFile(destinationFile).toString());
+
                 }
                 catch (FileNotFoundException e){
                     Toast.makeText(this, "There's a problem finding photo to sd card: File not found", Toast.LENGTH_SHORT).show();
@@ -486,7 +493,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG,"destinationFile is " +destinationFile);
                         FileUtils.copyFile(sourceFile, destinationFile);
                         MediaScannerConnection.scanFile(this, new String[] { destinationFile.getPath() }, null, null);
-                        editor.putBoolean(Uri.fromFile(destinationFile).toString(), false);
+
+                        //put in sharedpreferences if not there already
+                        if (!dejaPreferences.contains(Uri.fromFile(destinationFile).toString())) {
+                            editor.putString(Uri.fromFile(destinationFile).toString(), "");
+                        }
 
                         Log.d(TAG, "WE ARE WRITING THIS TO SHARED: " +Uri.fromFile(destinationFile).toString());
                     }
