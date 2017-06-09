@@ -4,6 +4,7 @@ import android.location.Location;
 
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
+import com.team29.cse110.team29dejaphoto.interfaces.HistoryStrategy;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -11,7 +12,7 @@ import java.util.ListIterator;
 /**
  * Manages history of previous photos
  */
-public class LinkedListHistory {
+public class LinkedListHistory implements HistoryStrategy {
 
     private static final String TAG = "LinkedListHistory";
 
@@ -25,10 +26,6 @@ public class LinkedListHistory {
         historyList = new LinkedList<>(); //new LinkedList<LocalPhoto>();
         iterator = historyList.listIterator();
         forward = true;
-    }
-
-    public boolean isHistoryEmpty() {
-        return nelems == 0;
     }
 
     /**

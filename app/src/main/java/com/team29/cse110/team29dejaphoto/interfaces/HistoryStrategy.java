@@ -10,13 +10,7 @@ import com.team29.cse110.team29dejaphoto.models.Preferences;
 
 public interface HistoryStrategy {
 
-    boolean isHistoryEmpty();
-
-    boolean checkValidNext();
-
-    boolean checkValidPrev();
-
-    void getPrev();
+    DejaPhoto getPrev();
 
     DejaPhoto getNext();
 
