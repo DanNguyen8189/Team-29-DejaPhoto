@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
@@ -17,6 +18,7 @@ import com.team29.cse110.team29dejaphoto.utils.DejaPhotoDownloader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ import static org.junit.Assert.*;
 /**
  * Created by tyler on 6/9/17.
  */
+@RunWith(AndroidJUnit4.class)
 public class BitmapUtilTest {
 
     @Rule
@@ -61,13 +64,13 @@ public class BitmapUtilTest {
     @Test
     public void resizePhoto() throws Exception {
 
-        resizedPhoto = bitmapUtil.resizePhoto(smallImage);
+        assert(resizedPhoto == bitmapUtil.resizePhoto(smallImage));
     }
 
     @Test
     public void bitmapToByteArray() throws Exception {
 
-        array = bitmapUtil.bitmapToByteArray(smallImage);
+        assert(array == bitmapUtil.bitmapToByteArray(smallImage));
     }
 
 }

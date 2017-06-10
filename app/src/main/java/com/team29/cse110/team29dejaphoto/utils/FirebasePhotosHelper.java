@@ -39,6 +39,8 @@ public class FirebasePhotosHelper {
 
     static boolean sharingSetting;
 
+    private boolean isSharing;
+
     //Firebase reference for accessing stored media
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
@@ -184,8 +186,8 @@ public class FirebasePhotosHelper {
 
                                             //gets metadata of friend's photos
                                             final long timeTaken = (long) friendPhotoRef.child("TimeTaken").getValue();
-                                            final long latitude = (long) friendPhotoRef.child("Latitude").getValue();
-                                            final long longitude = (long) friendPhotoRef.child("Longitude").getValue();
+                                            final double latitude = Double.parseDouble(friendPhotoRef.child("Latitude").getValue().toString());
+                                            final double longitude = Double.parseDouble(friendPhotoRef.child("Longitude").getValue().toString());
                                             final long karma = (long) friendPhotoRef.child("Karma").getValue();
                                             final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
                                             final String customLocation = (String) friendPhotoRef.child("customLocation").getValue();
@@ -270,6 +272,7 @@ public class FirebasePhotosHelper {
         user = FirebaseAuth.getInstance().getCurrentUser();
         myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@'))).
                       child("SharingEnabled").setValue(true);
+        isSharing = true;
 
     }
 
@@ -279,5 +282,11 @@ public class FirebasePhotosHelper {
         user = FirebaseAuth.getInstance().getCurrentUser();
         myFirebaseRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@'))).
                       child("SharingEnabled").setValue(false);
+        isSharing = false;
     }
+
+    public boolean isSharing() {
+        return isSharing;
+    }
+
 }

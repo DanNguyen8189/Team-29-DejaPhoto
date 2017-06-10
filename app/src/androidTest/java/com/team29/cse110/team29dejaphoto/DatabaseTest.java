@@ -54,8 +54,8 @@ public class DatabaseTest {
     @Test
     public void getFriends() throws Exception {
 
-        //assertEquals("Testing length of friends list",(friends.length),2 );
-        assertEquals("Testing friend 1:", "nlovato", friends[0]);
+        assertEquals("Testing length of friends list",(friends.length),0 );
+        //assertEquals("Testing friend 1:", "nlovato", friends[0]);
     }
 
 
@@ -68,7 +68,5 @@ public class DatabaseTest {
     public void getName() throws Exception {
 
         assertEquals("Testing userName is correct", "rchance", myName);
-
     }
-
 }
