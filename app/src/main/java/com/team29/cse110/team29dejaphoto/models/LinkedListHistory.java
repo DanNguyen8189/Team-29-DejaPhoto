@@ -1,6 +1,7 @@
 package com.team29.cse110.team29dejaphoto.models;
 
 import android.location.Location;
+import android.util.Log;
 
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
@@ -35,6 +36,10 @@ public class LinkedListHistory implements HistoryStrategy {
      *                   Otherwise, returns true.
      */
     private boolean checkValidNext() {
+
+        Log.d(TAG, "checkValidNext()");
+
+
         return iterator.hasPrevious();
     }
 
@@ -45,6 +50,9 @@ public class LinkedListHistory implements HistoryStrategy {
      *                   the history; false otherwise.
      */
     private boolean checkValidPrev() {
+
+        Log.d(TAG, "checkValidPrev()");
+
         return iterator.hasNext();
     }
 
@@ -55,6 +63,10 @@ public class LinkedListHistory implements HistoryStrategy {
      * @return LocalPhoto - the photo to be displayed
      */
     public DejaPhoto getNext() {
+
+        Log.d(TAG, "getNext()");
+
+
         if(!forward && checkValidNext()) {
             iterator.previous();
             forward = true;
@@ -69,6 +81,9 @@ public class LinkedListHistory implements HistoryStrategy {
      *         null - there are no previous photos available
      */
     public DejaPhoto getPrev() {
+
+        Log.d(TAG, "getPrev()");
+
         if(forward && checkValidPrev()) {
             iterator.next();
             forward = false;
@@ -85,6 +100,9 @@ public class LinkedListHistory implements HistoryStrategy {
      *                     the list
      */
     public DejaPhoto addPhoto(DejaPhoto photo) {
+
+        Log.d(TAG, "addPhoto()");
+
         DejaPhoto removed = null;
 
         // if history is full, take the earliest photo out to make room for the new one
@@ -108,6 +126,9 @@ public class LinkedListHistory implements HistoryStrategy {
      * used in the event there are less than 10 photos total
      */
     public DejaPhoto cycle() {
+
+        Log.d(TAG, "cycle()");
+
         // make sure we have photos. If we do, proceed
         if(nelems != 0) {
             DejaPhoto toCycle = historyList.removeLast();
@@ -125,12 +146,17 @@ public class LinkedListHistory implements HistoryStrategy {
      * @param location The new current location to update score with respects to
      */
     public void updatePriorities(Location location, Preferences prefs) {
+        Log.d(TAG, "updatePriorities()");
+
+
         for(DejaPhoto photo : historyList) {
             photo.updateScore(location, prefs);
         }
     }
 
     public void removeFromHistory() {
+        Log.d(TAG, "removeFromHistory()");
+
 
         if(nelems == 0) {
             return;

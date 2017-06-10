@@ -36,28 +36,32 @@ public class PhotoDownloaderTest {
 
     Context context;
     List<DejaPhoto> friendsPhotos;
+    List<DejaPhoto> myPhotos;
 
     @Before
     public void setUp() {
         context = main.getActivity().getApplicationContext();
         photoDownloader = new DejaPhotoDownloader(context);
         friendsPhotos = photoDownloader.downloadFriendsPhotos();
+        myPhotos = photoDownloader.downloadMyPhotos();
     }
 
     @Test
     public void downloadAllPhotos() throws Exception {
 
+        assertFalse(!friendsPhotos.isEmpty());
     }
 
     @Test
     public void downloadMyPhotos() throws Exception {
 
+        assertTrue(myPhotos.size() != 0);
     }
 
     @Test
     public void downloadFriendsPhotos() throws Exception {
 
-        assertTrue(friendsPhotos.size() != 0);
+        assertTrue(friendsPhotos.size() == 0);
     }
 
 }

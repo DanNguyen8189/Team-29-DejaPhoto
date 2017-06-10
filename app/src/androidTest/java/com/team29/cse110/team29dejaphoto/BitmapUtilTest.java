@@ -1,8 +1,10 @@
 package com.team29.cse110.team29dejaphoto;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.test.rule.ActivityTestRule;
 
@@ -34,24 +36,25 @@ public class BitmapUtilTest {
     Bitmap smallHorizontal;
 
     Bitmap resizedPhoto;
+    byte[] array;
 
-
+    Context context;
 
     BitmapUtil bitmapUtil = new BitmapUtil();
-    // PhotoDownloader photoDownloader = new DejaPhotoDownloader(main.getActivity().getApplicationContext());
 
-    // List<DejaPhoto> photos = photoDownloader.downloadAllPhotos();
-
+    Bitmap icon;
     @Before
     public void setUp() {
-        Bitmap testBitmap = BitmapFactory.decodeResource(main.getActivity().getResources(),R.drawable.custom_icon_med);
-//        testBitmap = Bitmap.createScaledBitmap()
+        context = main.getActivity().getApplicationContext();
+        icon = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.custom_icon_med);
 
-        smallImage = Bitmap.createBitmap(testBitmap,0,0,200,200);
-//        largeImage = Bitmap.createBitmap(testBitmap,0,0,2000,2000);
-//        smallHorizontal = Bitmap.createBitmap(testBitmap,0,0,200,800);
-//        smallVertical = Bitmap.createBitmap(testBitmap,0,0,800,200);
+        icon = Bitmap.createScaledBitmap(icon, 2000, 2000, true);
 
+        smallImage = Bitmap.createBitmap(icon,0,0,200,200);
+        largeImage = Bitmap.createBitmap(icon,0,0,2000,2000);
+        smallHorizontal = Bitmap.createBitmap(icon,0,0,200,800);
+        smallVertical = Bitmap.createBitmap(icon,0,0,800,200);
 
     }
 
@@ -64,11 +67,7 @@ public class BitmapUtilTest {
     @Test
     public void bitmapToByteArray() throws Exception {
 
-    }
-
-    @Test
-    public void backgroundImage() throws Exception {
-
+        array = bitmapUtil.bitmapToByteArray(smallImage);
     }
 
 }

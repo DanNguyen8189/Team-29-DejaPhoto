@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class Database {
 
-    private final String TAG = "User";
+    private final String TAG = "Database";
 
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -42,6 +42,8 @@ public class Database {
 
 
     public String[] getPhotoList() {
+
+        Log.d(TAG, "getPhotosList()");
 
         String[] friendList = getFriends();
         Query photosList = myRef.child(user.getEmail().substring(0, user.getEmail().indexOf('@')))
@@ -83,6 +85,10 @@ public class Database {
 
     public String[] getFriends() {
 
+        Log.d(TAG, "getFriends()");
+
+
+
         final ArrayList<DejaPhoto> friendsDejaPhotos = new ArrayList<>();
 
         final ArrayList<String> friends = new ArrayList<>();
@@ -96,7 +102,7 @@ public class Database {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for(DataSnapshot d : dataSnapshot.getChildren()) {
-                    friends.add((String) d.getValue());
+                    friends.add((String) d.getKey());
                 }
             }
 
@@ -111,6 +117,9 @@ public class Database {
     }
 
     public String getName() {
+
+        Log.d(TAG, "getName()");
+
         return user.getEmail().substring(0,user.getEmail().indexOf('@'));
     }
 

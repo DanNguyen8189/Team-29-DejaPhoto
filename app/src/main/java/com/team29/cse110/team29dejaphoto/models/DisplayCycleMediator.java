@@ -1,6 +1,7 @@
 package com.team29.cse110.team29dejaphoto.models;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.HistoryStrategy;
@@ -45,7 +46,9 @@ public class DisplayCycleMediator {
      * @return True - If the photo was added to the display cycle
      *         False - otherwise
      */
-    public boolean addToCycle(DejaPhoto photo) {
+    public boolean addToCycle(DejaPhoto photo)
+    {
+        Log.d(TAG, "addToCycle (single photo)");
         return priorities.add(photo);
     }
 
@@ -61,6 +64,7 @@ public class DisplayCycleMediator {
      *         False - otherwise
      */
     public boolean addToCycle(DejaPhoto[] gallery) {
+        Log.d(TAG, "addToCycle (galley of photos)");
 
         // An empty gallery is valid to load from
         if(gallery == null) return true;
@@ -80,6 +84,10 @@ public class DisplayCycleMediator {
      * @return LocalPhoto - photo to be displayed
      */
     public DejaPhoto getNextPhoto() {
+
+        Log.d(TAG, "getNextPhoto");
+
+
         DejaPhoto next = history.getNext();
         if(next == null) {
             DejaPhoto newPhoto = priorities.getNewPhoto();
@@ -105,6 +113,10 @@ public class DisplayCycleMediator {
      *         null - there are no previous photos available
      */
     public DejaPhoto getPrevPhoto() {
+
+        Log.d(TAG, "getPrevPhoto");
+
+
         return history.getPrev();
     }
 
@@ -114,6 +126,10 @@ public class DisplayCycleMediator {
      * @param location - The location for which scores are to be calculated with respects to
      */
     public void updatePriorities(Location location, Preferences prefs) {
+
+        Log.d(TAG, "updatePriorities");
+
+
         if(location == null) return;
 
         history.updatePriorities(location, prefs);

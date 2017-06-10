@@ -21,6 +21,10 @@ public class MockPhoto implements DejaPhoto {
     // coordinates where this photo was taken
     private String customLocation; // Holds the location that a user may set
 
+    private final int SCORE_UNIT = 10;
+    private static final double METERS_TO_FEET = 3.28084;
+    private static final int NEAR_RADIUS = 1000;
+
     /* LocalPhoto properties */
 
     private int karma;        // Flags for karma, released, and whether the photo has been
@@ -92,9 +96,9 @@ public class MockPhoto implements DejaPhoto {
      * @returns SCORE_UNIT - If the location of the photo is close to the current location
      */
     public int getLocationPoints(Location location) {
-//        return (location.distanceTo(this.location) * METERS_TO_FEET) <= NEAR_RADIUS
-//                ? SCORE_UNIT : 0;
-        return 1;
+        return (location.distanceTo(this.location) * METERS_TO_FEET) <= NEAR_RADIUS
+                ? SCORE_UNIT : 0;
+
     }
 
     /**
@@ -104,25 +108,25 @@ public class MockPhoto implements DejaPhoto {
      */
     public int getTimeTakenPoints() {
 
-//        Calendar lCalendar = Calendar.getInstance();
-//        lCalendar.setTime(getTime().getTime());
-//        lCalendar.set(1, 1, 1);
-//        lCalendar.add(Calendar.HOUR, -2);
-//
-//        Calendar uCalendar = Calendar.getInstance();
-//        uCalendar.setTime(getTime().getTime());
-//        uCalendar.set(1, 1, 1);
-//        uCalendar.add(Calendar.HOUR, 2);
-//
-//        Calendar now = new GregorianCalendar();
-//        now.set(1, 1, 1);
-//        Date currTime = now.getTime();
-//
-//        boolean withinTimeFrame
-//                = currTime.after(lCalendar.getTime()) && currTime.before(uCalendar.getTime());
-//
-//        return withinTimeFrame ? SCORE_UNIT : 0;
-        return 1;
+        Calendar lCalendar = Calendar.getInstance();
+        lCalendar.setTime(getTime().getTime());
+        lCalendar.set(1, 1, 1);
+        lCalendar.add(Calendar.HOUR, -2);
+
+        Calendar uCalendar = Calendar.getInstance();
+        uCalendar.setTime(getTime().getTime());
+        uCalendar.set(1, 1, 1);
+        uCalendar.add(Calendar.HOUR, 2);
+
+        Calendar now = new GregorianCalendar();
+        now.set(1, 1, 1);
+        Date currTime = now.getTime();
+
+        boolean withinTimeFrame
+                = currTime.after(lCalendar.getTime()) && currTime.before(uCalendar.getTime());
+
+        return withinTimeFrame ? SCORE_UNIT : 0;
+
     }
 
     /**
@@ -132,12 +136,12 @@ public class MockPhoto implements DejaPhoto {
      */
     public int getDatePoints() {
 
-//        Calendar now = new GregorianCalendar();
-//        boolean sameDayOfWeek =
-//                getTime().get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK);
-//
-//        return sameDayOfWeek ? SCORE_UNIT : 0;
-        return 1;
+        Calendar now = new GregorianCalendar();
+        boolean sameDayOfWeek =
+                getTime().get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK);
+
+        return sameDayOfWeek ? SCORE_UNIT : 0;
+
     }
 
     /*
