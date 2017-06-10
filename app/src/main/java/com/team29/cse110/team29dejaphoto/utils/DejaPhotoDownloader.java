@@ -53,7 +53,6 @@ public class DejaPhotoDownloader implements PhotoDownloader {
         Log.d("Download", "Size of array list: " + test.size());
         return test;
 
-
     }
 
 }

@@ -43,7 +43,7 @@ public class ReleaseSingleUser implements ReleaseStrategy {
             displayCycle.removeCurrentPhoto();
 
             /* If we own this photo, remove from Firebase */
-            if ( currPhoto instanceof LocalPhoto) {
+            if (currPhoto instanceof LocalPhoto) {
 
                 FirebaseUser user;
                 user = FirebaseAuth.getInstance().getCurrentUser();
@@ -57,10 +57,8 @@ public class ReleaseSingleUser implements ReleaseStrategy {
             }
             return 1;
         }
-
         return 0;
     }
-
 
     /* This method handles all recording a photo is released in SharedPreferences */
     private void recordIsReleasedInPrefs(DejaPhoto currPhoto) {

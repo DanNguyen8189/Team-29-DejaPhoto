@@ -47,8 +47,6 @@ public class DejaPhotoLoader implements PhotoLoader {
     private final int LONG_INDEX       = 2;
     private final int DATE_ADDED_INDEX = 3;
 
-    private final int MILLIS_IN_SECOND = 1000;
-
 
     /* This is the Uri for the storage of all photos */
     private final Uri MEDIA_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -97,14 +95,11 @@ public class DejaPhotoLoader implements PhotoLoader {
             File fileDejaPhotoFriends = new File(absolutePathDejaPhotoFriends);
             Uri uriDejaPhotoFriends = Uri.fromFile(fileDejaPhotoFriends);
 
-
             // used to hold uri of photo we want to load
             Uri uri = null;
+
             //used to get custom location of photo if there is one
             SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
-            /*SharedPreferences.Editor editor = sp.edit();
-            editor.clear();
-            editor.commit();*/
 
             if(fileDejaPhotoCopied.exists()) {
                 uri = uriDejaPhotoCopied;
@@ -129,12 +124,6 @@ public class DejaPhotoLoader implements PhotoLoader {
 
                 numPhotos++;
             }
-
-            //photo has karma so give karma
-           /*if(sp.contains(photoIdKarma)){
-               gallery[count].addKarma();
-           }*/
-
             count++;
         }
 
@@ -151,7 +140,6 @@ public class DejaPhotoLoader implements PhotoLoader {
      */
     @Override
     public LocalPhoto[] getNewPhotosAsArray(Context context) {
-        // TODO
         return new LocalPhoto[]{};
     }
 }

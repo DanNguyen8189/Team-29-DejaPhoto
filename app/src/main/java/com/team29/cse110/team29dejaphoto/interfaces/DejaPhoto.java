@@ -40,5 +40,4 @@ public interface DejaPhoto extends Comparable<DejaPhoto> {
 
     public String getCustomLocation();
 
-    // TODO Add all other necessary classes common to LocalPhoto and RemotePhoto
 }
