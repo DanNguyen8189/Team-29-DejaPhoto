@@ -3,6 +3,7 @@ package com.team29.cse110.team29dejaphoto.models;
 import android.location.Location;
 import android.util.Log;
 
+import com.google.firebase.storage.StorageException;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.HistoryStrategy;
 import com.team29.cse110.team29dejaphoto.interfaces.PrioritiesStrategy;
@@ -49,7 +50,9 @@ public class DisplayCycleMediator {
     public boolean addToCycle(DejaPhoto photo)
     {
         Log.d(TAG, "addToCycle (single photo)");
+
         return priorities.add(photo);
+
     }
 
     /**

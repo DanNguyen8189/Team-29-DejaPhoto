@@ -55,9 +55,9 @@ public class DisplayCycleTest {
 
         // Time values must be adjusted between 9:00pm and 12:00am
         one = new LocalPhoto(null, 0, 0, calendar.getTimeInMillis(), "");
-        calendar.add(Calendar.HOUR,1);
+        calendar.add(Calendar.HOUR,-1);
         two = new LocalPhoto(null, 300,300, calendar.getTimeInMillis(), "");
-        calendar.add(Calendar.HOUR,3);
+        calendar.add(Calendar.HOUR,-3);
         three = new LocalPhoto(null, 300, 300, calendar.getTimeInMillis(), "");
 
         // Create new LocalPhoto Galleries and populate them
