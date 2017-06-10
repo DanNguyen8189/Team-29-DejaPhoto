@@ -68,7 +68,5 @@ public class DatabaseTest {
     public void getName() throws Exception {
 
         assertEquals("Testing userName is correct", "rchance", myName);
-
     }
-
 }
