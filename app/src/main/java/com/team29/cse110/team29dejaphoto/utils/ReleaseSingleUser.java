@@ -42,6 +42,7 @@ public class ReleaseSingleUser implements ReleaseStrategy {
             recordIsReleasedInPrefs(currPhoto);
             displayCycle.removeCurrentPhoto();
 
+            /* If we own this photo, remove from Firebase */
             if ( currPhoto instanceof LocalPhoto) {
 
                 FirebaseUser user;

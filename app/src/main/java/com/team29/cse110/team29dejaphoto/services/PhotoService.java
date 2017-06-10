@@ -338,6 +338,7 @@ public class PhotoService extends Service {
                                                                     final long karma = (long) friendPhotoRef.child("Karma").getValue();
                                                                     final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
                                                                     final String userName = (String) friendPhotoRef.child("User").getValue();
+                                                                    final String customLocation = (String) friendPhotoRef.child("customLocation").getValue();
 
                                                                     photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                                                         @Override
@@ -353,7 +354,8 @@ public class PhotoService extends Service {
                                                                                         longitude,
                                                                                         timeTaken,
                                                                                         released,
-                                                                                        friendPhotoRef.getKey());
+                                                                                        friendPhotoRef.getKey(),
+                                                                                        customLocation);
                                                                                 friendPhoto.setOwner(userName);
                                                                                 if (friendPhoto != null) {
                                                                                     Log.d(TAG, "Friend photo added to cycle");
