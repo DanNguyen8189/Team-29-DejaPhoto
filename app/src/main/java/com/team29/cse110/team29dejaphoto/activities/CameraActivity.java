@@ -74,7 +74,7 @@ public class CameraActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = dejaPreferences.edit();
             editor.putString("file://"+mCurrentPhotoPath, "");
 
-            Log.d(TAG, "Photo successfully stored at AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + mCurrentPhotoPath);
+            Log.d(TAG, "Photo successfully stored at " + mCurrentPhotoPath);
             galleryAddPic();
         }
         finish();

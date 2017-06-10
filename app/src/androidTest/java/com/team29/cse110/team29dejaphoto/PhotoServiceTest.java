@@ -113,7 +113,9 @@ public class PhotoServiceTest {
 
     @Test
     public void givePhotoKarma() throws Exception {
-
+        DejaPhoto d = smallDisplayCycle.getNextPhoto();
+        d.addKarma();
+        assertTrue(d.getKarma() == 1);
     }
 
 }

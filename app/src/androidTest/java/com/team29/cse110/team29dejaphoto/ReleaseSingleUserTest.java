@@ -2,6 +2,7 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.content.SharedPreferences;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
@@ -11,12 +12,14 @@ import com.team29.cse110.team29dejaphoto.models.DisplayCycleMediator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by RobertChance on 6/9/17.
  */
+@RunWith(AndroidJUnit4.class)
 public class ReleaseSingleUserTest {
     @Rule
     public final ActivityTestRule<MainActivity> main = new ActivityTestRule<>(MainActivity.class);
@@ -40,5 +43,4 @@ public class ReleaseSingleUserTest {
 
         assertNull(displayCycleMediator.getNextPhoto());
     }
-
 }

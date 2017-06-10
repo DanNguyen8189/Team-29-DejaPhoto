@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Looper;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthProvider;
@@ -24,14 +25,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by tyler on 6/6/17.
  */
+@RunWith(AndroidJUnit4.class)
 public class FirebasePhotosHelperTest {
 
     @Rule
@@ -72,6 +76,7 @@ public class FirebasePhotosHelperTest {
     @Test
     public void downloadFriends() throws Exception {
 
+        List<DejaPhoto> friend = firebasePhotosHelper.downloadFriends();
     }
 
     @Test
@@ -81,12 +86,18 @@ public class FirebasePhotosHelperTest {
 
     @Test
     public void enableSharing() throws Exception {
-
+        assertFalse(firebasePhotosHelper.isSharing());
+        firebasePhotosHelper.enableSharing();
+        assertTrue(firebasePhotosHelper.isSharing());
     }
 
     @Test
     public void disableSharing() throws Exception {
 
+        firebasePhotosHelper.disableSharing();
+        assertFalse(firebasePhotosHelper.isSharing());
+        firebasePhotosHelper.enableSharing();
+        assertTrue(firebasePhotosHelper.isSharing());
     }
 
 }

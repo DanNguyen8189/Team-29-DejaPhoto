@@ -140,6 +140,11 @@ public class FriendActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method to parse the user's email
+     * @param email
+     * @return
+     */
     private String parseEmailToUsername(String email) {
         return email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+(.[a-zA-Z]{2,})$")
                 ? email.substring(0, email.indexOf('@')) : "";
