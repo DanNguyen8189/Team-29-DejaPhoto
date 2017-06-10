@@ -64,7 +64,7 @@ public class FirebasePhotosHelperTest {
         }
         sp = main.getActivity().getSharedPreferences("Deja_Preference",0);
        // sp = mainActivity.getApplicationContext().getSharedPreferences("Deja_Preferences",0);
-        firebasePhotosHelper = new FirebasePhotosHelper(sp);
+        firebasePhotosHelper = new FirebasePhotosHelper();
 
     }
 

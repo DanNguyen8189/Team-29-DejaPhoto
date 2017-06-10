@@ -16,6 +16,8 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -317,6 +319,9 @@ public class PhotoService extends Service {
                                                                     File friendPhoto = new File(path + "/" + friendPhotoRef.getKey() + ".jpg");
                                                                     try {
                                                                         friendPhoto.createNewFile();
+
+                                                                        MediaScannerConnection.scanFile(context, new String[] { friendPhoto.getPath() }, null, null);
+
                                                                     } catch (Exception e) {
                                                                         Log.d(TAG, "New file not created for image");
                                                                     }
@@ -325,8 +330,8 @@ public class PhotoService extends Service {
 
                                                                     //gets metadata of friend's photos
                                                                     final long timeTaken = (long) friendPhotoRef.child("TimeTaken").getValue();
-                                                                    final long latitude = (long) friendPhotoRef.child("Latitude").getValue();
-                                                                    final long longitude = (long) friendPhotoRef.child("Longitude").getValue();
+                                                                    final double latitude = Double.parseDouble(friendPhotoRef.child("Latitude").getValue().toString());
+                                                                    final double longitude = Double.parseDouble(friendPhotoRef.child("Longitude").getValue().toString());
                                                                     final long karma = (long) friendPhotoRef.child("Karma").getValue();
                                                                     final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
 
