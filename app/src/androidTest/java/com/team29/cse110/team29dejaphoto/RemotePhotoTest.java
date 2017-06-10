@@ -33,9 +33,9 @@ public class RemotePhotoTest {
         location.setLongitude(-117.2340);
         location.setLatitude(32.8801);// UCSD location
         // create a new remote photo with no bitmap, location or time information.
-        emptyPhoto = new RemotePhoto(null,0,0,0,0,false, null);
+        emptyPhoto = new RemotePhoto(null,0,0,0,0,false, null, "");
         dejaPhoto = new RemotePhoto(null,0,location.getLatitude(),location.getLongitude(),
-                                    calendar.getTimeInMillis(),false, null);
+                                    calendar.getTimeInMillis(),false, null, "");
     }
 
     /**

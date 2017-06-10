@@ -95,6 +95,7 @@ public class FirebasePhotosHelper {
         userPhotos.child(shortName).child("Longitude").setValue(photo.getLocation().getLongitude());
         userPhotos.child(shortName).child("TimeTaken").setValue(photo.getTime().getTimeInMillis());
         userPhotos.child(shortName).child("User").setValue(userName);
+        userPhotos.child(shortName).child("customLocation").setValue(photo.getCustomLocation());
 
 
         // Create file metadata including the content type
@@ -187,6 +188,7 @@ public class FirebasePhotosHelper {
                                             final long longitude = (long) friendPhotoRef.child("Longitude").getValue();
                                             final long karma = (long) friendPhotoRef.child("Karma").getValue();
                                             final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
+                                            final String customLocation = (String) friendPhotoRef.child("customLocation").getValue();
 
                                             photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                                 @Override
@@ -202,7 +204,8 @@ public class FirebasePhotosHelper {
                                                                 longitude,
                                                                 timeTaken,
                                                                 released,
-                                                                friendPhotoRef.getKey());
+                                                                friendPhotoRef.getKey(),
+                                                                customLocation);
                                                         friendsPhotosArray.add(friendPhoto);
                                                         Log.d("Download", "Size of returned array List: " + friendsPhotosArray.size());
                                                     }

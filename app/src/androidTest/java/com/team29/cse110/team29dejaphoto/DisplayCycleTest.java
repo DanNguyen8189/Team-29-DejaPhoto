@@ -221,7 +221,7 @@ public class DisplayCycleTest {
         }
 
         for(int i = 0; i < 5; i++ ) {
-            gallery [i+6] = new RemotePhoto(null,0,0,0,calendar.getTimeInMillis(),false, null);
+            gallery [i+6] = new RemotePhoto(null,0,0,0,calendar.getTimeInMillis(),false, null, "");
         }
         return gallery;
     }
