@@ -2,6 +2,8 @@ package com.team29.cse110.team29dejaphoto;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Looper;
 import android.support.test.rule.ActivityTestRule;
 
@@ -15,6 +17,7 @@ import com.google.firebase.storage.StorageReference;
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
+import com.team29.cse110.team29dejaphoto.utils.FirebaseMediator;
 import com.team29.cse110.team29dejaphoto.utils.FirebasePhotosHelper;
 
 import org.junit.Before;
@@ -33,22 +36,12 @@ public class FirebasePhotosHelperTest {
 
     @Rule
     public final ActivityTestRule<MainActivity> main = new ActivityTestRule<MainActivity>(MainActivity.class);
-
-  /*  //Firebase reference for accessing stored media
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef = storage.getReference();
-
-    //Firebase reference for getting user information
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myFirebaseRef = database.getReference();
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private StorageReference userRef = storageRef.child(user.getDisplayName()+" Unit Tests");
-    */
+    Bitmap b;
 
     public static SharedPreferences sp;
     public final String prefTag = "Test_Prefs";
 
-
+    FirebaseMediator fm = new FirebaseMediator(null, null);
 
 
     FirebasePhotosHelper firebasePhotosHelper;
@@ -58,12 +51,12 @@ public class FirebasePhotosHelperTest {
     @Before
     public void setUp(){
 
-//        mainActivity.context
+        b = BitmapFactory.decodeResource(main.getActivity().getResources(),
+            R.drawable.custom_icon_med);
         for(DejaPhoto d: gallery) {
-            d = new RemotePhoto(null, 0, 0, 0, Calendar.getInstance().getTimeInMillis(),false, null);
+            d = new RemotePhoto(b, 0, 0, 0, Calendar.getInstance().getTimeInMillis(),false, null);
         }
-        sp = main.getActivity().getSharedPreferences("Deja_Preference",0);
-       // sp = mainActivity.getApplicationContext().getSharedPreferences("Deja_Preferences",0);
+
         firebasePhotosHelper = new FirebasePhotosHelper();
 
     }

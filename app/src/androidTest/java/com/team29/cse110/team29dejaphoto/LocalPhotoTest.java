@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
+import com.team29.cse110.team29dejaphoto.models.MockPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
 
 import java.util.Calendar;
@@ -30,7 +31,7 @@ public class LocalPhotoTest {
     DejaPhoto dejaVuDate;// A photo with deja vu in date only
     DejaPhoto dejaVuAll; // A photo with deja vu in time and dateS
     DejaPhoto dejaVuLocation;// a DejaPhoto with deja vu in only location
-    DejaPhoto noDejaVu;// A photo with no deja vu
+    MockPhoto noDejaVu;// A photo with no deja vu
 
     Preferences prefAllOn = new Preferences(true,true,true);
 
@@ -57,7 +58,7 @@ public class LocalPhotoTest {
         calendar = Calendar.getInstance();
        // calendar.set(2017, 05, 13, 12, 47);
         calendar.add(Calendar.DAY_OF_WEEK, -7);// 1 week ago
-        calendar.add(Calendar.HOUR, 3);// 3 hours later
+        calendar.add(Calendar.HOUR, -3);// 3 hours later
         dejaVuDate = new LocalPhoto(Uri.EMPTY, 0, 0, calendar.getTimeInMillis(), "");
 
         // Adjust calendar to different day of week, but within current 2 hrs. Only deja vu in time
@@ -71,7 +72,7 @@ public class LocalPhotoTest {
 
         // Adjust calendar to different day, add non-local location
         calendar.add(Calendar.DAY_OF_WEEK, 3);
-        noDejaVu = new LocalPhoto(Uri.EMPTY, 300, 300, calendar.getTimeInMillis(), "");
+        noDejaVu = new MockPhoto(Uri.EMPTY, 300, 300, calendar.getTimeInMillis(), "");
     }
 
 
@@ -213,8 +214,8 @@ public class LocalPhotoTest {
         reference.setLongitude(0);
         reference.setLatitude(38);
 
-        dejaVuLocation.setCustomLocation("");
-        noDejaVu.setCustomLocation("");
+        ((LocalPhoto)dejaVuLocation).setLocation(inBounds);
+        (noDejaVu).setLocation(outBounds);
 
         assertTrue(dejaVuLocation.updateScore(reference, prefAllOn)
                      > noDejaVu.updateScore(reference, prefAllOn));
