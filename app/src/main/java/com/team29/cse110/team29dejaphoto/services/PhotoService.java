@@ -91,9 +91,8 @@ public class PhotoService extends Service {
     private static final String TAG = "PhotoService";
     private static final float FIVE_HUNDRED_FT = 152;   // Number of meters in a 500 feet
     private static final int DEFAULT_INTERVAL = 300000;
-    final long FIVE_MEGABYTES = 5*1024 * 1024;
+    final long FIVE_MEGABYTES = 5 * 1024 * 1024;
     static boolean sharingSetting;
-
 
 
     BitmapUtil bitmapUtil = new BitmapUtil(this);
@@ -114,7 +113,7 @@ public class PhotoService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch(intent.getAction()) {
+            switch (intent.getAction()) {
                 case "NEXT_BUTTON":
                     Log.d(TAG, "Next button intent received");
 
@@ -144,13 +143,10 @@ public class PhotoService extends Service {
 
                     if (currDisplayedPhoto == null) {
                         Toast.makeText(context, "No Photo Available", Toast.LENGTH_SHORT).show();
-                    }
-
-                    else if (currDisplayedPhoto instanceof RemotePhoto) {
-                       Toast.makeText(context, "Cannot edit location of friend's photo",
-                               Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else if (currDisplayedPhoto instanceof RemotePhoto) {
+                        Toast.makeText(context, "Cannot edit location of friend's photo",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
                         currDisplayedPhoto.setCustomLocation(intent.getStringExtra("customLocation"));
 
                         //record change in sharedPreferences
@@ -191,10 +187,10 @@ public class PhotoService extends Service {
 
         /* Forward Permissions Check */
         // TODO Handle no permissions and/or GPS/Network disabled
-        if(!(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (!(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED)) return;
+                        == PackageManager.PERMISSION_GRANTED)) return;
 
         /* Initialize WallpaperManager object */
         background = WallpaperManager.getInstance(getApplicationContext());
@@ -217,13 +213,16 @@ public class PhotoService extends Service {
             }
 
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
 
             @Override
-            public void onProviderEnabled(String provider) {}
+            public void onProviderEnabled(String provider) {
+            }
 
             @Override
-            public void onProviderDisabled(String provider) {}
+            public void onProviderDisabled(String provider) {
+            }
         };
 
         /* Initializes and configures the LocationListener */
@@ -242,7 +241,7 @@ public class PhotoService extends Service {
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                                   String key) {
 
-                switch(key) {
+                switch (key) {
                     case "UpdateInterval":
                         restartAutoUpdateTask();
                         Log.d(TAG, "Update interval changed");
@@ -251,17 +250,17 @@ public class PhotoService extends Service {
 
 
                     case "IsViewingFriends":
-                        Log.d(TAG, "IsViewingFriends changed to " + sp.getBoolean("IsViewingFriends",true));
+                        Log.d(TAG, "IsViewingFriends changed to " + sp.getBoolean("IsViewingFriends", true));
                         //Firebase reference for accessing stored media
                         final FirebaseStorage storage = FirebaseStorage.getInstance();
                         final StorageReference storageRef = storage.getReference();
 
-                        if(sp.getBoolean("IsViewingFriends",true)) {
+                        if (sp.getBoolean("IsViewingFriends", true)) {
 
                             String path2 = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends";
                             File DejaPhotoFriends = new File(path2);
                             // Create the DejaPhotoFriends album if it doesn't already exist
-                            if (!DejaPhotoFriends.exists()){
+                            if (!DejaPhotoFriends.exists()) {
                                 DejaPhotoFriends.mkdirs();
                                 Log.d(TAG, "DejaPhotoFriends directory created");
                             }
@@ -277,7 +276,7 @@ public class PhotoService extends Service {
                             myFirebaseRef = database.getReference();
                             user = FirebaseAuth.getInstance().getCurrentUser();
 
-                            if(user != null) {
+                            if (user != null) {
                                 String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
                                 //For storing photos in album
@@ -323,7 +322,7 @@ public class PhotoService extends Service {
                                                                     try {
                                                                         friendPhoto.createNewFile();
 
-                                                                        MediaScannerConnection.scanFile(context, new String[] { friendPhoto.getPath() }, null, null);
+                                                                        MediaScannerConnection.scanFile(context, new String[]{friendPhoto.getPath()}, null, null);
 
                                                                     } catch (Exception e) {
                                                                         Log.d(TAG, "New file not created for image");
@@ -358,6 +357,25 @@ public class PhotoService extends Service {
                                                                                         customLocation);
                                                                                 friendPhoto.setOwner(userName);
                                                                                 if (friendPhoto != null) {
+                                                                                    if (ActivityCompat.checkSelfPermission(
+                                                                                            context, Manifest.permission.ACCESS_FINE_LOCATION)
+                                                                                            != PackageManager.PERMISSION_GRANTED
+                                                                                            && ActivityCompat.checkSelfPermission(
+                                                                                                    context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                                                                                            != PackageManager.PERMISSION_GRANTED) {
+
+                                                                                        return;
+                                                                                    }
+                                                                                    if(sp.getBoolean("K_" + friendPhoto.getUniqueID(), false)) {
+                                                                                        friendPhoto.setFriendKarma();
+                                                                                    }
+                                                                                    friendPhoto.updateScore(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER),
+                                                                                            new Preferences(
+                                                                                                    sp.getBoolean("IsLocationOn", true),
+                                                                                                    sp.getBoolean("IsDateOn", true),
+                                                                                                    sp.getBoolean("IsTimeOn", true)
+                                                                                            )
+                                                                                    );
                                                                                     Log.d(TAG, "Friend photo added to cycle");
                                                                                     displayCycle.addToCycle(friendPhoto);
                                                                                 }

@@ -97,45 +97,6 @@ public class DejaPhotoLoader implements PhotoLoader {
             File fileDejaPhotoFriends = new File(absolutePathDejaPhotoFriends);
             Uri uriDejaPhotoFriends = Uri.fromFile(fileDejaPhotoFriends);
 
-//            //Shared Preference stores unique photoid that represents if photo was
-//            //released or given karma
-//            SharedPreferences sp = context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE);
-//
-//            //Unique Id that would be stored if given karma
-//            String photoId = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "1" + "0" + uri;
-
-//            String photoId = uriDejaPhotoCopied.toString();
-//            Log.d(TAG, "photoId we want to load is " + photoId);
-
-            //Unique Id that would be stored if released
-            //String photoIdRelease = Long.toString(cursor.getLong(DATE_ADDED_INDEX)) + "0" + "1" + uri;
-
-            //photo is released so skip loading
-           /*if(sp.contains(photoIdRelease))
-           {
-               Log.d(TAG, "WE ARE SKIPPING: " + uri + " !!!!!!!!!!!!!");
-               continue;
-           }*/
-
-           //Log.d(TAG, photoId);
-            // TODO Check that the photo is from the camera album
-//            if(fileDejaPhotoCopied.exists() /*&& sp.contains(uri.toString())*/) {
-//                gallery[count] = new LocalPhoto(uriDejaPhotoCopied,
-//                        cursor.getDouble(LAT_INDEX),
-//                        cursor.getDouble(LONG_INDEX),
-//                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
-//
-//                numPhotos++;
-//            }
-//
-//            if(fileDejaPhotoTaken.exists()){
-//                gallery[count] = new LocalPhoto(uriDejaPhotoTaken,
-//                        cursor.getDouble(LAT_INDEX),
-//                        cursor.getDouble(LONG_INDEX),
-//                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND);
-//
-//                numPhotos++;
-//            }
 
             // used to hold uri of photo we want to load
             Uri uri = null;
@@ -162,7 +123,9 @@ public class DejaPhotoLoader implements PhotoLoader {
 
                 Log.d(TAG, "custom location is " + sp.getString(uri.toString(), ""));
 
-                if(sp.getBoolean("K_" + uri, false)) gallery[count].addKarma();
+                if(sp.getBoolean("K_" + uri, false)) {
+                    gallery[count].addKarma();
+                }
 
                 numPhotos++;
             }
