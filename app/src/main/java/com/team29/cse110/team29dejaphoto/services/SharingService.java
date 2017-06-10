@@ -33,8 +33,7 @@ public class SharingService extends IntentService {
     //used to get the extra data added to the intent
     Bundle extras;
 
-    FirebasePhotosHelper database
-            = new FirebasePhotosHelper(getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE));
+    FirebasePhotosHelper database = new FirebasePhotosHelper();
 
     public SharingService() {
         super("SharingServce");

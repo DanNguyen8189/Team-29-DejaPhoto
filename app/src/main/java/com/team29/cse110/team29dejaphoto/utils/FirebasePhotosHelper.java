@@ -37,7 +37,6 @@ public class FirebasePhotosHelper {
     private final String TAG = "FirebasePhotosHelper";
     final long FIVE_MEGABYTES = 5*1024 * 1024;
 
-    private PhotoLoader photoLoader;
     static boolean sharingSetting;
 
     //Firebase reference for accessing stored media
@@ -52,8 +51,7 @@ public class FirebasePhotosHelper {
     //For checking if upload was successful or not
     private UploadTask uploadTask;
 
-    public FirebasePhotosHelper(SharedPreferences sp) {
-        photoLoader = new DejaPhotoLoader();
+    public FirebasePhotosHelper() {
     }
 
     public void upload(DejaPhoto photo)

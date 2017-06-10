@@ -47,8 +47,7 @@ public class DejaPhotoDownloader implements PhotoDownloader {
     public ArrayList<DejaPhoto> downloadFriendsPhotos() {
 
         FirebasePhotosHelper helper
-                = new FirebasePhotosHelper(
-                        context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE));
+                = new FirebasePhotosHelper();
         ArrayList<DejaPhoto>  test = new ArrayList<DejaPhoto>();
         test = helper.downloadFriends();
         Log.d("Download", "Size of array list: " + test.size());
