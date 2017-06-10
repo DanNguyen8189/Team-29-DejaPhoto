@@ -239,7 +239,7 @@ public class PhotoService extends Service {
 
                         return;
 
-                    /*
+
                     case "IsViewingFriends":
                         Log.d(TAG, "IsViewingFriends changed to " + sp.getBoolean("IsViewingFriends",true));
                         //Firebase reference for accessing stored media
@@ -392,7 +392,6 @@ public class PhotoService extends Service {
                             displayCycle = new DisplayCycleMediator(photoLoader.getPhotosAsArray(PhotoService.this));
                         }
 
-                        */
 
 
 
