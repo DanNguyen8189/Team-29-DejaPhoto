@@ -36,9 +36,21 @@ public class BitmapUtil {
 
     public Bitmap resizePhoto(Bitmap bitmap) {
 
-        return bitmap.getHeight()>= 4*bitmap.getWidth()/3
-                ? Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getWidth()*4/3),480,640,true)
-                : Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap,0,0,bitmap.getHeight()*3/4,bitmap.getHeight()),480,640,true);
+        Bitmap newBitmap;
+
+        if(bitmap.getHeight() >= 4 * bitmap.getWidth() / 3) {
+            if(bitmap.getWidth() * 4/3 >= bitmap.getHeight())
+                newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getWidth() * 4/3);
+            else
+                newBitmap = bitmap;
+        } else {
+            if(bitmap.getHeight() * 3/4 >= bitmap.getWidth())
+                newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getHeight() * 3/4, bitmap.getHeight());
+            else
+                newBitmap = bitmap;
+        }
+
+        return Bitmap.createScaledBitmap(newBitmap, 480, 640, true);
     }
 
     public byte[] bitmapToByteArray(Bitmap b) {

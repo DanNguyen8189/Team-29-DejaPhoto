@@ -1,6 +1,7 @@
 package com.team29.cse110.team29dejaphoto;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.support.test.rule.ActivityTestRule;
@@ -37,17 +38,20 @@ public class BitmapUtilTest {
 
 
     BitmapUtil bitmapUtil = new BitmapUtil();
-    PhotoDownloader photoDownloader = new DejaPhotoDownloader(main.getActivity().getApplicationContext());
+    // PhotoDownloader photoDownloader = new DejaPhotoDownloader(main.getActivity().getApplicationContext());
 
-    List<DejaPhoto> photos = photoDownloader.downloadAllPhotos();
+    // List<DejaPhoto> photos = photoDownloader.downloadAllPhotos();
 
     @Before
     public void setUp() {
+        Bitmap testBitmap = BitmapFactory.decodeResource(main.getActivity().getResources(),R.drawable.custom_icon_med);
+//        testBitmap = Bitmap.createScaledBitmap()
 
-        smallImage = Bitmap.createBitmap(null,0,0,200,200);
-        largeImage = Bitmap.createBitmap(null,0,0,2000,2000);
-        smallHorizontal = Bitmap.createBitmap(null,0,0,200,800);
-        smallVertical = Bitmap.createBitmap(null,0,0,800,200);
+        smallImage = Bitmap.createBitmap(testBitmap,0,0,200,200);
+//        largeImage = Bitmap.createBitmap(testBitmap,0,0,2000,2000);
+//        smallHorizontal = Bitmap.createBitmap(testBitmap,0,0,200,800);
+//        smallVertical = Bitmap.createBitmap(testBitmap,0,0,800,200);
+
 
     }
 
