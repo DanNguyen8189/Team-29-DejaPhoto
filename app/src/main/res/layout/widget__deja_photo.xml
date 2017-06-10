@@ -95,6 +95,7 @@
         android:id="@+id/editLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Customize Location!"
         android:textSize="20dp"
         android:layout_below="@+id/textView3"

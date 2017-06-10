@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         dejaDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         dejaDrawerToggle = new ActionBarDrawerToggle(this, dejaDrawer,
                 R.string.drawer_opened, R.string.drawer_closed);
