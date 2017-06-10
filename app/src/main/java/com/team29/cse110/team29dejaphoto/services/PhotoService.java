@@ -12,10 +12,12 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
@@ -24,6 +26,17 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.team29.cse110.team29dejaphoto.R;
 import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
@@ -36,6 +49,10 @@ import com.team29.cse110.team29dejaphoto.models.RemotePhoto;
 import com.team29.cse110.team29dejaphoto.utils.BitmapUtil;
 import com.team29.cse110.team29dejaphoto.utils.DejaPhotoLoader;
 import com.team29.cse110.team29dejaphoto.utils.ReleaseSingleUser;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
 
 
 /**
@@ -222,7 +239,7 @@ public class PhotoService extends Service {
 
                         return;
 
-                    /* Commented for those who dont have friends for now
+                    /*
                     case "IsViewingFriends":
                         Log.d(TAG, "IsViewingFriends changed to " + sp.getBoolean("IsViewingFriends",true));
                         //Firebase reference for accessing stored media
@@ -249,116 +266,116 @@ public class PhotoService extends Service {
                             database = FirebaseDatabase.getInstance();
                             myFirebaseRef = database.getReference();
                             user = FirebaseAuth.getInstance().getCurrentUser();
-                            String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
-                            //For storing photos in album
-                            final String path = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends";
+                            if(user != null) {
+                                String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
 
-                            //Sets reference to current user in realtime database
-                            DatabaseReference dataFriendsRef = myFirebaseRef.child(userName).child("friends");
-                            Query friendsQuery = dataFriendsRef;
+                                //For storing photos in album
+                                final String path = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends";
 
-                            friendsQuery.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                //Sets reference to current user in realtime database
+                                DatabaseReference dataFriendsRef = myFirebaseRef.child(userName).child("friends");
+                                Query friendsQuery = dataFriendsRef;
 
-                                    for( final DataSnapshot friend : dataSnapshot.getChildren())
-                                    {
-                                        Log.d(TAG, "Friend is: " + friend.getKey());
-                                        final StorageReference storageUserRef = storageRef.child(friend.getKey());
-                                        final Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
+                                friendsQuery.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                        //Checks friend's sharing setting before downloading photos
-                                        Query friendsSharing = myFirebaseRef.child(friend.getKey()).child("SharingEnabled");
-                                        friendsSharing.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                Log.d(TAG, "Setting is " + dataSnapshot.getValue());
-                                                sharingSetting = ((boolean) dataSnapshot.getValue());
+                                        for (final DataSnapshot friend : dataSnapshot.getChildren()) {
+                                            Log.d(TAG, "Friend is: " + friend.getKey());
+                                            final StorageReference storageUserRef = storageRef.child(friend.getKey());
+                                            final Query friendsPhotos = myFirebaseRef.child(friend.getKey()).child("Photos");
 
-                                                //Will download photos if friend has setting enabled
-                                                Log.d(TAG, "Sharing is " + sharingSetting);
-                                                if(sharingSetting) {
+                                            //Checks friend's sharing setting before downloading photos
+                                            Query friendsSharing = myFirebaseRef.child(friend.getKey()).child("SharingEnabled");
+                                            friendsSharing.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    Log.d(TAG, "Setting is " + dataSnapshot.getValue());
+                                                    sharingSetting = ((boolean) dataSnapshot.getValue());
 
-                                                    Log.d(TAG, "Entering friends photos ");
-                                                    friendsPhotos.addValueEventListener(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    //Will download photos if friend has setting enabled
+                                                    Log.d(TAG, "Sharing is " + sharingSetting);
+                                                    if (sharingSetting) {
 
-                                                            for (final DataSnapshot friendPhotoRef : dataSnapshot.getChildren()) {
-                                                                //Gets reference to friend's photos and downloads them to
-                                                                Log.d(TAG, "Downloading " + friend.getKey() + "'s " +
-                                                                        friendPhotoRef.getKey() + ".jpg");
-                                                                StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
-                                                                //creates new file for photo in album
-                                                                File friendPhoto = new File(path + "/" + friendPhotoRef.getKey() + ".jpg");
-                                                                try{
-                                                                    friendPhoto.createNewFile();
-                                                                }
-                                                                catch(Exception e)
-                                                                {
-                                                                    Log.d(TAG, "New file not created for image");
-                                                                }
-                                                                //downloads the file to storage
-                                                                photoref.getFile(friendPhoto);
+                                                        Log.d(TAG, "Entering friends photos ");
+                                                        friendsPhotos.addValueEventListener(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                                                //gets metadata of friend's photos
-                                                                final long timeTaken = (long) friendPhotoRef.child("TimeTaken").getValue();
-                                                                final long latitude = (long) friendPhotoRef.child("Latitude").getValue();
-                                                                final long longitude = (long) friendPhotoRef.child("Longitude").getValue();
-                                                                final long karma = (long) friendPhotoRef.child("Karma").getValue();
-                                                                final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
-
-                                                                photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                                                    @Override
-                                                                    public void onSuccess(byte[] bytes) {
-                                                                        Log.d(TAG, "Conversion to bitmap successful");
-                                                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                                        if (bitmap != null) {
-                                                                            Log.d(TAG, "Bitmap not null");
-                                                                            RemotePhoto friendPhoto = new RemotePhoto(
-                                                                                    bitmap,
-                                                                                    (int) karma,
-                                                                                    latitude,
-                                                                                    longitude,
-                                                                                    timeTaken,
-                                                                                    released,
-                                                                                    friendPhotoRef.getKey());
-                                                                            if(friendPhoto != null) {
-                                                                                Log.d(TAG, "Friend photo added to cycle");
-                                                                                displayCycle.addToCycle(friendPhoto);
-                                                                            }
-                                                                        }
-
+                                                                for (final DataSnapshot friendPhotoRef : dataSnapshot.getChildren()) {
+                                                                    //Gets reference to friend's photos and downloads them to
+                                                                    Log.d(TAG, "Downloading " + friend.getKey() + "'s " +
+                                                                            friendPhotoRef.getKey() + ".jpg");
+                                                                    StorageReference photoref = storageUserRef.child(friendPhotoRef.getKey() + ".jpg");
+                                                                    //creates new file for photo in album
+                                                                    File friendPhoto = new File(path + "/" + friendPhotoRef.getKey() + ".jpg");
+                                                                    try {
+                                                                        friendPhoto.createNewFile();
+                                                                    } catch (Exception e) {
+                                                                        Log.d(TAG, "New file not created for image");
                                                                     }
-                                                                });
+                                                                    //downloads the file to storage
+                                                                    photoref.getFile(friendPhoto);
+
+                                                                    //gets metadata of friend's photos
+                                                                    final long timeTaken = (long) friendPhotoRef.child("TimeTaken").getValue();
+                                                                    final long latitude = (long) friendPhotoRef.child("Latitude").getValue();
+                                                                    final long longitude = (long) friendPhotoRef.child("Longitude").getValue();
+                                                                    final long karma = (long) friendPhotoRef.child("Karma").getValue();
+                                                                    final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
+
+                                                                    photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                                        @Override
+                                                                        public void onSuccess(byte[] bytes) {
+                                                                            Log.d(TAG, "Conversion to bitmap successful");
+                                                                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                                            if (bitmap != null) {
+                                                                                Log.d(TAG, "Bitmap not null");
+                                                                                RemotePhoto friendPhoto = new RemotePhoto(
+                                                                                        bitmap,
+                                                                                        (int) karma,
+                                                                                        latitude,
+                                                                                        longitude,
+                                                                                        timeTaken,
+                                                                                        released,
+                                                                                        friendPhotoRef.getKey());
+                                                                                if (friendPhoto != null) {
+                                                                                    Log.d(TAG, "Friend photo added to cycle");
+                                                                                    displayCycle.addToCycle(friendPhoto);
+                                                                                }
+                                                                            }
+
+                                                                        }
+                                                                    });
+                                                                }
+
                                                             }
 
-                                                        }
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
 
-                                                        @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
+                                                            }
+                                                        });
+                                                    }
 
-                                                        }
-                                                    });
+
                                                 }
 
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
 
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        });
+                                                }
+                                            });
+                                        }
                                     }
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
 
-                                }
-                            });
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
+                                    }
+                                });
+                            }
                         }
                         else
                         {
@@ -376,6 +393,7 @@ public class PhotoService extends Service {
                         }
 
                         */
+
 
 
                     case "IsLocationOn":
