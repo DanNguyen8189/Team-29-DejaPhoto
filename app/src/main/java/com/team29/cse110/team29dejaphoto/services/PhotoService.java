@@ -535,9 +535,9 @@ public class PhotoService extends Service {
 
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
         if ( dejaPhoto != null ) {
-            //if(dejaPhoto instanceof LocalPhoto) {
-            //    updateKarma((LocalPhoto) dejaPhoto);
-            //}
+            if(dejaPhoto instanceof LocalPhoto && sp.getBoolean("IsSharingPhotos",true)) {
+                updateKarma((LocalPhoto) dejaPhoto);
+            }
             currDisplayedPhoto = dejaPhoto;
         }
 
@@ -591,9 +591,9 @@ public class PhotoService extends Service {
 
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
         if ( dejaPhoto != null ) {
-            //if(dejaPhoto instanceof LocalPhoto) {
-             //   updateKarma((LocalPhoto) dejaPhoto);
-            //}
+            if(dejaPhoto instanceof LocalPhoto && sp.getBoolean("IsSharingPhotos",true)) {
+                updateKarma((LocalPhoto) dejaPhoto);
+            }
             currDisplayedPhoto = dejaPhoto;
         }
 
@@ -784,6 +784,8 @@ public class PhotoService extends Service {
                Uri photoURI = Uri.parse(photo.getUniqueID());
                String photoname = photoURI.getLastPathSegment();
                String shortName = photoname.substring(0,photoname.indexOf("."));
+
+               Log.d(TAG, "Upadting Karma of: "+ shortName);
 
                long karmaCount = (long) dataSnapshot.child(shortName).child("Karma").getValue();
                int karmaC = (int) karmaCount;
