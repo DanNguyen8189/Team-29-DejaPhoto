@@ -282,7 +282,7 @@ public class PhotoService extends Service {
                                 DatabaseReference dataFriendsRef = myFirebaseRef.child(userName).child("friends");
                                 Query friendsQuery = dataFriendsRef;
 
-                                friendsQuery.addValueEventListener(new ValueEventListener() {
+                                friendsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -304,7 +304,7 @@ public class PhotoService extends Service {
                                                     if (sharingSetting) {
 
                                                         Log.d(TAG, "Entering friends photos ");
-                                                        friendsPhotos.addValueEventListener(new ValueEventListener() {
+                                                        friendsPhotos.addListenerForSingleValueEvent(new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(DataSnapshot dataSnapshot) {
 
