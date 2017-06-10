@@ -159,6 +159,10 @@ public class RemotePhoto implements DejaPhoto {
 
     public void setReleased() { released = true; }
 
+    public boolean isReleased() {
+        return released;
+    }
+
     public Bitmap getBitmap() {
         return bitmap;
     }

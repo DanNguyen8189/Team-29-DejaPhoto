@@ -590,6 +590,13 @@ public class PhotoService extends Service {
                         ((LocalPhoto) dejaPhoto).getPhotoUri());
             }
             else {
+
+                /* First check if this photo was released by the owner */
+                if ( ((RemotePhoto) dejaPhoto).isReleased() ) {
+                    displayCycle.removeCurrentPhoto();
+                    cycleForward();
+                }
+
                 photoBitmap = ((RemotePhoto) dejaPhoto).getBitmap();
             }
 
