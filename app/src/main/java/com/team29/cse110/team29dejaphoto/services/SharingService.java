@@ -28,7 +28,7 @@ public class SharingService extends IntentService {
 
     private static final String TAG = "SharingService";
 
-    private PhotoLoader photoLoader;
+    private PhotoLoader photoLoader = new DejaPhotoLoader(getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE));
     private DatabaseReference myFirebaseRef;
     //used to get the extra data added to the intent
     Bundle extras;
@@ -36,9 +36,8 @@ public class SharingService extends IntentService {
     FirebasePhotosHelper database
             = new FirebasePhotosHelper(getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE));
 
-    public SharingService(SharedPreferences sp) {
-        super("SharingService");
-        photoLoader = new DejaPhotoLoader(sp);
+    public SharingService() {
+        super("SharingServce");
     }
 
     @Override
