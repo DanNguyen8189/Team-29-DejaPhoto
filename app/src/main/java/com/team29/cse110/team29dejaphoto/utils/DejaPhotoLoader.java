@@ -83,6 +83,7 @@ public class DejaPhotoLoader implements PhotoLoader {
             //String absolutePath = Environment.getExternalStorageDirectory() + "/DCIM/Camera/" + filename;
 
             String absolutePathDejaPhotoCopied = Environment.getExternalStorageDirectory() + "/DejaPhotoCopied/dejaCopied" + filename;
+            Log.d(TAG, "absolutepath of dejaphotocopied " + absolutePathDejaPhotoCopied);
             File fileDejaPhotoCopied = new File(absolutePathDejaPhotoCopied);
             Uri uriDejaPhotoCopied = Uri.fromFile(fileDejaPhotoCopied);
 
@@ -90,6 +91,11 @@ public class DejaPhotoLoader implements PhotoLoader {
             Log.d(TAG, "absolutepath of dejaphototaken " + absolutePathDejaPhotoTaken);
             File fileDejaPhotoTaken = new File(absolutePathDejaPhotoTaken);
             Uri uriDejaPhotoTaken = Uri.fromFile(fileDejaPhotoTaken);
+
+            String absolutePathDejaPhotoFriends = Environment.getExternalStorageDirectory() + "/DejaPhotoFriends/" + filename;
+            Log.d(TAG, "absolutepath of dejaphotofriends " + absolutePathDejaPhotoFriends);
+            File fileDejaPhotoFriends = new File(absolutePathDejaPhotoFriends);
+            Uri uriDejaPhotoFriends = Uri.fromFile(fileDejaPhotoFriends);
 
 //            //Shared Preference stores unique photoid that represents if photo was
 //            //released or given karma
@@ -146,6 +152,9 @@ public class DejaPhotoLoader implements PhotoLoader {
             } else if(fileDejaPhotoTaken.exists()) {
                 uri = uriDejaPhotoTaken;
                 Log.d(TAG, "Loading photo from in-app camera: " + uriDejaPhotoTaken);
+            } else if(fileDejaPhotoFriends.exists()) {
+                uri = uriDejaPhotoFriends;
+                Log.d(TAG, "Loading photo from friends album: " + uriDejaPhotoFriends);
             }
 
             if(uri != null && !sp.getBoolean("R_" + uri, false)) {
