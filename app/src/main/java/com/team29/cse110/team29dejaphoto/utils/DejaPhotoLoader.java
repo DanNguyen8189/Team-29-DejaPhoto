@@ -152,16 +152,12 @@ public class DejaPhotoLoader implements PhotoLoader {
             } else if(fileDejaPhotoTaken.exists()) {
                 uri = uriDejaPhotoTaken;
                 Log.d(TAG, "Loading photo from in-app camera: " + uriDejaPhotoTaken);
-            } else if(fileDejaPhotoFriends.exists()) {
-                uri = uriDejaPhotoFriends;
-                Log.d(TAG, "Loading photo from friends album: " + uriDejaPhotoFriends);
             }
-
             if(uri != null && !sp.getBoolean("R_" + uri, false)) {
                 gallery[count] = new LocalPhoto(uri,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
-                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND,
+                        cursor.getLong(DATE_ADDED_INDEX),
                         sp.getString(uri.toString(), ""));
 
                 Log.d(TAG, "custom location is " + sp.getString(uri.toString(), ""));

@@ -535,6 +535,9 @@ public class PhotoService extends Service {
 
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
         if ( dejaPhoto != null ) {
+            if(dejaPhoto instanceof LocalPhoto && sp.getBoolean("IsSharingPhotos",true)) {
+                updateKarma((LocalPhoto) dejaPhoto);
+            }
             currDisplayedPhoto = dejaPhoto;
         }
 
@@ -588,6 +591,9 @@ public class PhotoService extends Service {
 
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
         if ( dejaPhoto != null ) {
+            if(dejaPhoto instanceof LocalPhoto && sp.getBoolean("IsSharingPhotos",true)) {
+                updateKarma((LocalPhoto) dejaPhoto);
+            }
             currDisplayedPhoto = dejaPhoto;
         }
 
@@ -742,5 +748,55 @@ public class PhotoService extends Service {
        else {
            Log.d(TAG, "No reference to currently displayed photo - cannot set karma, or photo already has karma");
        }
+
+   }
+
+
+   //for updating the users karma when someone else gives it karma
+   public void updateKarma(final LocalPhoto photo)
+   {
+       //Firebase Stuff for incrementing karma in database
+       FirebaseDatabase database;
+       DatabaseReference myFirebaseRef;
+       FirebaseUser user;
+
+       //Gets current User
+       database = FirebaseDatabase.getInstance();
+       myFirebaseRef = database.getReference();
+       user = FirebaseAuth.getInstance().getCurrentUser();
+       Uri photoURI;
+       String photoName;
+
+       // Ensure a User is found
+       if(user == null) {
+           Log.d(TAG, "User authentication failed");
+           return;
+       }
+
+       String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+
+       //Sets reference to current user
+       DatabaseReference userRef = myFirebaseRef.child(userName);
+
+       userRef.child("Photos").addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+               Uri photoURI = Uri.parse(photo.getUniqueID());
+               String photoname = photoURI.getLastPathSegment();
+               String shortName = photoname.substring(0,photoname.indexOf("."));
+
+               Log.d(TAG, "Upadting Karma of: "+ shortName);
+
+               long karmaCount = (long) dataSnapshot.child(shortName).child("Karma").getValue();
+               int karmaC = (int) karmaCount;
+               photo.setKarma(karmaC);
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+
    }
 }

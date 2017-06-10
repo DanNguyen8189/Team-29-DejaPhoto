@@ -250,4 +250,9 @@ public class LocalPhoto implements DejaPhoto {
     {
         this.owner = owner;
     }
+
+    public void setKarma(int karma)
+    {
+        this.karma = karma;
+    }
 }
