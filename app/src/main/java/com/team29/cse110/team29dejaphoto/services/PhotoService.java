@@ -136,7 +136,12 @@ public class PhotoService extends Service {
 
                 case "EDIT_LOCATION":
                     Log.d(TAG, "Edit location intent received");
-                    if(currDisplayedPhoto instanceof RemotePhoto) {
+
+                    if (currDisplayedPhoto == null) {
+                        Toast.makeText(context, "No Photo Available", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else if (currDisplayedPhoto instanceof RemotePhoto) {
                        Toast.makeText(context, "Cannot edit location of friend's photo",
                                Toast.LENGTH_SHORT).show();
                     }
