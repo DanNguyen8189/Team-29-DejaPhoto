@@ -535,9 +535,9 @@ public class PhotoService extends Service {
 
         DejaPhoto dejaPhoto = displayCycle.getPrevPhoto();
         if ( dejaPhoto != null ) {
-            if(dejaPhoto instanceof LocalPhoto) {
-                updateKarma((LocalPhoto) dejaPhoto);
-            }
+            //if(dejaPhoto instanceof LocalPhoto) {
+            //    updateKarma((LocalPhoto) dejaPhoto);
+            //}
             currDisplayedPhoto = dejaPhoto;
         }
 
@@ -591,9 +591,9 @@ public class PhotoService extends Service {
 
         DejaPhoto dejaPhoto = displayCycle.getNextPhoto();
         if ( dejaPhoto != null ) {
-            if(dejaPhoto instanceof LocalPhoto) {
-                updateKarma((LocalPhoto) dejaPhoto);
-            }
+            //if(dejaPhoto instanceof LocalPhoto) {
+             //   updateKarma((LocalPhoto) dejaPhoto);
+            //}
             currDisplayedPhoto = dejaPhoto;
         }
 
