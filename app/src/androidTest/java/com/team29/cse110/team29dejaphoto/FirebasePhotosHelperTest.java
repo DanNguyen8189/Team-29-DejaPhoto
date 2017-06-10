@@ -54,7 +54,7 @@ public class FirebasePhotosHelperTest {
         b = BitmapFactory.decodeResource(main.getActivity().getResources(),
             R.drawable.custom_icon_med);
         for(DejaPhoto d: gallery) {
-            d = new RemotePhoto(b, 0, 0, 0, Calendar.getInstance().getTimeInMillis(),false, null);
+            d = new RemotePhoto(b, 0, 0, 0, Calendar.getInstance().getTimeInMillis(),false, null, "");
         }
 
         firebasePhotosHelper = new FirebasePhotosHelper();

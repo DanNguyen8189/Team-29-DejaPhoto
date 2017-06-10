@@ -41,7 +41,7 @@ public class RemotePhoto implements DejaPhoto {
     private static final int NEAR_RADIUS = 1000;
     private final int SCORE_UNIT = 10;
 
-    public RemotePhoto(Bitmap bitmap, int karma, double lat, double lng, long timeTaken, boolean released, String fileName) {
+    public RemotePhoto(Bitmap bitmap, int karma, double lat, double lng, long timeTaken, boolean released, String fileName, String customUserLocation) {
         this.bitmap = bitmap;
         this.karma = karma;
         this.lat = lat;
@@ -52,6 +52,7 @@ public class RemotePhoto implements DejaPhoto {
         location.setLatitude(lat);
         location.setLongitude(lng);
         this.fileName = fileName;
+        this.customLocation = customUserLocation;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class HistoryTest {
     DejaPhoto[] remoteGallery = new RemotePhoto[10];
     DejaPhoto[] shortgallery = new DejaPhoto[] {new LocalPhoto(Uri.EMPTY,0,0,0L, ""),
                                                 new LocalPhoto(Uri.EMPTY,0,0,0L, ""),
-                                                new RemotePhoto(null,0,0,0,0L,false, null)};
+                                                new RemotePhoto(null,0,0,0,0L,false, null, "")};
     LinkedListHistory history = new LinkedListHistory();
 
     private String TAG = "HistoryTest";
@@ -44,7 +44,7 @@ public class HistoryTest {
         for(int i =0; i < 10; i++) {
 
             remoteGallery[i] = new RemotePhoto(null, 0, 0, 0, Calendar.getInstance().
-                                                                       getTimeInMillis(),false, null);
+                                                                       getTimeInMillis(),false, null, "");
         }
     }
 
