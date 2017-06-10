@@ -53,7 +53,7 @@ public class FirebasePhotosHelper {
     private UploadTask uploadTask;
 
     public FirebasePhotosHelper(SharedPreferences sp) {
-        photoLoader = new DejaPhotoLoader(sp);
+        photoLoader = new DejaPhotoLoader();
     }
 
     public void upload(DejaPhoto photo)
