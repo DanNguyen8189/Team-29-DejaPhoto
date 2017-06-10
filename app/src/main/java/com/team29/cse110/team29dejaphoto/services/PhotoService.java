@@ -334,6 +334,7 @@ public class PhotoService extends Service {
                                                                     final double longitude = Double.parseDouble(friendPhotoRef.child("Longitude").getValue().toString());
                                                                     final long karma = (long) friendPhotoRef.child("Karma").getValue();
                                                                     final boolean released = (boolean) friendPhotoRef.child("Released").getValue();
+                                                                    final String userName = (String) friendPhotoRef.child("User").getValue();
 
                                                                     photoref.getBytes(FIVE_MEGABYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                                                         @Override
@@ -350,6 +351,7 @@ public class PhotoService extends Service {
                                                                                         timeTaken,
                                                                                         released,
                                                                                         friendPhotoRef.getKey());
+                                                                                friendPhoto.setOwner(userName);
                                                                                 if (friendPhoto != null) {
                                                                                     Log.d(TAG, "Friend photo added to cycle");
                                                                                     displayCycle.addToCycle(friendPhoto);
@@ -662,6 +664,67 @@ public class PhotoService extends Service {
            //stores unique photo id
            editor.putBoolean(photoid, true);
            editor.apply();
+
+           //Firebase Stuff for incrementing karma in database
+           FirebaseDatabase database;
+           DatabaseReference myFirebaseRef;
+           FirebaseUser user;
+
+           //Gets current User
+           database = FirebaseDatabase.getInstance();
+           myFirebaseRef = database.getReference();
+           user = FirebaseAuth.getInstance().getCurrentUser();
+           Uri photoURI;
+           String photoName;
+
+           // Ensure a User is found
+           if(user == null) {
+               Log.d(TAG, "User authentication failed");
+               return;
+           }
+
+           String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+
+           //Sets reference to current user
+           DatabaseReference userRef = myFirebaseRef.child(userName);
+
+           //Updates karma for users own photo
+           if(currDisplayedPhoto instanceof LocalPhoto) {
+               photoURI = Uri.parse(currDisplayedPhoto.getUniqueID());
+               String photoname = photoURI.getLastPathSegment();
+               String shortName = photoname.substring(0,photoname.indexOf("."));
+               userRef.child("Photos").child(shortName).addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(DataSnapshot dataSnapshot) {
+                    long karmaCount = (long) dataSnapshot.child("Karma").getValue();
+                       dataSnapshot.child("Karma").getRef().setValue(karmaCount + 1);
+                   }
+
+                   @Override
+                   public void onCancelled(DatabaseError databaseError) {
+
+                   }
+               });
+           }
+           //updates karma for a friend photo
+           else if(currDisplayedPhoto instanceof RemotePhoto )
+           {
+               photoName = ((RemotePhoto) currDisplayedPhoto).getFileName();
+               String owner = ((RemotePhoto) currDisplayedPhoto).getOwner();
+               myFirebaseRef.child(owner).child("Photos").child(photoName).addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(DataSnapshot dataSnapshot) {
+                       long karmaCount = (long) dataSnapshot.child("Karma").getValue();
+                       dataSnapshot.child("Karma").getRef().setValue(karmaCount + 1);
+                   }
+
+                   @Override
+                   public void onCancelled(DatabaseError databaseError) {
+
+                   }
+               });
+           }
+
 
            Log.d(TAG, "Photoid is: " + photoid);
        }

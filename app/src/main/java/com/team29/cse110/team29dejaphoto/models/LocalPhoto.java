@@ -22,6 +22,7 @@ public class LocalPhoto implements DejaPhoto {
     private Location location;    // Location object composing lat and long
                                   // coordinates where this photo was taken
     private String customLocation; // Holds the location that a user may set
+    String owner;
 
     /* LocalPhoto properties */
 
@@ -238,5 +239,15 @@ public class LocalPhoto implements DejaPhoto {
 
     public String getCustomLocation() {
         return customLocation;
+    }
+
+    public String getOwner()
+    {
+        return this.owner;
+    }
+
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
     }
 }

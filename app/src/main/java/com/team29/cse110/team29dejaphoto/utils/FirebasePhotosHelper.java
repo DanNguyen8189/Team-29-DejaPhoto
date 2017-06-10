@@ -94,6 +94,8 @@ public class FirebasePhotosHelper {
         userPhotos.child(shortName).child("Latitude").setValue(photo.getLocation().getLatitude());
         userPhotos.child(shortName).child("Longitude").setValue(photo.getLocation().getLongitude());
         userPhotos.child(shortName).child("TimeTaken").setValue(photo.getTime().getTimeInMillis());
+        userPhotos.child(shortName).child("User").setValue(userName);
+
 
         // Create file metadata including the content type
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg")
