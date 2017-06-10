@@ -135,7 +135,7 @@ public class RemotePhoto implements DejaPhoto {
     }
 
     public void addKarma() {
-        if(!hasKarma()) {
+        if(!hasFriendKarma) {
             karma += 1;
             setFriendKarma();
         }
@@ -155,7 +155,7 @@ public class RemotePhoto implements DejaPhoto {
 
     public Calendar getTime() { return time; }
 
-    public String getUniqueID() { return "";}
+    public String getUniqueID() { return fileName; }
 
     public Location getLocation() { return location; }
 

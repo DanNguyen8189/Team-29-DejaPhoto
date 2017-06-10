@@ -698,14 +698,6 @@ public class PhotoService extends Service {
 
            String photoid =  "K_" + currDisplayedPhoto.getUniqueID();
 
-           if(currDisplayedPhoto instanceof LocalPhoto) {
-               photoid = "K_" + currDisplayedPhoto.getUniqueID();
-           }
-           else if(currDisplayedPhoto instanceof RemotePhoto)
-           {
-               photoid = ((RemotePhoto) currDisplayedPhoto).getFileName();
-           }
-
            //stores unique photo id
            editor.putBoolean(photoid, true);
            editor.apply();
