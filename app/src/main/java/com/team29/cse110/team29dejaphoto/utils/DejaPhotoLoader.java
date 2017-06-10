@@ -161,7 +161,7 @@ public class DejaPhotoLoader implements PhotoLoader {
                 gallery[count] = new LocalPhoto(uri,
                         cursor.getDouble(LAT_INDEX),
                         cursor.getDouble(LONG_INDEX),
-                        cursor.getLong(DATE_ADDED_INDEX) * MILLIS_IN_SECOND,
+                        cursor.getLong(DATE_ADDED_INDEX),
                         sp.getString(uri.toString(), ""));
 
                 Log.d(TAG, "custom location is " + sp.getString(uri.toString(), ""));
