@@ -397,6 +397,7 @@ public class PhotoService extends Service {
                             Log.d(TAG, "Turning viewing friends off, resetting display..");
                             //Deletes friend album to sync with database
                             try{
+                                Log.d(TAG, "Deleting Album..");
                                 FileUtils.deleteDirectory(new File(Environment.getExternalStorageDirectory() + "/DejaPhotoFriends"));
                             }
                             catch(Exception e)
@@ -675,7 +676,15 @@ public class PhotoService extends Service {
            SharedPreferences.Editor editor = sp.edit();
            //Unique DejaPhoto id given to a photo that has been given karma
 
-           String photoid = "K_" + currDisplayedPhoto.getUniqueID();
+           String photoid =  "K_" + currDisplayedPhoto.getUniqueID();
+
+           if(currDisplayedPhoto instanceof LocalPhoto) {
+               photoid = "K_" + currDisplayedPhoto.getUniqueID();
+           }
+           else if(currDisplayedPhoto instanceof RemotePhoto)
+           {
+               photoid = ((RemotePhoto) currDisplayedPhoto).getFileName();
+           }
 
            //stores unique photo id
            editor.putBoolean(photoid, true);
