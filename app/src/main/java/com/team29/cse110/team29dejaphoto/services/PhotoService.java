@@ -29,8 +29,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +46,7 @@ import com.team29.cse110.team29dejaphoto.activities.MainActivity;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.PhotoLoader;
 import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
+import com.team29.cse110.team29dejaphoto.models.Database;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycleMediator;
 import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 import com.team29.cse110.team29dejaphoto.models.Preferences;
@@ -597,6 +600,13 @@ public class PhotoService extends Service {
                         ((LocalPhoto) dejaPhoto).getPhotoUri());
             }
             else {
+
+                /* First check if this photo was released by the owner */
+                if ( ((RemotePhoto) dejaPhoto).isReleased() ) {
+                    displayCycle.removeCurrentPhoto();
+                    cycleForward();
+                }
+
                 photoBitmap = ((RemotePhoto) dejaPhoto).getBitmap();
             }
 

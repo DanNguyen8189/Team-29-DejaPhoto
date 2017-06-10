@@ -2,9 +2,14 @@ package com.team29.cse110.team29dejaphoto.utils;
 
 import android.content.SharedPreferences;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.team29.cse110.team29dejaphoto.interfaces.DejaPhoto;
 import com.team29.cse110.team29dejaphoto.interfaces.ReleaseStrategy;
 import com.team29.cse110.team29dejaphoto.models.DisplayCycleMediator;
+import com.team29.cse110.team29dejaphoto.models.LocalPhoto;
 
 
 /**
@@ -36,6 +41,19 @@ public class ReleaseSingleUser implements ReleaseStrategy {
             currPhoto.setReleased();
             recordIsReleasedInPrefs(currPhoto);
             displayCycle.removeCurrentPhoto();
+
+            if ( currPhoto instanceof LocalPhoto) {
+
+                FirebaseUser user;
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                String userName = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference databaseRef = database.getReference().child(userName).child("Photos").child(currPhoto.getPhotoUri().toString().substring(currPhoto.getPhotoUri().toString().lastIndexOf('/'),
+                        currPhoto.getPhotoUri().toString().lastIndexOf('.')));
+                databaseRef.removeValue();
+
+            }
             return 1;
         }
 
