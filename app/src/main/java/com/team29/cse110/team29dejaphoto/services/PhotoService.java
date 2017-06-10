@@ -420,7 +420,7 @@ public class PhotoService extends Service {
 
         /* Initializes DisplayCycleMediator with photos from the system */
 
-        PhotoLoader photoLoader = new DejaPhotoLoader(sp);
+        PhotoLoader photoLoader = new DejaPhotoLoader();
         //DejaPhotoDownloader downloader = new DejaPhotoDownloader(context);
         //ArrayList<DejaPhoto> allPhotos = downloader.downloadAllPhotos();
         //DejaPhoto[] allPhotosArray = new DejaPhoto[allPhotos.size()];

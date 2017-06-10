@@ -54,12 +54,6 @@ public class DejaPhotoLoader implements PhotoLoader {
     private final Uri MEDIA_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
     /* SharedPreferences for karma and release */
-    private SharedPreferences sp;
-
-
-    public DejaPhotoLoader(SharedPreferences sp) {
-        this.sp = sp;
-    }
 
     /*
      * This method searches all photos retrieved from the phone's storage and returns them as an

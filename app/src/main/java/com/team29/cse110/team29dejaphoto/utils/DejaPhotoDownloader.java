@@ -37,9 +37,7 @@ public class DejaPhotoDownloader implements PhotoDownloader {
     @Override
     public ArrayList<DejaPhoto> downloadMyPhotos() {
 
-        PhotoLoader loader
-                = new DejaPhotoLoader(
-                        context.getSharedPreferences("Deja_Preferences", Context.MODE_PRIVATE));
+        PhotoLoader loader = new DejaPhotoLoader();
         DejaPhoto[] gallery = loader.getPhotosAsArray(context);
         return new ArrayList<>(Arrays.asList(gallery));
 
