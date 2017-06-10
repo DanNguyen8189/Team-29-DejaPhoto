@@ -92,18 +92,7 @@ public class PhotoPickerActivity extends AppCompatActivity {
         File destinationFile; // Holds the copied photo
 
         Log.d("TAG", "Running onActivityResult");
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null /*&& data.getData() != null*/) {
-
-            /*Uri uri1 = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri1);
-                // Log.d(TAG, String.valueOf(bitmap));
-
-                photoView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
 
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
             String trueUri;
